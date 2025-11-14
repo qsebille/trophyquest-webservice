@@ -1,6 +1,8 @@
 package fr.trophyquest.web.service.controllers;
 
-import fr.trophyquest.web.service.dto.UserDTO;
+import fr.trophyquest.web.service.dto.EarnedTrophyDTO;
+import fr.trophyquest.web.service.dto.GameDTO;
+import fr.trophyquest.web.service.dto.PsnUserDTO;
 import fr.trophyquest.web.service.service.UserService;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,18 +25,23 @@ public class UserController {
     }
 
     @GetMapping
-    public List<UserDTO> getAllUsers() {
+    public List<PsnUserDTO> getAllUsers() {
         return this.userService.findAll();
     }
 
     @GetMapping("/{id}")
-    public UserDTO fetchUser(@PathVariable UUID id) {
+    public PsnUserDTO fetchUser(@PathVariable UUID id) {
         return userService.findById(id);
     }
 
-//    @GetMapping("/{id}/games")
-//    public List<GameDTO> getUserGames(@PathVariable Long id) {
-//        return
-//    }
+    @GetMapping("/{id}/games")
+    public List<GameDTO> getUserGames(@PathVariable UUID id) {
+        return userService.findUserGames(id);
+    }
+
+    @GetMapping("/{id}/trophies")
+    public List<EarnedTrophyDTO> getUserEarnedTrophies(@PathVariable UUID id) {
+        return userService.findUserEarnedTrophies(id);
+    }
 
 }

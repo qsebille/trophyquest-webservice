@@ -1,4 +1,4 @@
-package fr.trophyquest.web.service.model;
+package fr.trophyquest.web.service.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

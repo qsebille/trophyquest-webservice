@@ -1,4 +1,4 @@
-package fr.trophyquest.web.service.model;
+package fr.trophyquest.web.service.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -15,7 +15,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "psn_user")
 @Data
-public class User {
+public class PsnUser {
 
     @Id
     private UUID id;
@@ -27,9 +27,5 @@ public class User {
     @ManyToMany
     @JoinTable(name = "user_game", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "game_id"))
     private Set<Game> games = new HashSet<>();
-
-    @ManyToMany
-    @JoinTable(name = "user_trophy", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "trophy_id"))
-    private Set<Trophy> trophies = new HashSet<>();
 
 }

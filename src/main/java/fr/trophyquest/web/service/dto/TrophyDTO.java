@@ -9,8 +9,10 @@ public record TrophyDTO(
         String trophyType,
         Boolean isHidden,
         String iconUrl,
-        UUID gameId,
         String gameName,
-        String gameGroup
+        String gameGroup,
+        String quickGuide,
+        String youtubeVideoUrl,
+        String youtubeThumbnailUrl
 ) {
 }

@@ -1,4 +1,4 @@
-package fr.trophyquest.web.service.model;
+package fr.trophyquest.web.service.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Entity;
@@ -36,5 +36,11 @@ public class Trophy {
     private String gameGroup;
 
     private String iconUrl;
+
+    private String quickGuide;
+
+    private String youtubeVideoUrl;
+
+    private String youtubeThumbnailUrl;
 
 }

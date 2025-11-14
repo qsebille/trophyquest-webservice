@@ -2,7 +2,7 @@ package fr.trophyquest.web.service.service;
 
 import fr.trophyquest.web.service.dto.GameDTO;
 import fr.trophyquest.web.service.mapper.GameDTOMapper;
-import fr.trophyquest.web.service.model.Game;
+import fr.trophyquest.web.service.entity.Game;
 import fr.trophyquest.web.service.repository.GameRepository;
 import org.springframework.stereotype.Service;
 

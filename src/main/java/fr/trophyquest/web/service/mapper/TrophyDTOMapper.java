@@ -1,7 +1,7 @@
 package fr.trophyquest.web.service.mapper;
 
 import fr.trophyquest.web.service.dto.TrophyDTO;
-import fr.trophyquest.web.service.model.Trophy;
+import fr.trophyquest.web.service.entity.Trophy;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -15,9 +15,11 @@ public class TrophyDTOMapper {
                 entity.getTrophyType(),
                 entity.getIsHidden(),
                 entity.getIconUrl(),
-                entity.getGame().getId(),
                 entity.getGame().getTitle(),
-                entity.getGameGroup()
+                entity.getGameGroup(),
+                entity.getQuickGuide(),
+                entity.getYoutubeVideoUrl(),
+                entity.getYoutubeThumbnailUrl()
         );
     }
 

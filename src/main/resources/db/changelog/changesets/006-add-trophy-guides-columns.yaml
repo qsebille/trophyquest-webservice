@@ -1,0 +1,16 @@
+databaseChangeLog:
+  - changeSet:
+      id: 006-add-trophy-guides-columns
+      author: Quentin Sebille
+      logicalFilePath: db/changelog/changesets/006-add-trophy-guides-columns.yaml
+      changes:
+        - addColumn:
+            tableName: trophy
+            columns:
+              - column: { name: quick_guide, type: VARCHAR(1024) }
+              - column: { name: youtube_video_url, type: varchar(255) }
+              - column: { name: youtube_thumbnail_url, type: varchar(255) }
+      rollback:
+        - dropColumn: { tableName: trophy, columnName: quick_guide }
+        - dropColumn: { tableName: trophy, columnName: youtube_video_url }
+        - dropColumn: { tableName: trophy, columnName: youtube_thumbnail_url }

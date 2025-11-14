@@ -1,7 +1,7 @@
 package fr.trophyquest.web.service.mapper;
 
 import fr.trophyquest.web.service.dto.GameDTO;
-import fr.trophyquest.web.service.model.Game;
+import fr.trophyquest.web.service.entity.Game;
 import org.springframework.stereotype.Component;
 
 @Component

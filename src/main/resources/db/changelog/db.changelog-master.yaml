@@ -1,0 +1,6 @@
+databaseChangeLog:
+  - include: { file: changesets/001-create-game-table.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/002-create-trophy-table.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/003-create-psn-user-table.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/004-create-user-game-table.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/005-create-user-trophy-table.yaml, relativeToChangelogFile: true }

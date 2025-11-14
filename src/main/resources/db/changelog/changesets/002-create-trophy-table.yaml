@@ -1,0 +1,21 @@
+databaseChangeLog:
+  - changeSet:
+      id: 002-create-trophy-table
+      author: Quentin Sebille
+      logicalFilePath: db/changelog/changesets/002-create-trophy-table.yaml
+      changes:
+        - createTable:
+            tableName: trophy
+            columns:
+              - column: { name: id, type: uuid, constraints: { primaryKey: true, nullable: false } }
+              - column: { name: game_id, type: uuid, constraints: { foreignKeyName: fk_trophy_game, references: game(id) } }
+              - column: { name: order_in_game, type: INT, constraints: { nullable: false } }
+              - column: { name: title, type: VARCHAR(255), constraints: { nullable: false } }
+              - column: { name: detail, type: VARCHAR(1024) }
+              - column: { name: trophy_type, type: VARCHAR(10), constraints: { nullable: false } }
+              - column: { name: is_hidden, type: BOOLEAN }
+              - column: { name: game_group, type: VARCHAR(255) }
+              - column: { name: icon_url, type: VARCHAR(255) }
+              - column: { name: created_at, type: TIMESTAMP WITH TIME ZONE, defaultValueComputed: CURRENT_TIMESTAMP, constraints: { nullable: false } }
+      rollback:
+        - dropTable: { tableName: trophy }

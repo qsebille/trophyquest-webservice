@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -27,8 +28,14 @@ public class GameController {
     }
 
     @GetMapping
-    public List<GameDTO> getAllGames() {
-        return this.gameService.findAll();
+    public List<GameDTO> searchGames(
+            @RequestParam(name = "userId", defaultValue = "") String userId,
+            @RequestParam(name = "searchFrom", defaultValue = "0") String searchFrom,
+            @RequestParam(name = "searchSize", defaultValue = "50") String searchSize,
+            @RequestParam(name = "sortBy", defaultValue = "id") String sortBy,
+            @RequestParam(name = "sortDirection", defaultValue = "asc") String sortDirection
+    ) {
+        return this.gameService.searchGames(userId, searchFrom, searchSize, sortBy, sortDirection);
     }
 
     @GetMapping("/{id}")

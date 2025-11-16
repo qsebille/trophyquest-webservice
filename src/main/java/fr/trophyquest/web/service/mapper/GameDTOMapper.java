@@ -7,8 +7,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class GameDTOMapper {
 
-    private final TrophyDTOMapper trophyDTOMapper = new TrophyDTOMapper();
-
     public GameDTO toDTO(Game entity) {
         return new GameDTO(
                 entity.getId(),

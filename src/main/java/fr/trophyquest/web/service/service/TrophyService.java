@@ -50,4 +50,18 @@ public class TrophyService {
         );
     }
 
+    public List<UserTrophyProjection> getUserTrophies(
+            UUID userId,
+            String searchFrom,
+            String searchSize
+    ) {
+        final int pageNumber = Integer.parseInt(searchFrom);
+        final int pageSize = Integer.parseInt(searchSize);
+        return this.psnTrophyRepository.getUserTrophies(
+                userId,
+                pageNumber,
+                pageSize
+        );
+    }
+
 }

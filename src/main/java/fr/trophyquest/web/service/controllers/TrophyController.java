@@ -2,14 +2,12 @@ package fr.trophyquest.web.service.controllers;
 
 import fr.trophyquest.web.service.dto.TrophyDTO;
 import fr.trophyquest.web.service.service.TrophyService;
-import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -21,12 +19,6 @@ public class TrophyController {
 
     public TrophyController(TrophyService trophyService) {
         this.trophyService = trophyService;
-    }
-
-    @GetMapping
-    public List<TrophyDTO> getAllTrophies() {
-        throw new NotImplementedException("Not implemented yet, need pagination");
-//        return trophyService.findAll();
     }
 
     @GetMapping("/{id}")

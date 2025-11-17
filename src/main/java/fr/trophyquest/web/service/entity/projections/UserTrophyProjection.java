@@ -18,6 +18,10 @@ public interface UserTrophyProjection {
 
     String getIconUrl();
 
+    String getGameId();
+
+    String getGameName();
+
     String getGameGroup();
 
     Instant getEarnedAt();

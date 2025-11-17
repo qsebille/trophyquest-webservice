@@ -1,6 +1,6 @@
 package fr.trophyquest.web.service.controllers;
 
-import fr.trophyquest.web.service.dto.GameDTO;
+import fr.trophyquest.web.service.dto.GameSearchDTO;
 import fr.trophyquest.web.service.dto.TrophyDTO;
 import fr.trophyquest.web.service.service.GameService;
 import fr.trophyquest.web.service.service.TrophyService;
@@ -31,23 +31,13 @@ public class GameController {
     }
 
     @GetMapping
-    public List<GameDTO> searchGames(
-            @RequestParam(name = "searchFrom", defaultValue = "0") String searchFrom,
-            @RequestParam(name = "searchSize", defaultValue = "50") String searchSize,
-            @RequestParam(name = "sortBy", defaultValue = "id") String sortBy,
-            @RequestParam(name = "sortDirection", defaultValue = "asc") String sortDirection
+    public GameSearchDTO searchGames(
+            @RequestParam(name = "pageNumber", defaultValue = "0") String pageNumberParam,
+            @RequestParam(name = "pageSize", defaultValue = "50") String pageSizeParam
     ) {
-        return this.gameService.searchGames(
-                searchFrom,
-                searchSize,
-                sortBy,
-                sortDirection
-        );
-    }
-
-    @GetMapping("/{id}")
-    public GameDTO getGameById(@PathVariable UUID id) {
-        return this.gameService.getGameById(id);
+        final int pageNumber = Integer.parseInt(pageNumberParam);
+        final int pageSize = Integer.parseInt(pageSizeParam);
+        return this.gameService.search(pageNumber, pageSize);
     }
 
     @GetMapping("/{id}/trophies")

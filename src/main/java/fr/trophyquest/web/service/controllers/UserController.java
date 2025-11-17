@@ -1,13 +1,11 @@
 package fr.trophyquest.web.service.controllers;
 
 import fr.trophyquest.web.service.dto.PsnUserDTO;
-import fr.trophyquest.web.service.dto.TrophyDTO;
 import fr.trophyquest.web.service.entity.projections.PlayedGameProjection;
 import fr.trophyquest.web.service.entity.projections.UserTrophyProjection;
 import fr.trophyquest.web.service.service.GameService;
 import fr.trophyquest.web.service.service.TrophyService;
 import fr.trophyquest.web.service.service.UserService;
-import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -72,8 +70,16 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/trophies")
-    public List<TrophyDTO> getUserTrophies(@PathVariable UUID userId) {
-        throw new NotImplementedException("User trophies not implemented yet");
+    public List<UserTrophyProjection> getUserTrophies(
+            @PathVariable UUID userId,
+            @RequestParam(name = "searchFrom", defaultValue = "0") String searchFrom,
+            @RequestParam(name = "searchSize", defaultValue = "50") String searchSize
+    ) {
+        return this.trophyService.getUserTrophies(
+                userId,
+                searchFrom,
+                searchSize
+        );
     }
 
 }

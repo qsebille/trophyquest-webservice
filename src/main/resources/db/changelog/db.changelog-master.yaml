@@ -1,7 +1,8 @@
 databaseChangeLog:
-  - include: { file: changesets/001-create-game-table.yaml, relativeToChangelogFile: true }
-  - include: { file: changesets/002-create-trophy-table.yaml, relativeToChangelogFile: true }
-  - include: { file: changesets/003-create-psn-user-table.yaml, relativeToChangelogFile: true }
-  - include: { file: changesets/004-create-user-game-table.yaml, relativeToChangelogFile: true }
-  - include: { file: changesets/005-create-user-trophy-table.yaml, relativeToChangelogFile: true }
-  - include: { file: changesets/006-add-trophy-guides-columns.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/001-create-psn-user-table.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/002-create-psn-title-table.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/003-create-psn-user-title-table.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/004-create-psn-trophy-set-table.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/005-create-psn-title-trophy-set-table.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/006-create-psn-trophy-table.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/007-create-psn-earned-trophy-table.yaml, relativeToChangelogFile: true }

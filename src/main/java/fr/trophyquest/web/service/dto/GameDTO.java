@@ -4,8 +4,7 @@ import java.util.UUID;
 
 public record GameDTO(
         UUID id,
-        String title,
-        String platform,
+        String name,
         String imageUrl
 ) {
 }

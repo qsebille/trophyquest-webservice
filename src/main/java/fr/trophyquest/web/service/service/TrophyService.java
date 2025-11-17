@@ -1,9 +1,10 @@
 package fr.trophyquest.web.service.service;
 
 import fr.trophyquest.web.service.dto.TrophyDTO;
+import fr.trophyquest.web.service.entity.PsnTrophy;
+import fr.trophyquest.web.service.entity.projections.UserTrophyProjection;
 import fr.trophyquest.web.service.mapper.TrophyDTOMapper;
-import fr.trophyquest.web.service.entity.Trophy;
-import fr.trophyquest.web.service.repository.TrophyRepository;
+import fr.trophyquest.web.service.repository.PsnTrophyRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,30 +14,40 @@ import java.util.stream.Collectors;
 @Service
 public class TrophyService {
 
-    private final TrophyRepository trophyRepository;
+    private final PsnTrophyRepository psnTrophyRepository;
     private final TrophyDTOMapper trophyMapper;
 
-    public TrophyService(TrophyRepository trophyRepository, TrophyDTOMapper trophyMapper) {
-        this.trophyRepository = trophyRepository;
+    public TrophyService(
+            PsnTrophyRepository psnTrophyRepository,
+            TrophyDTOMapper trophyMapper
+    ) {
+        this.psnTrophyRepository = psnTrophyRepository;
         this.trophyMapper = trophyMapper;
     }
 
     public List<TrophyDTO> findAll() {
-        return trophyRepository.findAll()
-                .stream()
-                .map(trophyMapper::toDTO)
-                .collect(Collectors.toList());
+        return psnTrophyRepository.findAll().stream().map(trophyMapper::toDTO).collect(Collectors.toList());
     }
 
     public TrophyDTO getTrophyById(UUID trophyId) {
-        Trophy trophy = trophyRepository.findById(trophyId).orElseThrow();
+        PsnTrophy trophy = psnTrophyRepository.findById(trophyId).orElseThrow();
         return trophyMapper.toDTO(trophy);
     }
 
-    public List<TrophyDTO> getTrophyForGame(UUID gameId) {
-        return trophyRepository.findByGameId(gameId)
-                .stream()
-                .map(trophyMapper::toDTO)
-                .collect(Collectors.toList());
+    public List<TrophyDTO> getGameTrophies(UUID gameId) {
+        return this.psnTrophyRepository.getGameTrophies(gameId).stream()
+                .map(this.trophyMapper::toDTO)
+                .toList();
     }
+
+    public List<UserTrophyProjection> getUserGameTrophies(
+            UUID userId,
+            UUID gameId
+    ) {
+        return this.psnTrophyRepository.getUserGameTrophies(
+                userId,
+                gameId
+        );
+    }
+
 }

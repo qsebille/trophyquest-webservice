@@ -1,5 +1,6 @@
 package fr.trophyquest.web.service.dto;
 
+import java.time.ZonedDateTime;
 import java.util.UUID;
 
 public record TrophyDTO(
@@ -9,8 +10,9 @@ public record TrophyDTO(
         String trophyType,
         Boolean isHidden,
         String iconUrl,
-        String gameName,
+        String trophySetName,
         String gameGroup,
+        ZonedDateTime earnedTrophyDate,
         String quickGuide,
         String youtubeVideoUrl,
         String youtubeThumbnailUrl

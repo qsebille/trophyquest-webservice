@@ -13,29 +13,31 @@ import java.util.UUID;
 
 
 @Entity
-@Table(name = "trophy")
+@Table(name = "psn_trophy")
 @Data
-public class Trophy {
+public class PsnTrophy {
 
     @Id
     private UUID id;
 
+    private int rank;
+
+    private String name;
+
+    private String description;
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "game_id")
+    @JoinColumn(name = "trophy_set_id")
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    private Game game;
-
-    private String title;
-
-    private String detail;
-
-    private String trophyType;
+    private PsnTrophySet trophySet;
 
     private Boolean isHidden;
 
-    private String gameGroup;
+    private String trophyType;
 
     private String iconUrl;
+
+    private String gameGroupId;
 
     private String quickGuide;
 

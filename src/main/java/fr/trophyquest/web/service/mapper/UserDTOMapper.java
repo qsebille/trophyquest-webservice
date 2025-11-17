@@ -10,7 +10,7 @@ public class UserDTOMapper {
     public PsnUserDTO toDTO(PsnUser entity) {
         return new PsnUserDTO(
                 entity.getId(),
-                entity.getName(),
+                entity.getProfileName(),
                 entity.getAvatarUrl()
         );
     }

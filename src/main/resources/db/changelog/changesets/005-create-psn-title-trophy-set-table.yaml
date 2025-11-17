@@ -1,0 +1,18 @@
+databaseChangeLog:
+  - changeSet:
+      id: 005
+      author: Quentin Sebille
+      logicalFilePath: db/changelog/changesets/005-create-psn-title-trophy-set-table.yaml
+      changes:
+        - createTable:
+            tableName: psn_title_trophy_set
+            columns:
+              - column: { name: title_id, type: uuid, constraints: { nullable: false, foreignKeyName: fk_tts_title_id, references: psn_title(id) } }
+              - column: { name: trophy_set_id, type: uuid, constraints: { nullable: false, foreignKeyName: fk_tts_trophy_set_id, references: psn_trophy_set(id) } }
+              - column: { name: importation_timestamp, type: timestamptz, defaultValueComputed: CURRENT_TIMESTAMP, constraints: { nullable: false } }
+        - addPrimaryKey:
+            tableName: psn_title_trophy_set
+            columnNames: title_id, trophy_set_id
+            constraintName: pk_psn_title_trophy_set
+      rollback:
+        - dropTable: { tableName: psn_title_trophy_set }

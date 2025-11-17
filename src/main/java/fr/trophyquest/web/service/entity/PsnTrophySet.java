@@ -7,16 +7,21 @@ import lombok.Data;
 
 import java.util.UUID;
 
+
 @Entity
-@Table(name = "psn_user")
+@Table(name = "psn_trophy_set")
 @Data
-public class PsnUser {
+public class PsnTrophySet {
 
     @Id
     private UUID id;
 
-    private String profileName;
+    private String psnId;
 
-    private String avatarUrl;
+    private String name;
+
+    private String version;
+
+    private String iconUrl;
 
 }

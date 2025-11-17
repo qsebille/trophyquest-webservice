@@ -22,20 +22,27 @@ public class GameController {
     private final GameService gameService;
     private final TrophyService trophyService;
 
-    public GameController(GameService gameService, TrophyService trophyService) {
+    public GameController(
+            GameService gameService,
+            TrophyService trophyService
+    ) {
         this.gameService = gameService;
         this.trophyService = trophyService;
     }
 
     @GetMapping
     public List<GameDTO> searchGames(
-            @RequestParam(name = "userId", defaultValue = "") String userId,
             @RequestParam(name = "searchFrom", defaultValue = "0") String searchFrom,
             @RequestParam(name = "searchSize", defaultValue = "50") String searchSize,
             @RequestParam(name = "sortBy", defaultValue = "id") String sortBy,
             @RequestParam(name = "sortDirection", defaultValue = "asc") String sortDirection
     ) {
-        return this.gameService.searchGames(userId, searchFrom, searchSize, sortBy, sortDirection);
+        return this.gameService.searchGames(
+                searchFrom,
+                searchSize,
+                sortBy,
+                sortDirection
+        );
     }
 
     @GetMapping("/{id}")
@@ -44,8 +51,8 @@ public class GameController {
     }
 
     @GetMapping("/{id}/trophies")
-    public List<TrophyDTO> getAllTrophiesForGame(@PathVariable UUID id) {
-        return trophyService.getTrophyForGame(id);
+    public List<TrophyDTO> getTrophies(@PathVariable UUID id) {
+        return this.trophyService.getGameTrophies(id);
     }
 
 }

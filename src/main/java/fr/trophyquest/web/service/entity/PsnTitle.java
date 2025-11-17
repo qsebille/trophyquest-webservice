@@ -8,15 +8,19 @@ import lombok.Data;
 import java.util.UUID;
 
 @Entity
-@Table(name = "psn_user")
+@Table(name = "psn_title")
 @Data
-public class PsnUser {
+public class PsnTitle {
 
     @Id
     private UUID id;
 
-    private String profileName;
+    private String psnId;
 
-    private String avatarUrl;
+    private String name;
+
+    private String category;
+
+    private String imageUrl;
 
 }

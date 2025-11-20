@@ -2,9 +2,9 @@ package fr.trophyquest.web.service.dto;
 
 import java.util.UUID;
 
-public record PsnUserDTO(
+public record UserProfileDTO(
         UUID id,
-        String name,
-        String imageUrl
+        String profileName,
+        String avatarUrl
 ) {
 }

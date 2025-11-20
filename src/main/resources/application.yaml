@@ -1,0 +1,16 @@
+spring:
+  application.name: trophyquest-web-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/trophyquest?currentSchema=app
+    username: postgres
+    password: postgres
+  jpa:
+    properties:
+      hibernate:
+        default_schema: app
+    show-sql: true
+    hibernate:
+      ddl-auto: validate
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+    default-schema: public

@@ -11,38 +11,21 @@ import lombok.Data;
 
 import java.util.UUID;
 
-
 @Entity
-@Table(name = "psn_trophy")
+@Table(name = "trophy_collection")
 @Data
-public class PsnTrophy {
+public class TrophyCollection {
 
     @Id
     private UUID id;
 
-    private int rank;
-
-    private String name;
-
-    private String description;
-
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "trophy_set_id")
+    @JoinColumn(name = "game_id")
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    private PsnTrophySet trophySet;
+    private Game game;
 
-    private Boolean isHidden;
+    private String platform;
 
-    private String trophyType;
-
-    private String iconUrl;
-
-    private String gameGroupId;
-
-    private String quickGuide;
-
-    private String youtubeVideoUrl;
-
-    private String youtubeThumbnailUrl;
+    private String imageUrl;
 
 }

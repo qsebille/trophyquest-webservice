@@ -1,10 +1,8 @@
 package fr.trophyquest.web.service.controllers;
 
-import fr.trophyquest.web.service.dto.PsnUserDTO;
-import fr.trophyquest.web.service.entity.projections.PlayedGameProjection;
-import fr.trophyquest.web.service.entity.projections.UserTrophyProjection;
+import fr.trophyquest.web.service.dto.GameSearchDTO;
+import fr.trophyquest.web.service.dto.UserProfileDTO;
 import fr.trophyquest.web.service.service.GameService;
-import fr.trophyquest.web.service.service.TrophyService;
 import fr.trophyquest.web.service.service.UserService;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,63 +21,32 @@ public class UserController {
 
     private final UserService userService;
     private final GameService gameService;
-    private final TrophyService trophyService;
 
-    public UserController(
-            UserService userService,
-            GameService gameService,
-            TrophyService trophyService
-    ) {
+    public UserController(UserService userService, GameService gameService) {
         this.userService = userService;
         this.gameService = gameService;
-        this.trophyService = trophyService;
     }
 
-    @GetMapping
-    public List<PsnUserDTO> getAllUsers() {
+
+    @GetMapping("/all")
+    public List<UserProfileDTO> getAllUsers() {
         return this.userService.findAll();
     }
 
     @GetMapping("/{userId}")
-    public PsnUserDTO fetchUser(@PathVariable UUID userId) {
+    public UserProfileDTO fetchUser(@PathVariable UUID userId) {
         return userService.findById(userId);
     }
 
     @GetMapping("/{userId}/games")
-    public List<PlayedGameProjection> getUserGames(
+    public GameSearchDTO fetchGames(
             @PathVariable UUID userId,
-            @RequestParam(name = "searchFrom", defaultValue = "0") String searchFrom,
-            @RequestParam(name = "searchSize", defaultValue = "50") String searchSize
+            @RequestParam(name = "pageNumber", defaultValue = "0") String pageNumberParam,
+            @RequestParam(name = "pageSize", defaultValue = "50") String pageSizeParam
     ) {
-        return this.gameService.getUserPlayedGames(
-                userId,
-                searchFrom,
-                searchSize
-        );
+        final int pageNumber = Integer.parseInt(pageNumberParam);
+        final int pageSize = Integer.parseInt(pageSizeParam);
+        return this.gameService.searchUserGames(userId, pageNumber, pageSize);
     }
-
-    @GetMapping("/{userId}/games/{gameId}/trophies")
-    public List<UserTrophyProjection> getUserGameTrophies(
-            @PathVariable UUID userId,
-            @PathVariable UUID gameId
-    ) {
-        return this.trophyService.getUserGameTrophies(
-                userId,
-                gameId
-        );
-    }
-
-    @GetMapping("/{userId}/trophies")
-    public List<UserTrophyProjection> getUserTrophies(
-            @PathVariable UUID userId,
-            @RequestParam(name = "searchFrom", defaultValue = "0") String searchFrom,
-            @RequestParam(name = "searchSize", defaultValue = "50") String searchSize
-    ) {
-        return this.trophyService.getUserTrophies(
-                userId,
-                searchFrom,
-                searchSize
-        );
-    }
-
+    
 }

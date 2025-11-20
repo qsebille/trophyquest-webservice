@@ -1,0 +1,17 @@
+databaseChangeLog:
+  - changeSet:
+      id: 01-setup/006-create-user-trophy-collection-table
+      author: Quentin Sebille
+      changes:
+        - createTable:
+            schemaName: app
+            tableName: user_trophy_collection
+            columns:
+              - column: { name: user_id, type: uuid, constraints: { nullable: false, foreignKeyName: fk_user, references: app.user_profile(id) } }
+              - column: { name: trophy_collection_id, type: uuid, constraints: { nullable: false, foreignKeyName: fk_trophy_collection, references: app.trophy_collection(id) } }
+              - column: { name: created_at, type: timestamptz, defaultValueComputed: CURRENT_TIMESTAMP, constraints: { nullable: false } }
+        - addPrimaryKey:
+            schemaName: app
+            tableName: user_trophy_collection
+            columnNames: user_id,trophy_collection_id
+            constraintName: pk_user_trophy_collection

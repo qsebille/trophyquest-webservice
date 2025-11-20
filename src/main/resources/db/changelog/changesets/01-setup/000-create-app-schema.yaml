@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - changeSet:
+      id: 01-setup/000-create-app-schema
+      author: Quentin Sebille
+      changes:
+        - sql:
+            sql: CREATE SCHEMA IF NOT EXISTS app;

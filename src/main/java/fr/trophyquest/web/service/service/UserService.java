@@ -1,9 +1,9 @@
 package fr.trophyquest.web.service.service;
 
-import fr.trophyquest.web.service.dto.PsnUserDTO;
-import fr.trophyquest.web.service.entity.PsnUser;
-import fr.trophyquest.web.service.mapper.UserDTOMapper;
-import fr.trophyquest.web.service.repository.PsnUserRepository;
+import fr.trophyquest.web.service.dto.UserProfileDTO;
+import fr.trophyquest.web.service.entity.UserProfile;
+import fr.trophyquest.web.service.mappers.UserProfileMapper;
+import fr.trophyquest.web.service.repository.UserProfileRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,21 +12,25 @@ import java.util.UUID;
 @Service
 public class UserService {
 
-    private final PsnUserRepository userRepository;
-    private final UserDTOMapper userDTOMapper;
+    private final UserProfileRepository userProfileRepository;
+    private final UserProfileMapper userProfileMapper;
 
-    public UserService(PsnUserRepository userRepository, UserDTOMapper userDTOMapper) {
-        this.userRepository = userRepository;
-        this.userDTOMapper = userDTOMapper;
+    public UserService(
+            UserProfileRepository userProfileRepository,
+            UserProfileMapper userProfileMapper
+    ) {
+        this.userProfileRepository = userProfileRepository;
+        this.userProfileMapper = userProfileMapper;
     }
 
-    public List<PsnUserDTO> findAll() {
-        return this.userRepository.findAll().stream().map(this.userDTOMapper::toDTO).toList();
+    public UserProfileDTO findById(UUID id) {
+        UserProfile userProfile = userProfileRepository.findById(id).orElseThrow();
+        return this.userProfileMapper.toDTO(userProfile);
     }
 
-    public PsnUserDTO findById(UUID id) {
-        PsnUser psnUser = this.userRepository.findById(id).orElseThrow();
-        return this.userDTOMapper.toDTO(psnUser);
+    public List<UserProfileDTO> findAll() {
+        return userProfileRepository.findAll().stream()
+                .map(this.userProfileMapper::toDTO)
+                .toList();
     }
-
 }

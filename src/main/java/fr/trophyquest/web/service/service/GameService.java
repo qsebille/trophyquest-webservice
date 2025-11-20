@@ -1,11 +1,12 @@
 package fr.trophyquest.web.service.service;
 
-import fr.trophyquest.web.service.dto.GameDTO;
 import fr.trophyquest.web.service.dto.GameSearchDTO;
-import fr.trophyquest.web.service.entity.projections.GameProjection;
-import fr.trophyquest.web.service.entity.projections.PlayedGameProjection;
-import fr.trophyquest.web.service.mapper.GameDTOMapper;
-import fr.trophyquest.web.service.repository.PsnTitleRepository;
+import fr.trophyquest.web.service.entity.Game;
+import fr.trophyquest.web.service.mappers.GameMapper;
+import fr.trophyquest.web.service.repository.GameRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,36 +14,26 @@ import java.util.UUID;
 
 @Service
 public class GameService {
-    private final PsnTitleRepository psnTitleRepository;
-    private final GameDTOMapper gameDTOMapper;
+    private final GameRepository gameRepository;
+    private final GameMapper gameMapper;
 
-    public GameService(
-            PsnTitleRepository psnTitleRepository,
-            GameDTOMapper gameDTOMapper
-    ) {
-        this.psnTitleRepository = psnTitleRepository;
-        this.gameDTOMapper = gameDTOMapper;
+    public GameService(GameRepository gameRepository, GameMapper gameMapper) {
+        this.gameRepository = gameRepository;
+        this.gameMapper = gameMapper;
     }
 
-    public GameSearchDTO search(
-            int pageNumber,
-            int pageSize
-    ) {
-        List<GameProjection> projections = this.psnTitleRepository.search(pageNumber, pageSize);
-        List<GameDTO> games = this.gameDTOMapper.buildGames(projections);
-        long total = this.psnTitleRepository.count();
+    public GameSearchDTO searchUserGames(UUID userId, int pageNumber, int pageSize) {
+        List<Game> games = this.gameRepository.searchByUserId(userId, pageNumber, pageSize);
+        long totalElements = this.gameRepository.countDistinctByUserId(userId);
 
-        return new GameSearchDTO(games, total);
+        return new GameSearchDTO(games.stream().map(this.gameMapper::toDTO).toList(), totalElements);
     }
 
-    public List<PlayedGameProjection> getUserPlayedGames(
-            UUID userId,
-            String searchFrom,
-            String searchSize
-    ) {
-        final int pageNumber = Integer.parseInt(searchFrom);
-        final int pageSize = Integer.parseInt(searchSize);
-        return this.psnTitleRepository.findByUserId(userId, pageNumber, pageSize);
+    public GameSearchDTO search(int pageNumber, int pageSize) {
+        PageRequest pageRequest = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.ASC, "title"));
+        Page<Game> games = this.gameRepository.findAll(pageRequest);
+
+        return new GameSearchDTO(games.stream().map(this.gameMapper::toDTO).toList(), games.getTotalElements());
     }
 
 }

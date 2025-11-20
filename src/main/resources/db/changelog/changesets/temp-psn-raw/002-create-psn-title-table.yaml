@@ -1,0 +1,19 @@
+databaseChangeLog:
+  - changeSet:
+      id: temp-psn-raw/002-create-psn-title-table
+      author: Quentin Sebille
+      changes:
+        - createTable:
+            schemaName: psn
+            tableName: title
+            columns:
+              - column: { name: id, type: varchar(20), constraints: { nullable: false } }
+              - column: { name: name, type: varchar(200), constraints: { nullable: false } }
+              - column: { name: category, type: varchar(50), constraints: { nullable: false } }
+              - column: { name: image_url, type: varchar(300) }
+              - column: { name: created_at, type: timestamptz, defaultValueComputed: CURRENT_TIMESTAMP, constraints: { nullable: false } }
+        - addPrimaryKey:
+            schemaName: psn
+            tableName: title
+            columnNames: id
+            constraintName: pk_title

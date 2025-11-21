@@ -1,5 +1,6 @@
 package fr.trophyquest.web.service.service;
 
+import fr.trophyquest.web.service.dto.GameDTO;
 import fr.trophyquest.web.service.dto.GameSearchDTO;
 import fr.trophyquest.web.service.entity.Game;
 import fr.trophyquest.web.service.mappers.GameMapper;
@@ -34,6 +35,11 @@ public class GameService {
         Page<Game> games = this.gameRepository.findAll(pageRequest);
 
         return new GameSearchDTO(games.stream().map(this.gameMapper::toDTO).toList(), games.getTotalElements());
+    }
+
+    public GameDTO getGame(UUID gameId) {
+        Game game = this.gameRepository.findById(gameId).orElseThrow();
+        return gameMapper.toDTO(game);
     }
 
 }

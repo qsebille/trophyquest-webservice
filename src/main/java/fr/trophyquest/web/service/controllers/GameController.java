@@ -1,12 +1,16 @@
 package fr.trophyquest.web.service.controllers;
 
+import fr.trophyquest.web.service.dto.GameDTO;
 import fr.trophyquest.web.service.dto.GameSearchDTO;
 import fr.trophyquest.web.service.service.GameService;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/games")
@@ -27,6 +31,11 @@ public class GameController {
         final int pageNumber = Integer.parseInt(pageNumberParam);
         final int pageSize = Integer.parseInt(pageSizeParam);
         return this.gameService.search(pageNumber, pageSize);
+    }
+
+    @GetMapping("/{id}")
+    public GameDTO getGameById(@PathVariable UUID id) {
+        return this.gameService.getGame(id);
     }
 
 }

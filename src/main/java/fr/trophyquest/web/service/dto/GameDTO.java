@@ -4,7 +4,7 @@ import java.util.Set;
 import java.util.UUID;
 
 public record GameDTO(
-        UUID gameId,
+        UUID id,
         String title,
         Set<String> platforms,
         String imageUrl

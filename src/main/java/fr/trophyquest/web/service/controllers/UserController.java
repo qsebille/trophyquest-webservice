@@ -1,7 +1,7 @@
 package fr.trophyquest.web.service.controllers;
 
-import fr.trophyquest.web.service.dto.GameSearchDTO;
 import fr.trophyquest.web.service.dto.TrophyCountDTO;
+import fr.trophyquest.web.service.dto.UserGameSearchDTO;
 import fr.trophyquest.web.service.dto.UserProfileDTO;
 import fr.trophyquest.web.service.dto.UserSearchDTO;
 import fr.trophyquest.web.service.service.GameService;
@@ -53,7 +53,7 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/games")
-    public GameSearchDTO fetchGames(
+    public UserGameSearchDTO fetchGames(
             @PathVariable UUID userId,
             @RequestParam(name = "pageNumber", defaultValue = "0") String pageNumberParam,
             @RequestParam(name = "pageSize", defaultValue = "50") String pageSizeParam

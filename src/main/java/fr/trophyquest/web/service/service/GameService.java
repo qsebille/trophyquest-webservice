@@ -2,8 +2,11 @@ package fr.trophyquest.web.service.service;
 
 import fr.trophyquest.web.service.dto.GameDTO;
 import fr.trophyquest.web.service.dto.GameSearchDTO;
+import fr.trophyquest.web.service.dto.UserGameSearchDTO;
 import fr.trophyquest.web.service.entity.Game;
+import fr.trophyquest.web.service.entity.projections.UserGameProjection;
 import fr.trophyquest.web.service.mappers.GameMapper;
+import fr.trophyquest.web.service.mappers.UserGameMapper;
 import fr.trophyquest.web.service.repository.GameRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,17 +20,19 @@ import java.util.UUID;
 public class GameService {
     private final GameRepository gameRepository;
     private final GameMapper gameMapper;
+    private final UserGameMapper userGameMapper;
 
-    public GameService(GameRepository gameRepository, GameMapper gameMapper) {
+    public GameService(GameRepository gameRepository, GameMapper gameMapper, UserGameMapper userGameMapper) {
         this.gameRepository = gameRepository;
         this.gameMapper = gameMapper;
+        this.userGameMapper = userGameMapper;
     }
 
-    public GameSearchDTO searchUserGames(UUID userId, int pageNumber, int pageSize) {
-        List<Game> games = this.gameRepository.searchByUserId(userId, pageNumber, pageSize);
+    public UserGameSearchDTO searchUserGames(UUID userId, int pageNumber, int pageSize) {
+        List<UserGameProjection> userGames = this.gameRepository.searchByUserId(userId, pageNumber, pageSize);
         long totalElements = this.gameRepository.countDistinctByUserId(userId);
 
-        return new GameSearchDTO(games.stream().map(this.gameMapper::toDTO).toList(), totalElements);
+        return new UserGameSearchDTO(userGames.stream().map(this.userGameMapper::toDTO).toList(), totalElements);
     }
 
     public GameSearchDTO search(int pageNumber, int pageSize) {

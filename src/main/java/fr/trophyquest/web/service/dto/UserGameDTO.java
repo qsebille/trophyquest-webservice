@@ -1,5 +1,6 @@
 package fr.trophyquest.web.service.dto;
 
+import java.util.Set;
 import java.util.UUID;
 
 public record UserGameDTO(
@@ -8,6 +9,7 @@ public record UserGameDTO(
         String imageUrl,
         String platform,
         TrophyCountDTO totalTrophies,
-        TrophyCountDTO earnedTrophies
+        TrophyCountDTO earnedTrophies,
+        Set<UUID> trophyCollections
 ) {
 }

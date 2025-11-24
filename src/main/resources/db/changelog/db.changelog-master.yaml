@@ -7,6 +7,7 @@ databaseChangeLog:
   - include: { file: changesets/02-app-setup/005-create-user-game-table.yaml, relativeToChangelogFile: true }
   - include: { file: changesets/02-app-setup/006-create-user-trophy-collection-table.yaml, relativeToChangelogFile: true }
   - include: { file: changesets/02-app-setup/007-create-user-trophy-table.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/02-app-setup/008-add-updated-at-columns.yaml, relativeToChangelogFile: true }
 
   - include: { file: changesets/01-psn-setup/000-create-psn-schema.yaml, relativeToChangelogFile: true }
   - include: { file: changesets/01-psn-setup/001-create-psn-user-profile-table.yaml, relativeToChangelogFile: true }
@@ -16,3 +17,4 @@ databaseChangeLog:
   - include: { file: changesets/01-psn-setup/005-create-psn-title-trophy-set-table.yaml, relativeToChangelogFile: true }
   - include: { file: changesets/01-psn-setup/006-create-psn-trophy-table.yaml, relativeToChangelogFile: true }
   - include: { file: changesets/01-psn-setup/007-create-psn-earned-trophy-table.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/01-psn-setup/008-add-updated-at-columns.yaml, relativeToChangelogFile: true }

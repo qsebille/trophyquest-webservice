@@ -5,7 +5,7 @@ databaseChangeLog:
       changes:
         - addColumn:
             schemaName: psn
-            tableName: psn_user_profile
+            tableName: user_profile
             columns:
               - column:
                   name: updated_at
@@ -15,7 +15,7 @@ databaseChangeLog:
                     nullable: false
         - addColumn:
             schemaName: psn
-            tableName: psn_title
+            tableName: title
             columns:
               - column:
                   name: updated_at
@@ -25,7 +25,7 @@ databaseChangeLog:
                     nullable: false
         - addColumn:
             schemaName: psn
-            tableName: psn_user_played_title
+            tableName: user_played_title
             columns:
               - column:
                   name: updated_at
@@ -35,7 +35,7 @@ databaseChangeLog:
                     nullable: false
         - addColumn:
             schemaName: psn
-            tableName: psn_trophy_set
+            tableName: trophy_set
             columns:
               - column:
                   name: updated_at
@@ -45,7 +45,7 @@ databaseChangeLog:
                     nullable: false
         - addColumn:
             schemaName: psn
-            tableName: psn_title_trophy_set
+            tableName: title_trophy_set
             columns:
               - column:
                   name: updated_at
@@ -55,7 +55,7 @@ databaseChangeLog:
                     nullable: false
         - addColumn:
             schemaName: psn
-            tableName: psn_trophy
+            tableName: trophy
             columns:
               - column:
                   name: updated_at
@@ -65,7 +65,7 @@ databaseChangeLog:
                     nullable: false
         - addColumn:
             schemaName: psn
-            tableName: psn_earned_trophy
+            tableName: user_earned_trophy
             columns:
               - column:
                   name: updated_at
@@ -75,7 +75,7 @@ databaseChangeLog:
                     nullable: false
         - sql:
             dbms: postgresql
-            splitStatements: true
+            splitStatements: false
             stripComments: true
             sql: |
               CREATE OR REPLACE FUNCTION psn.set_updated_at()
@@ -87,36 +87,36 @@ databaseChangeLog:
               $$ LANGUAGE plpgsql;
 
               CREATE TRIGGER trg_psn_user_profile_set_updated_at
-              BEFORE UPDATE ON psn.psn_user_profile
+              BEFORE UPDATE ON psn.user_profile
               FOR EACH ROW
               EXECUTE FUNCTION psn.set_updated_at();
 
               CREATE TRIGGER trg_psn_title_set_updated_at
-              BEFORE UPDATE ON psn.psn_title
+              BEFORE UPDATE ON psn.title
               FOR EACH ROW
               EXECUTE FUNCTION psn.set_updated_at();
 
               CREATE TRIGGER trg_psn_user_played_title_set_updated_at
-              BEFORE UPDATE ON psn.psn_user_played_title
+              BEFORE UPDATE ON psn.user_played_title
               FOR EACH ROW
               EXECUTE FUNCTION psn.set_updated_at();
 
               CREATE TRIGGER trg_psn_trophy_set_set_updated_at
-              BEFORE UPDATE ON psn.psn_trophy_set
+              BEFORE UPDATE ON psn.trophy_set
               FOR EACH ROW
               EXECUTE FUNCTION psn.set_updated_at();
 
               CREATE TRIGGER trg_psn_title_trophy_set_set_updated_at
-              BEFORE UPDATE ON psn.psn_title_trophy_set
+              BEFORE UPDATE ON psn.title_trophy_set
               FOR EACH ROW
               EXECUTE FUNCTION psn.set_updated_at();
 
               CREATE TRIGGER trg_psn_trophy_set_updated_at
-              BEFORE UPDATE ON psn.psn_trophy
+              BEFORE UPDATE ON psn.trophy
               FOR EACH ROW
               EXECUTE FUNCTION psn.set_updated_at();
 
               CREATE TRIGGER trg_psn_earned_trophy_set_updated_at
-              BEFORE UPDATE ON psn.psn_earned_trophy
+              BEFORE UPDATE ON psn.user_earned_trophy
               FOR EACH ROW
               EXECUTE FUNCTION psn.set_updated_at();

@@ -7,7 +7,6 @@ public record UserGameDTO(
         UUID id,
         String title,
         String imageUrl,
-        String platform,
         TrophyCountDTO totalTrophies,
         TrophyCountDTO earnedTrophies,
         Set<UUID> trophyCollections

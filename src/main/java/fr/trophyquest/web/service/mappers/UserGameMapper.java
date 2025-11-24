@@ -25,7 +25,6 @@ public class UserGameMapper {
                     gameId,
                     projection.getTitle(),
                     projection.getImageUrl(),
-                    projection.getPlatform(),
                     new TrophyCountDTO(
                             projection.getTotalPlatinum(),
                             projection.getTotalGold(),

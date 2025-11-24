@@ -3,6 +3,7 @@ package fr.trophyquest.web.service.repository;
 import fr.trophyquest.web.service.entity.TrophyCollection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Set;
@@ -16,5 +17,5 @@ public interface TrophyCollectionRepository extends JpaRepository<TrophyCollecti
             JOIN app.user_trophy_collection utc ON utc.trophy_collection_id = tc.id
             WHERE utc.user_id = :userId AND g.id IN :gameIds
             """, nativeQuery = true)
-    List<TrophyCollection> fetchUserGamesCollections(UUID userId, Set<UUID> gameIds);
+    List<TrophyCollection> fetchUserGamesCollections(@Param("userId") UUID userId, @Param("gameIds") Set<UUID> gameIds);
 }

@@ -1,18 +1,18 @@
 databaseChangeLog:
-  - include: { file: changesets/01-setup/000-create-app-schema.yaml, relativeToChangelogFile: true }
-  - include: { file: changesets/01-setup/001-create-user-profile-table.yaml, relativeToChangelogFile: true }
-  - include: { file: changesets/01-setup/002-create-game-table.yaml, relativeToChangelogFile: true }
-  - include: { file: changesets/01-setup/003-create-trophy-collection-table.yaml, relativeToChangelogFile: true }
-  - include: { file: changesets/01-setup/004-create-trophy-table.yaml, relativeToChangelogFile: true }
-  - include: { file: changesets/01-setup/005-create-user-game-table.yaml, relativeToChangelogFile: true }
-  - include: { file: changesets/01-setup/006-create-user-trophy-collection-table.yaml, relativeToChangelogFile: true }
-  - include: { file: changesets/01-setup/007-create-user-trophy-table.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/02-app-setup/000-create-app-schema.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/02-app-setup/001-create-user-profile-table.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/02-app-setup/002-create-game-table.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/02-app-setup/003-create-trophy-collection-table.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/02-app-setup/004-create-trophy-table.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/02-app-setup/005-create-user-game-table.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/02-app-setup/006-create-user-trophy-collection-table.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/02-app-setup/007-create-user-trophy-table.yaml, relativeToChangelogFile: true }
 
-  - include: { file: changesets/temp-psn-raw/000-create-psn-schema.yaml, relativeToChangelogFile: true }
-  - include: { file: changesets/temp-psn-raw/001-create-psn-user-profile-table.yaml, relativeToChangelogFile: true }
-  - include: { file: changesets/temp-psn-raw/002-create-psn-title-table.yaml, relativeToChangelogFile: true }
-  - include: { file: changesets/temp-psn-raw/003-create-psn-user-played-title-table.yaml, relativeToChangelogFile: true }
-  - include: { file: changesets/temp-psn-raw/004-create-psn-trophy-set-table.yaml, relativeToChangelogFile: true }
-  - include: { file: changesets/temp-psn-raw/005-create-psn-title-trophy-set-table.yaml, relativeToChangelogFile: true }
-  - include: { file: changesets/temp-psn-raw/006-create-psn-trophy-table.yaml, relativeToChangelogFile: true }
-  - include: { file: changesets/temp-psn-raw/007-create-psn-earned-trophy-table.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/01-psn-setup/000-create-psn-schema.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/01-psn-setup/001-create-psn-user-profile-table.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/01-psn-setup/002-create-psn-title-table.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/01-psn-setup/003-create-psn-user-played-title-table.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/01-psn-setup/004-create-psn-trophy-set-table.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/01-psn-setup/005-create-psn-title-trophy-set-table.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/01-psn-setup/006-create-psn-trophy-table.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/01-psn-setup/007-create-psn-earned-trophy-table.yaml, relativeToChangelogFile: true }

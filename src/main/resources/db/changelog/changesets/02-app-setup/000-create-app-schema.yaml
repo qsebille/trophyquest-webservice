@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 01-setup/000-create-app-schema
+      id: 02-app-setup/000-create-app-schema
       author: Quentin Sebille
       changes:
         - sql:

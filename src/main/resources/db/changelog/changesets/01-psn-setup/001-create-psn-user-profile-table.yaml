@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: temp-psn-raw/001-create-psn-user-profile-table
+      id: 01-psn-setup/001-create-psn-user-profile-table
       author: Quentin Sebille
       changes:
         - createTable:

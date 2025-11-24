@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: temp-psn-raw/002-create-psn-title-table
+      id: 01-psn-setup/002-create-psn-title-table
       author: Quentin Sebille
       changes:
         - createTable:

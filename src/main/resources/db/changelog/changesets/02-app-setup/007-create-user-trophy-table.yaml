@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 01-setup/006-create-user-game-table
+      id: 02-app-setup/006-create-user-game-table
       author: Quentin Sebille
       changes:
         - createTable:

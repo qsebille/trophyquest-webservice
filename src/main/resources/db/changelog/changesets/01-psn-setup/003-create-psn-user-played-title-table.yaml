@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: temp-psn-raw/003-create-psn-user-played-title-table
+      id: 01-psn-setup/003-create-psn-user-played-title-table
       author: Quentin Sebille
       changes:
         - createTable:

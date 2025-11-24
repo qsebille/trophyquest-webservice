@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: temp-psn-raw/-create-psn-trophy-set-table
+      id: 01-psn-setup/-create-psn-trophy-set-table
       author: Quentin Sebille
       changes:
         - createTable:

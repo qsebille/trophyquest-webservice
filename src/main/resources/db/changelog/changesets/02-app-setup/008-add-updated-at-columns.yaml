@@ -75,7 +75,7 @@ databaseChangeLog:
                     nullable: false
         - sql:
             dbms: postgresql
-            splitStatements: true
+            splitStatements: false
             stripComments: true
             sql: |
               CREATE OR REPLACE FUNCTION app.set_updated_at()

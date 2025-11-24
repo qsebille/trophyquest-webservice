@@ -16,7 +16,6 @@ public interface GameRepository extends JpaRepository<Game, UUID> {
                 g.id,
                 g.title,
                 g.image_url,
-                tc.platform,
                 MAX(ut.earned_at) AS last_earned_at,
                 COUNT(*) FILTER (WHERE t.trophy_type = 'platinum')                            AS total_platinum,
                 COUNT(*) FILTER (WHERE t.trophy_type = 'gold')                                AS total_gold,
@@ -27,23 +26,16 @@ public interface GameRepository extends JpaRepository<Game, UUID> {
                 COUNT(*) FILTER (WHERE t.trophy_type = 'silver'   AND ut.user_id IS NOT NULL) AS earned_silver,
                 COUNT(*) FILTER (WHERE t.trophy_type = 'bronze'   AND ut.user_id IS NOT NULL) AS earned_bronze
             FROM app.game g
-                     JOIN app.user_game ug
-                          ON ug.game_id = g.id
-                     JOIN app.user_profile up
-                          ON up.id = ug.user_id
-                     JOIN app.trophy_collection tc
-                          ON tc.game_id = g.id
-                     JOIN app.trophy t
-                          ON t.trophy_collection_id = tc.id
-                     LEFT JOIN app.user_trophy ut
-                               ON ut.trophy_id = t.id
-                                   AND ut.user_id = up.id
+                     JOIN app.user_game ug ON ug.game_id = g.id
+                     JOIN app.user_profile up ON up.id = ug.user_id
+                     JOIN app.trophy_collection tc ON tc.game_id = g.id
+                     JOIN app.trophy t ON t.trophy_collection_id = tc.id
+                     LEFT JOIN app.user_trophy ut ON ut.trophy_id = t.id AND ut.user_id = up.id
             WHERE up.id = :userId
             GROUP BY
                 g.id,
                 g.title,
-                g.image_url,
-                tc.platform
+                g.image_url
             ORDER BY
                 last_earned_at DESC NULLS LAST
             LIMIT :pageSize OFFSET :pageNumber * :pageSize

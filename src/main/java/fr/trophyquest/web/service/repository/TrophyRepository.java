@@ -64,13 +64,13 @@ public interface TrophyRepository extends JpaRepository<Trophy, UUID> {
                    t.is_hidden,
                    t.icon_url,
                    g.title as game_title,
-                   t.game_group_id,
+                   t.game_group_id as game_group,
                    ut.earned_at
             FROM app.trophy t
                      JOIN app.trophy_collection tc ON t.trophy_collection_id = tc.id
                      JOIN app.game g ON tc.game_id = g.id
-                     LEFT JOIN app.user_trophy ut ON ut.trophy_id = t.id
-            WHERE (user_id = :userId OR user_id IS NULL) AND g.id = :gameId
+                     LEFT JOIN app.user_trophy ut ON ut.trophy_id = t.id AND ut.user_id = :userId
+            WHERE g.id = :gameId
             ORDER BY rank
             """, nativeQuery = true)
     List<EarnedTrophyProjection> fetchUserGameTrophies(@Param("userId") UUID userId, @Param("gameId") UUID gameId);

@@ -1,7 +1,7 @@
 package fr.trophyquest.web.service.service;
 
+import fr.trophyquest.web.service.dto.SearchDTO;
 import fr.trophyquest.web.service.dto.UserProfileDTO;
-import fr.trophyquest.web.service.dto.UserSearchDTO;
 import fr.trophyquest.web.service.entity.UserProfile;
 import fr.trophyquest.web.service.mappers.UserProfileMapper;
 import fr.trophyquest.web.service.repository.UserProfileRepository;
@@ -26,10 +26,10 @@ public class UserService {
         this.userProfileMapper = userProfileMapper;
     }
 
-    public UserSearchDTO search(int pageNumber, int pageSize) {
+    public SearchDTO<UserProfileDTO> search(int pageNumber, int pageSize) {
         PageRequest pageRequest = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.ASC, "name"));
         Page<UserProfile> searchResult = this.userProfileRepository.findAll(pageRequest);
-        return new UserSearchDTO(
+        return new SearchDTO<>(
                 searchResult.getContent().stream().map(this.userProfileMapper::toDTO).toList(),
                 searchResult.getTotalElements()
         );

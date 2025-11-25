@@ -1,9 +1,10 @@
 package fr.trophyquest.web.service.controllers;
 
+import fr.trophyquest.web.service.dto.EarnedTrophyDTO;
+import fr.trophyquest.web.service.dto.SearchDTO;
 import fr.trophyquest.web.service.dto.TrophyCountDTO;
-import fr.trophyquest.web.service.dto.UserGameSearchDTO;
+import fr.trophyquest.web.service.dto.UserGameDTO;
 import fr.trophyquest.web.service.dto.UserProfileDTO;
-import fr.trophyquest.web.service.dto.UserSearchDTO;
 import fr.trophyquest.web.service.service.GameService;
 import fr.trophyquest.web.service.service.TrophyService;
 import fr.trophyquest.web.service.service.UserService;
@@ -33,7 +34,7 @@ public class UserController {
 
 
     @GetMapping("/search")
-    public UserSearchDTO searchUsers(
+    public SearchDTO<UserProfileDTO> searchUsers(
             @RequestParam(name = "pageNumber", defaultValue = "0") String pageNumberParam,
             @RequestParam(name = "pageSize", defaultValue = "50") String pageSizeParam
     ) {
@@ -53,7 +54,7 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/games")
-    public UserGameSearchDTO fetchGames(
+    public SearchDTO<UserGameDTO> fetchGames(
             @PathVariable UUID userId,
             @RequestParam(name = "pageNumber", defaultValue = "0") String pageNumberParam,
             @RequestParam(name = "pageSize", defaultValue = "50") String pageSizeParam
@@ -61,6 +62,17 @@ public class UserController {
         final int pageNumber = Integer.parseInt(pageNumberParam);
         final int pageSize = Integer.parseInt(pageSizeParam);
         return this.gameService.searchUserGames(userId, pageNumber, pageSize);
+    }
+
+    @GetMapping("/{userId}/trophies")
+    public SearchDTO<EarnedTrophyDTO> fetchTrophies(
+            @PathVariable UUID userId,
+            @RequestParam(name = "pageNumber", defaultValue = "0") String pageNumberParam,
+            @RequestParam(name = "pageSize", defaultValue = "50") String pageSizeParam
+    ) {
+        final int pageNumber = Integer.parseInt(pageNumberParam);
+        final int pageSize = Integer.parseInt(pageSizeParam);
+        return this.trophyService.searchUserEarnedTrophies(userId, pageNumber, pageSize);
     }
 
 }

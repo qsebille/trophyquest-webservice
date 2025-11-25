@@ -1,9 +1,8 @@
 package fr.trophyquest.web.service.service;
 
 import fr.trophyquest.web.service.dto.GameDTO;
-import fr.trophyquest.web.service.dto.GameSearchDTO;
+import fr.trophyquest.web.service.dto.SearchDTO;
 import fr.trophyquest.web.service.dto.UserGameDTO;
-import fr.trophyquest.web.service.dto.UserGameSearchDTO;
 import fr.trophyquest.web.service.entity.Game;
 import fr.trophyquest.web.service.entity.TrophyCollection;
 import fr.trophyquest.web.service.entity.projections.UserGameProjection;
@@ -53,7 +52,7 @@ public class GameService {
      * @param pageSize   the number of items per page for pagination
      * @return a UserGameSearchDTO containing the list of user games and the total number of games
      */
-    public UserGameSearchDTO searchUserGames(UUID userId, int pageNumber, int pageSize) {
+    public SearchDTO<UserGameDTO> searchUserGames(UUID userId, int pageNumber, int pageSize) {
         List<UserGameProjection> userGameProjections = this.gameRepository.searchByUserId(userId, pageNumber, pageSize);
         Set<UUID> gameIds = userGameProjections.stream().map(UserGameProjection::getId).collect(Collectors.toSet());
         List<TrophyCollection> trophyCollections = this.trophyCollectionRepository.fetchUserGamesCollections(
@@ -76,7 +75,7 @@ public class GameService {
 
         long totalElements = this.gameRepository.countDistinctByUserId(userId);
 
-        return new UserGameSearchDTO(userGames, totalElements);
+        return new SearchDTO<>(userGames, totalElements);
     }
 
     /**
@@ -86,11 +85,11 @@ public class GameService {
      * @param pageSize   the number of items per page for pagination
      * @return a GameSearchDTO containing the list of games and the total number of games
      */
-    public GameSearchDTO search(int pageNumber, int pageSize) {
+    public SearchDTO<GameDTO> search(int pageNumber, int pageSize) {
         PageRequest pageRequest = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.ASC, "title"));
         Page<Game> games = this.gameRepository.findAll(pageRequest);
 
-        return new GameSearchDTO(games.stream().map(this.gameMapper::toDTO).toList(), games.getTotalElements());
+        return new SearchDTO<>(games.stream().map(this.gameMapper::toDTO).toList(), games.getTotalElements());
     }
 
     /**

@@ -60,4 +60,10 @@ public class TrophyService {
         long totalEarnedTrophies = this.trophyRepository.getTotalEarnedTrophiesForUser(userId);
         return new SearchDTO<>(trophies, totalEarnedTrophies);
     }
+
+    public List<EarnedTrophyDTO> fetchUserGameTrophies(UUID userId, UUID gameId) {
+        return this.trophyRepository.fetchUserGameTrophies(userId, gameId).stream()
+                .map(this.trophyMapper::toEarnedTrophyDTO)
+                .toList();
+    }
 }

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -62,6 +63,11 @@ public class UserController {
         final int pageNumber = Integer.parseInt(pageNumberParam);
         final int pageSize = Integer.parseInt(pageSizeParam);
         return this.gameService.searchUserGames(userId, pageNumber, pageSize);
+    }
+
+    @GetMapping("/{userId}/games/{gameId}/trophies")
+    public List<EarnedTrophyDTO> fetchGameTrophies(@PathVariable UUID userId, @PathVariable UUID gameId) {
+        return this.trophyService.fetchUserGameTrophies(userId, gameId);
     }
 
     @GetMapping("/{userId}/trophies")

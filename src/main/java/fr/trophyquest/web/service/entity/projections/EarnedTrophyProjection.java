@@ -6,15 +6,21 @@ import java.util.UUID;
 public interface EarnedTrophyProjection {
     UUID getId();
 
+    int getRank();
+
     String getTrophyTitle();
 
     String getTrophyDescription();
 
     String getTrophyType();
 
+    Boolean getIsHidden();
+
     String getIconUrl();
 
     String getGameTitle();
+
+    String getGameGroup();
 
     Instant getEarnedAt();
 }

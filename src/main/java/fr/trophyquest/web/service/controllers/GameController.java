@@ -1,7 +1,7 @@
 package fr.trophyquest.web.service.controllers;
 
 import fr.trophyquest.web.service.dto.GameDTO;
-import fr.trophyquest.web.service.dto.GameSearchDTO;
+import fr.trophyquest.web.service.dto.SearchDTO;
 import fr.trophyquest.web.service.service.GameService;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,7 +24,7 @@ public class GameController {
     }
 
     @GetMapping
-    public GameSearchDTO searchGames(
+    public SearchDTO<GameDTO> searchGames(
             @RequestParam(name = "pageNumber", defaultValue = "0") String pageNumberParam,
             @RequestParam(name = "pageSize", defaultValue = "50") String pageSizeParam
     ) {

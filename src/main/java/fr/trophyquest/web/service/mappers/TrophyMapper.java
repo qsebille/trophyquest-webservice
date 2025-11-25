@@ -16,7 +16,7 @@ public class TrophyMapper {
         if (null == earnedAt) {
             return Optional.empty();
         } else {
-            ZoneId zoneId = ZoneId.systemDefault();
+            ZoneId zoneId = ZoneId.of("Europe/Paris");
             ZonedDateTime zonedEarnedAt = earnedAt.atZone(zoneId);
             return Optional.of(zonedEarnedAt);
         }

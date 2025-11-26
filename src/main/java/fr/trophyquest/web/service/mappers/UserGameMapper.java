@@ -23,12 +23,15 @@ public class UserGameMapper {
         return projections.stream().map(projection -> {
             UUID gameId = projection.getId();
             Set<UserGameCollectionDTO> mappedCollections = new HashSet<>();
-            collectionMap.get(gameId).forEach(tc -> mappedCollections.add(new UserGameCollectionDTO(
-                    tc.getId(),
-                    tc.getTitle(),
-                    tc.getPlatform(),
-                    tc.getImageUrl()
-            )));
+            Set<TrophyCollection> trophyCollections = collectionMap.getOrDefault(gameId, Set.of());
+            if (!trophyCollections.isEmpty()) {
+                collectionMap.get(gameId).forEach(tc -> mappedCollections.add(new UserGameCollectionDTO(
+                        tc.getId(),
+                        tc.getTitle(),
+                        tc.getPlatform(),
+                        tc.getImageUrl()
+                )));
+            }
 
             return new UserGameDTO(
                     gameId,

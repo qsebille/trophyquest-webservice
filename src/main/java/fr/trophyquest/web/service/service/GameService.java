@@ -55,23 +55,19 @@ public class GameService {
     public SearchDTO<UserGameDTO> searchUserGames(UUID userId, int pageNumber, int pageSize) {
         List<UserGameProjection> userGameProjections = this.gameRepository.searchByUserId(userId, pageNumber, pageSize);
         Set<UUID> gameIds = userGameProjections.stream().map(UserGameProjection::getId).collect(Collectors.toSet());
-        List<TrophyCollection> trophyCollections = this.trophyCollectionRepository.fetchUserGamesCollections(
-                userId,
-                gameIds
-        );
-        Map<UUID, Set<UUID>> gameTrophyCollections = new HashMap<>();
-        trophyCollections.forEach(tc -> {
-            UUID trophyCollectionId = tc.getId();
-            UUID gameId = tc.getGame().getId();
-            if (!gameTrophyCollections.containsKey(gameId)) {
-                gameTrophyCollections.put(gameId, Set.of(trophyCollectionId));
+        List<TrophyCollection> trophyCollections = this.trophyCollectionRepository.findByUserAndGames(userId, gameIds);
+        Map<UUID, Set<TrophyCollection>> gameCollectionsMap = new HashMap<>();
+        trophyCollections.forEach(collection -> {
+            UUID gameId = collection.getGame().getId();
+            if (gameCollectionsMap.containsKey(gameId)) {
+                Set<TrophyCollection> existingTrophyCollections = new HashSet<>(gameCollectionsMap.get(gameId));
+                existingTrophyCollections.add(collection);
+                gameCollectionsMap.put(gameId, existingTrophyCollections);
             } else {
-                Set<UUID> existingTrophyCollectionIds = new HashSet<>(gameTrophyCollections.get(gameId));
-                existingTrophyCollectionIds.add(trophyCollectionId);
-                gameTrophyCollections.put(gameId, existingTrophyCollectionIds);
+                gameCollectionsMap.put(gameId, Set.of(collection));
             }
         });
-        List<UserGameDTO> userGames = this.userGameMapper.toDtos(userGameProjections, gameTrophyCollections);
+        List<UserGameDTO> userGames = this.userGameMapper.toDtos(userGameProjections, gameCollectionsMap);
 
         long totalElements = this.gameRepository.countDistinctByUserId(userId);
 

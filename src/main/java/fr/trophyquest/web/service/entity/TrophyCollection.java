@@ -19,6 +19,8 @@ public class TrophyCollection {
     @Id
     private UUID id;
 
+    private String title;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "game_id")
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})

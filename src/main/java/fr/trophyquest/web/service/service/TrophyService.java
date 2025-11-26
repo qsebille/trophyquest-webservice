@@ -61,8 +61,15 @@ public class TrophyService {
         return new SearchDTO<>(trophies, totalEarnedTrophies);
     }
 
-    public List<EarnedTrophyDTO> fetchUserGameTrophies(UUID userId, UUID gameId) {
-        return this.trophyRepository.fetchUserGameTrophies(userId, gameId).stream()
+    /**
+     * Retrieves a list of trophies earned by a specific user from a particular collection.
+     *
+     * @param userId       the unique identifier of the user whose trophies are being queried
+     * @param collectionId the unique identifier of the trophy collection being queried
+     * @return a list of EarnedTrophyDTO objects representing the trophies earned by the user in the specified collection
+     */
+    public List<EarnedTrophyDTO> fetchUserCollectionTrophies(UUID userId, UUID collectionId) {
+        return this.trophyRepository.fetchUserCollectionTrophies(userId, collectionId).stream()
                 .map(this.trophyMapper::toEarnedTrophyDTO)
                 .toList();
     }

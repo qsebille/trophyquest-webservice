@@ -1,10 +1,13 @@
 package fr.trophyquest.web.service.mappers;
 
 import fr.trophyquest.web.service.dto.TrophyCountDTO;
+import fr.trophyquest.web.service.dto.UserGameCollectionDTO;
 import fr.trophyquest.web.service.dto.UserGameDTO;
+import fr.trophyquest.web.service.entity.TrophyCollection;
 import fr.trophyquest.web.service.entity.projections.UserGameProjection;
 import org.springframework.stereotype.Component;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -15,11 +18,20 @@ public class UserGameMapper {
 
     public List<UserGameDTO> toDtos(
             List<UserGameProjection> projections,
-            Map<UUID, Set<UUID>> trophyCollectionMap
+            Map<UUID, Set<TrophyCollection>> collectionMap
     ) {
         return projections.stream().map(projection -> {
             UUID gameId = projection.getId();
-            Set<UUID> trophyCollectionIds = trophyCollectionMap.get(gameId);
+            Set<UserGameCollectionDTO> mappedCollections = new HashSet<>();
+            Set<TrophyCollection> trophyCollections = collectionMap.getOrDefault(gameId, Set.of());
+            if (!trophyCollections.isEmpty()) {
+                collectionMap.get(gameId).forEach(tc -> mappedCollections.add(new UserGameCollectionDTO(
+                        tc.getId(),
+                        tc.getTitle(),
+                        tc.getPlatform(),
+                        tc.getImageUrl()
+                )));
+            }
 
             return new UserGameDTO(
                     gameId,
@@ -37,7 +49,7 @@ public class UserGameMapper {
                             projection.getEarnedSilver(),
                             projection.getEarnedBronze()
                     ),
-                    trophyCollectionIds
+                    mappedCollections
             );
         }).toList();
     }

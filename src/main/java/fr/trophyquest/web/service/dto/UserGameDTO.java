@@ -9,6 +9,6 @@ public record UserGameDTO(
         String imageUrl,
         TrophyCountDTO totalTrophies,
         TrophyCountDTO earnedTrophies,
-        Set<UUID> trophyCollections
+        Set<UserGameCollectionDTO> trophyCollections
 ) {
 }

@@ -8,16 +8,21 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.UUID;
 
 @Entity
 @Table(name = "trophy_collection")
 @Data
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class TrophyCollection {
 
     @Id
+    @EqualsAndHashCode.Include
     private UUID id;
+
+    private String title;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "game_id")

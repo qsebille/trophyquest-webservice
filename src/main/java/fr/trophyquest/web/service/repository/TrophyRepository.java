@@ -70,8 +70,11 @@ public interface TrophyRepository extends JpaRepository<Trophy, UUID> {
                      JOIN app.trophy_collection tc ON t.trophy_collection_id = tc.id
                      JOIN app.game g ON tc.game_id = g.id
                      LEFT JOIN app.user_trophy ut ON ut.trophy_id = t.id AND ut.user_id = :userId
-            WHERE g.id = :gameId
+            WHERE tc.id = :collectionId
             ORDER BY rank
             """, nativeQuery = true)
-    List<EarnedTrophyProjection> fetchUserGameTrophies(@Param("userId") UUID userId, @Param("gameId") UUID gameId);
+    List<EarnedTrophyProjection> fetchUserCollectionTrophies(
+            @Param("userId") UUID userId,
+            @Param("collectionId") UUID collectionId
+    );
 }

@@ -65,9 +65,12 @@ public class UserController {
         return this.gameService.searchUserGames(userId, pageNumber, pageSize);
     }
 
-    @GetMapping("/{userId}/games/{gameId}/trophies")
-    public List<EarnedTrophyDTO> fetchGameTrophies(@PathVariable UUID userId, @PathVariable UUID gameId) {
-        return this.trophyService.fetchUserGameTrophies(userId, gameId);
+    @GetMapping("/{userId}/collection/{collectionId}/trophies")
+    public List<EarnedTrophyDTO> fetchUserCollectionTrophies(
+            @PathVariable UUID userId,
+            @PathVariable UUID collectionId
+    ) {
+        return this.trophyService.fetchUserCollectionTrophies(userId, collectionId);
     }
 
     @GetMapping("/{userId}/trophies")

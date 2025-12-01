@@ -1,17 +1,21 @@
 package fr.trophyquest.web.service.service;
 
-import fr.trophyquest.web.service.dto.EarnedTrophyDTO;
+import fr.trophyquest.web.service.dto.GameGroupTrophiesDTO;
 import fr.trophyquest.web.service.dto.SearchDTO;
 import fr.trophyquest.web.service.dto.TrophyCountDTO;
-import fr.trophyquest.web.service.entity.projections.EarnedTrophyProjection;
+import fr.trophyquest.web.service.dto.TrophyDTO;
 import fr.trophyquest.web.service.entity.projections.TrophyCountProjection;
+import fr.trophyquest.web.service.entity.projections.TrophyProjection;
 import fr.trophyquest.web.service.mappers.TrophyCountMapper;
 import fr.trophyquest.web.service.mappers.TrophyMapper;
 import fr.trophyquest.web.service.repository.TrophyRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class TrophyService {
@@ -49,14 +53,14 @@ public class TrophyService {
      * @param pageSize   the number of items to include on each page of the results
      * @return a list of EarnedTrophyDTO objects representing the user's earned trophies
      */
-    public SearchDTO<EarnedTrophyDTO> searchUserEarnedTrophies(UUID userId, int pageNumber, int pageSize) {
+    public SearchDTO<TrophyDTO> searchUserEarnedTrophies(UUID userId, int pageNumber, int pageSize) {
         int offset = pageNumber * pageSize;
-        List<EarnedTrophyProjection> projections = this.trophyRepository.searchUserEarnedTrophies(
+        List<TrophyProjection> projections = this.trophyRepository.searchUserEarnedTrophies(
                 userId,
                 pageSize,
                 offset
         );
-        List<EarnedTrophyDTO> trophies = projections.stream().map(this.trophyMapper::toEarnedTrophyDTO).toList();
+        List<TrophyDTO> trophies = projections.stream().map(this.trophyMapper::toTrophyDTO).toList();
         long totalEarnedTrophies = this.trophyRepository.getTotalEarnedTrophiesForUser(userId);
         return new SearchDTO<>(trophies, totalEarnedTrophies);
     }
@@ -68,9 +72,19 @@ public class TrophyService {
      * @param collectionId the unique identifier of the trophy collection being queried
      * @return a list of EarnedTrophyDTO objects representing the trophies earned by the user in the specified collection
      */
-    public List<EarnedTrophyDTO> fetchUserCollectionTrophies(UUID userId, UUID collectionId) {
-        return this.trophyRepository.fetchUserCollectionTrophies(userId, collectionId).stream()
-                .map(this.trophyMapper::toEarnedTrophyDTO)
-                .toList();
+    public List<GameGroupTrophiesDTO> fetchUserCollectionTrophies(UUID userId, UUID collectionId) {
+        List<TrophyProjection> projections = this.trophyRepository.fetchUserCollectionTrophies(userId, collectionId);
+
+        Set<String> gameGroups = projections.stream().map(TrophyProjection::getGameGroup).collect(Collectors.toSet());
+        List<GameGroupTrophiesDTO> result = new ArrayList<>();
+        for (String gameGroup : gameGroups) {
+            List<TrophyDTO> groupTrophies = projections.stream()
+                    .filter(t -> t.getGameGroup().equals(gameGroup))
+                    .map(this.trophyMapper::toTrophyDTO).toList();
+            result.add(new GameGroupTrophiesDTO(gameGroup, groupTrophies));
+        }
+
+        return result;
     }
+
 }

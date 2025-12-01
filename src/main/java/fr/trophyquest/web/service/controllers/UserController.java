@@ -1,8 +1,9 @@
 package fr.trophyquest.web.service.controllers;
 
-import fr.trophyquest.web.service.dto.EarnedTrophyDTO;
+import fr.trophyquest.web.service.dto.GameGroupTrophiesDTO;
 import fr.trophyquest.web.service.dto.SearchDTO;
 import fr.trophyquest.web.service.dto.TrophyCountDTO;
+import fr.trophyquest.web.service.dto.TrophyDTO;
 import fr.trophyquest.web.service.dto.UserGameDTO;
 import fr.trophyquest.web.service.dto.UserProfileDTO;
 import fr.trophyquest.web.service.service.GameService;
@@ -66,7 +67,7 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/collection/{collectionId}/trophies")
-    public List<EarnedTrophyDTO> fetchUserCollectionTrophies(
+    public List<GameGroupTrophiesDTO> fetchUserCollectionTrophies(
             @PathVariable UUID userId,
             @PathVariable UUID collectionId
     ) {
@@ -74,7 +75,7 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/trophies")
-    public SearchDTO<EarnedTrophyDTO> fetchTrophies(
+    public SearchDTO<TrophyDTO> fetchTrophies(
             @PathVariable UUID userId,
             @RequestParam(name = "pageNumber", defaultValue = "0") String pageNumberParam,
             @RequestParam(name = "pageSize", defaultValue = "50") String pageSizeParam

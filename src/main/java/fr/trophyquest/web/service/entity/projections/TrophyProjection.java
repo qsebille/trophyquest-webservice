@@ -3,7 +3,7 @@ package fr.trophyquest.web.service.entity.projections;
 import java.time.Instant;
 import java.util.UUID;
 
-public interface EarnedTrophyProjection {
+public interface TrophyProjection {
     UUID getId();
 
     int getRank();

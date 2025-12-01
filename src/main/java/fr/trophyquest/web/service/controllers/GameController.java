@@ -37,5 +37,5 @@ public class GameController {
     public GameDTO getGameById(@PathVariable UUID id) {
         return this.gameService.getGame(id);
     }
-
+    
 }

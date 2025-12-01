@@ -4,7 +4,7 @@ import java.time.ZonedDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
-public record EarnedTrophyDTO(
+public record TrophyDTO(
         UUID id,
         int rank,
         String trophyTitle,

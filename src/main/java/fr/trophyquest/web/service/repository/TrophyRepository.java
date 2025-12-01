@@ -1,8 +1,8 @@
 package fr.trophyquest.web.service.repository;
 
 import fr.trophyquest.web.service.entity.Trophy;
-import fr.trophyquest.web.service.entity.projections.EarnedTrophyProjection;
 import fr.trophyquest.web.service.entity.projections.TrophyCountProjection;
+import fr.trophyquest.web.service.entity.projections.TrophyProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -41,7 +41,7 @@ public interface TrophyRepository extends JpaRepository<Trophy, UUID> {
             ORDER BY earned_at DESC
             LIMIT :limit OFFSET :offset
             """, nativeQuery = true)
-    List<EarnedTrophyProjection> searchUserEarnedTrophies(
+    List<TrophyProjection> searchUserEarnedTrophies(
             @Param("userId") UUID userId,
             @Param("limit") int limit,
             @Param("offset") int offset
@@ -73,7 +73,7 @@ public interface TrophyRepository extends JpaRepository<Trophy, UUID> {
             WHERE tc.id = :collectionId
             ORDER BY rank
             """, nativeQuery = true)
-    List<EarnedTrophyProjection> fetchUserCollectionTrophies(
+    List<TrophyProjection> fetchUserCollectionTrophies(
             @Param("userId") UUID userId,
             @Param("collectionId") UUID collectionId
     );

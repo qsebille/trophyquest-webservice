@@ -1,7 +1,7 @@
 package fr.trophyquest.web.service.mappers;
 
-import fr.trophyquest.web.service.dto.EarnedTrophyDTO;
-import fr.trophyquest.web.service.entity.projections.EarnedTrophyProjection;
+import fr.trophyquest.web.service.dto.TrophyDTO;
+import fr.trophyquest.web.service.entity.projections.TrophyProjection;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
@@ -22,8 +22,8 @@ public class TrophyMapper {
         }
     }
 
-    public EarnedTrophyDTO toEarnedTrophyDTO(EarnedTrophyProjection projection) {
-        return new EarnedTrophyDTO(
+    public TrophyDTO toTrophyDTO(TrophyProjection projection) {
+        return new TrophyDTO(
                 projection.getId(),
                 projection.getRank(),
                 projection.getTrophyTitle(),

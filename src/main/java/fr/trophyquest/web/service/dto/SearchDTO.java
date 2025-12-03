@@ -4,6 +4,6 @@ import java.util.List;
 
 public record SearchDTO<T>(
         List<T> content,
-        long totalElements
+        long total
 ) {
 }

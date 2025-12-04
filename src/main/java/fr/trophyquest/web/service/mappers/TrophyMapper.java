@@ -1,6 +1,8 @@
 package fr.trophyquest.web.service.mappers;
 
+import fr.trophyquest.web.service.dto.ObtainedTrophyDTO;
 import fr.trophyquest.web.service.dto.TrophyDTO;
+import fr.trophyquest.web.service.entity.projections.ObtainedTrophyProjection;
 import fr.trophyquest.web.service.entity.projections.TrophyProjection;
 import org.springframework.stereotype.Component;
 
@@ -11,6 +13,8 @@ import java.util.Optional;
 
 @Component
 public class TrophyMapper {
+
+    private final static ZoneId ZONE_ID = ZoneId.of("Europe/Paris");
 
     private Optional<ZonedDateTime> toZonedDateTime(Instant earnedAt) {
         if (null == earnedAt) {
@@ -34,6 +38,19 @@ public class TrophyMapper {
                 projection.getGameTitle(),
                 projection.getGameGroup(),
                 this.toZonedDateTime(projection.getEarnedAt())
+        );
+    }
+
+    public ObtainedTrophyDTO toObtainedDTO(ObtainedTrophyProjection projection) {
+        return new ObtainedTrophyDTO(
+                projection.getId(),
+                projection.getTrophyTitle(),
+                projection.getTrophyType(),
+                projection.getTrophyDescription(),
+                projection.getTrophyIconUrl(),
+                projection.getGameTitle(),
+                projection.getObtainedAt().atZone(ZONE_ID),
+                projection.getObtainedBy()
         );
     }
 

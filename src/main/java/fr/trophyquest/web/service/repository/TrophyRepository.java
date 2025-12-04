@@ -1,6 +1,7 @@
 package fr.trophyquest.web.service.repository;
 
 import fr.trophyquest.web.service.entity.Trophy;
+import fr.trophyquest.web.service.entity.projections.ObtainedTrophyProjection;
 import fr.trophyquest.web.service.entity.projections.TrophyCountProjection;
 import fr.trophyquest.web.service.entity.projections.TrophyProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -77,4 +78,29 @@ public interface TrophyRepository extends JpaRepository<Trophy, UUID> {
             @Param("userId") UUID userId,
             @Param("collectionId") UUID collectionId
     );
+
+    @Query(value = """
+            SELECT t.id,
+                   t.title       as trophy_title,
+                   t.trophy_type,
+                   t.description as trophy_description,
+                   t.icon_url    as trophy_icon_url,
+                   g.title       as game_title,
+                   ut.earned_at  as obtained_at,
+                   up.name       as obtained_by
+            FROM app.trophy t
+                     JOIN app.user_trophy ut ON ut.trophy_id = t.id
+                     JOIN app.trophy_collection tc ON tc.id = t.trophy_collection_id
+                     JOIN app.game g ON g.id = tc.game_id
+                     JOIN app.user_profile up ON up.id = ut.user_id
+            ORDER BY obtained_at DESC
+            LIMIT :limit OFFSET :offset
+            """, nativeQuery = true)
+    List<ObtainedTrophyProjection> searchObtainedTrophies(@Param("limit") int limit, @Param("offset") int offset);
+
+    @Query(value = """
+            SELECT COUNT(*)
+            FROM app.user_trophy
+            """, nativeQuery = true)
+    long getTotalEarnedTrophies();
 }

@@ -1,6 +1,7 @@
 package fr.trophyquest.web.service.service;
 
 import fr.trophyquest.web.service.dto.GameGroupTrophiesDTO;
+import fr.trophyquest.web.service.dto.ObtainedTrophyDTO;
 import fr.trophyquest.web.service.dto.SearchDTO;
 import fr.trophyquest.web.service.dto.TrophyCountDTO;
 import fr.trophyquest.web.service.dto.TrophyDTO;
@@ -25,14 +26,14 @@ public class TrophyService {
     private final TrophyMapper trophyMapper;
 
     public TrophyService(
-            TrophyRepository trophyRepository, TrophyCountMapper trophyCountMapper,
+            TrophyRepository trophyRepository,
+            TrophyCountMapper trophyCountMapper,
             TrophyMapper trophyMapper
     ) {
         this.trophyRepository = trophyRepository;
         this.trophyCountMapper = trophyCountMapper;
         this.trophyMapper = trophyMapper;
     }
-
 
     /**
      * Retrieves the trophy count for a specific user in the form of a TrophyCountDTO object.
@@ -55,11 +56,7 @@ public class TrophyService {
      */
     public SearchDTO<TrophyDTO> searchUserEarnedTrophies(UUID userId, int pageNumber, int pageSize) {
         int offset = pageNumber * pageSize;
-        List<TrophyProjection> projections = this.trophyRepository.searchUserEarnedTrophies(
-                userId,
-                pageSize,
-                offset
-        );
+        List<TrophyProjection> projections = this.trophyRepository.searchUserEarnedTrophies(userId, pageSize, offset);
         List<TrophyDTO> trophies = projections.stream().map(this.trophyMapper::toTrophyDTO).toList();
         long totalEarnedTrophies = this.trophyRepository.getTotalEarnedTrophiesForUser(userId);
         return new SearchDTO<>(trophies, totalEarnedTrophies);
@@ -78,13 +75,20 @@ public class TrophyService {
         Set<String> gameGroups = projections.stream().map(TrophyProjection::getGameGroup).collect(Collectors.toSet());
         List<GameGroupTrophiesDTO> result = new ArrayList<>();
         for (String gameGroup : gameGroups) {
-            List<TrophyDTO> groupTrophies = projections.stream()
-                    .filter(t -> t.getGameGroup().equals(gameGroup))
-                    .map(this.trophyMapper::toTrophyDTO).toList();
+            List<TrophyDTO> groupTrophies = projections.stream().filter(t -> t.getGameGroup().equals(gameGroup)).map(
+                    this.trophyMapper::toTrophyDTO).toList();
             result.add(new GameGroupTrophiesDTO(gameGroup, groupTrophies));
         }
 
         return result;
+    }
+
+    public SearchDTO<ObtainedTrophyDTO> searchLastObtained(int pageNumber, int pageSize) {
+        int offset = pageNumber * pageSize;
+        List<ObtainedTrophyDTO> trophies = this.trophyRepository.searchObtainedTrophies(pageSize, offset).stream().map(
+                trophyMapper::toObtainedDTO).toList();
+        long total = this.trophyRepository.getTotalEarnedTrophies();
+        return new SearchDTO<>(trophies, total);
     }
 
 }

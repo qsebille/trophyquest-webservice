@@ -42,16 +42,18 @@ public class TrophyMapper {
     }
 
     public ObtainedTrophyDTO toObtainedDTO(ObtainedTrophyProjection projection) {
-        return new ObtainedTrophyDTO(
-                projection.getId(),
-                projection.getTrophyTitle(),
-                projection.getTrophyType(),
-                projection.getTrophyDescription(),
-                projection.getTrophyIconUrl(),
-                projection.getGameTitle(),
-                projection.getObtainedAt().atZone(ZONE_ID),
-                projection.getObtainedBy()
-        );
+        return ObtainedTrophyDTO.builder()
+                .id(projection.getId())
+                .trophyTitle(projection.getTrophyTitle())
+                .trophyType(projection.getTrophyType())
+                .trophyDescription(projection.getTrophyDescription())
+                .trophyIconUrl(projection.getTrophyIconUrl())
+                .gameTitle(projection.getGameTitle())
+                .playerId(projection.getPlayerId())
+                .playerPseudo(projection.getPlayerPseudo())
+                .playerAvatarUrl(projection.getPlayerAvatarUrl())
+                .obtainedDate(projection.getObtainedAt().atZone(ZONE_ID))
+                .build();
     }
 
 }

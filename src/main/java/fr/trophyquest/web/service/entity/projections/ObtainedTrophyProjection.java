@@ -16,7 +16,11 @@ public interface ObtainedTrophyProjection {
 
     String getGameTitle();
 
-    Instant getObtainedAt();
+    String getPlayerId();
 
-    String getObtainedBy();
+    String getPlayerPseudo();
+
+    String getPlayerAvatarUrl();
+
+    Instant getObtainedAt();
 }

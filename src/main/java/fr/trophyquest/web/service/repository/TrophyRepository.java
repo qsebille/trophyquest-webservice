@@ -81,18 +81,20 @@ public interface TrophyRepository extends JpaRepository<Trophy, UUID> {
 
     @Query(value = """
             SELECT t.id,
-                   t.title       as trophy_title,
-                   t.trophy_type,
-                   t.description as trophy_description,
-                   t.icon_url    as trophy_icon_url,
-                   g.title       as game_title,
-                   et.earned_at  as obtained_at,
-                   p.pseudo       as obtained_by
+               t.title       as trophy_title,
+               t.trophy_type,
+               t.description as trophy_description,
+               t.icon_url    as trophy_icon_url,
+               g.title       as game_title,
+               et.earned_at  as obtained_at,
+               p.id          as player_id,
+               p.pseudo      as player_pseudo,
+               p.avatar_url  as player_avatar_url
             FROM app.trophy t
-                     JOIN app.earned_trophy et ON et.trophy_id = t.id
-                     JOIN app.trophy_collection tc ON tc.id = t.trophy_collection_id
-                     JOIN app.game g ON g.id = tc.game_id
-                     JOIN app.player p ON p.id = et.player_id
+                 JOIN app.earned_trophy et ON et.trophy_id = t.id
+                 JOIN app.trophy_collection tc ON tc.id = t.trophy_collection_id
+                 JOIN app.game g ON g.id = tc.game_id
+                 JOIN app.player p ON p.id = et.player_id
             ORDER BY obtained_at DESC
             LIMIT :limit OFFSET :offset
             """, nativeQuery = true)

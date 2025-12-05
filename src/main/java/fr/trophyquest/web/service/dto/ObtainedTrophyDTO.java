@@ -1,8 +1,11 @@
 package fr.trophyquest.web.service.dto;
 
+import lombok.Builder;
+
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
+@Builder
 public record ObtainedTrophyDTO(
         UUID id,
         String trophyTitle,
@@ -11,6 +14,8 @@ public record ObtainedTrophyDTO(
         String trophyIconUrl,
         String gameTitle,
         ZonedDateTime obtainedDate,
-        String obtainedBy
+        String playerId,
+        String playerPseudo,
+        String playerAvatarUrl
 ) {
 }

@@ -2,14 +2,12 @@ package fr.trophyquest.web.service.entity.projections;
 
 import java.util.UUID;
 
-public interface UserGameProjection {
+public interface PlayedGameProjection {
     UUID getId();
 
     String getTitle();
 
     String getImageUrl();
-
-    String getPlatform();
 
     int getEarnedPlatinum();
 

@@ -22,8 +22,6 @@ public class Game {
 
     private String title;
 
-    private String platforms;
-
     private String imageUrl;
 
     @OneToMany(mappedBy = "game")

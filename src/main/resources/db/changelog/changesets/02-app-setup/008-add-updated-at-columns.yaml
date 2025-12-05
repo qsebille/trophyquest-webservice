@@ -5,7 +5,7 @@ databaseChangeLog:
       changes:
         - addColumn:
             schemaName: app
-            tableName: user_profile
+            tableName: player
             columns:
               - column:
                   name: updated_at
@@ -45,7 +45,7 @@ databaseChangeLog:
                     nullable: false
         - addColumn:
             schemaName: app
-            tableName: user_game
+            tableName: played_game
             columns:
               - column:
                   name: updated_at
@@ -55,7 +55,7 @@ databaseChangeLog:
                     nullable: false
         - addColumn:
             schemaName: app
-            tableName: user_trophy_collection
+            tableName: played_trophy_collection
             columns:
               - column:
                   name: updated_at
@@ -65,7 +65,7 @@ databaseChangeLog:
                     nullable: false
         - addColumn:
             schemaName: app
-            tableName: user_trophy
+            tableName: earned_trophy
             columns:
               - column:
                   name: updated_at
@@ -86,8 +86,8 @@ databaseChangeLog:
               END;
               $$ LANGUAGE plpgsql;
 
-              CREATE TRIGGER trg_app_user_profile_set_updated_at
-              BEFORE UPDATE ON app.user_profile
+              CREATE TRIGGER trg_app_player_set_updated_at
+              BEFORE UPDATE ON app.player
               FOR EACH ROW
               EXECUTE FUNCTION app.set_updated_at();
 
@@ -106,17 +106,17 @@ databaseChangeLog:
               FOR EACH ROW
               EXECUTE FUNCTION app.set_updated_at();
 
-              CREATE TRIGGER trg_app_user_game_set_updated_at
-              BEFORE UPDATE ON app.user_game
+              CREATE TRIGGER trg_app_played_game_set_updated_at
+              BEFORE UPDATE ON app.played_game
               FOR EACH ROW
               EXECUTE FUNCTION app.set_updated_at();
 
-              CREATE TRIGGER trg_app_user_trophy_collection_set_updated_at
-              BEFORE UPDATE ON app.user_trophy_collection
+              CREATE TRIGGER trg_app_played_trophy_collection_set_updated_at
+              BEFORE UPDATE ON app.played_trophy_collection
               FOR EACH ROW
               EXECUTE FUNCTION app.set_updated_at();
 
-              CREATE TRIGGER trg_app_user_trophy_set_updated_at
-              BEFORE UPDATE ON app.user_trophy
+              CREATE TRIGGER trg_app_earned_trophy_set_updated_at
+              BEFORE UPDATE ON app.earned_trophy
               FOR EACH ROW
               EXECUTE FUNCTION app.set_updated_at();

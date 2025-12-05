@@ -15,7 +15,7 @@ public interface TrophyCollectionRepository extends JpaRepository<TrophyCollecti
             SELECT tc.*
             FROM app.trophy_collection tc
                 JOIN app.game g ON tc.game_id = g.id
-                JOIN app.played_trophy_collection utc ON ptc.trophy_collection_id = tc.id
+                JOIN app.played_trophy_collection ptc ON ptc.trophy_collection_id = tc.id
             WHERE ptc.player_id = :playerId AND g.id IN :gameIds
             """, nativeQuery = true)
     List<TrophyCollection> findByPlayedGamesByPlayer(

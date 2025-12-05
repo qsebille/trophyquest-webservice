@@ -38,7 +38,7 @@ public interface TrophyRepository extends JpaRepository<Trophy, UUID> {
             JOIN app.trophy t ON et.trophy_id = t.id
             JOIN app.trophy_collection tc ON t.trophy_collection_id = tc.id
             JOIN app.game g ON tc.game_id = g.id
-            WHERE et.played_id = :playerId
+            WHERE et.player_id = :playerId
             ORDER BY earned_at DESC
             LIMIT :limit OFFSET :offset
             """, nativeQuery = true)
@@ -70,7 +70,7 @@ public interface TrophyRepository extends JpaRepository<Trophy, UUID> {
             FROM app.trophy t
                      JOIN app.trophy_collection tc ON t.trophy_collection_id = tc.id
                      JOIN app.game g ON tc.game_id = g.id
-                     LEFT JOIN app.earned_trophy ut ON et.trophy_id = t.id AND et.player_id = :playerId
+                     LEFT JOIN app.earned_trophy et ON et.trophy_id = t.id AND et.player_id = :playerId
             WHERE tc.id = :collectionId
             ORDER BY rank
             """, nativeQuery = true)

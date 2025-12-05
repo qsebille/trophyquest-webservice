@@ -27,7 +27,7 @@ public class PlayerService {
     }
 
     public SearchDTO<PlayerDTO> search(int pageNumber, int pageSize) {
-        PageRequest pageRequest = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.ASC, "name"));
+        PageRequest pageRequest = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.ASC, "pseudo"));
         Page<Player> searchResult = this.playerRepository.findAll(pageRequest);
         return new SearchDTO<>(
                 searchResult.getContent().stream().map(this.playerMapper::toDTO).toList(),

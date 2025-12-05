@@ -16,7 +16,7 @@ public interface GameRepository extends JpaRepository<Game, UUID> {
                 g.id,
                 g.title,
                 g.image_url,
-                MAX(ut.earned_at) AS last_earned_at,
+                MAX(et.earned_at) AS last_earned_at,
                 COUNT(*) FILTER (WHERE t.trophy_type = 'platinum')                            AS total_platinum,
                 COUNT(*) FILTER (WHERE t.trophy_type = 'gold')                                AS total_gold,
                 COUNT(*) FILTER (WHERE t.trophy_type = 'silver')                              AS total_silver,

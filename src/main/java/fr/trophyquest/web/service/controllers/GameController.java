@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/games")
+@RequestMapping("/api/game")
 @CrossOrigin(origins = "*")
 public class GameController {
 
@@ -37,5 +37,5 @@ public class GameController {
     public GameDTO getGameById(@PathVariable UUID id) {
         return this.gameService.getGame(id);
     }
-    
+
 }

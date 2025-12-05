@@ -17,11 +17,11 @@ public interface TrophyRepository extends JpaRepository<Trophy, UUID> {
             SELECT t.trophy_type AS trophy_type,
                    COUNT(*)      AS trophy_count
             FROM app.trophy t
-                JOIN app.user_trophy ut ON ut.trophy_id = t.id
-            WHERE ut.user_id = :userId
+                JOIN app.earned_trophy et ON et.trophy_id = t.id
+            WHERE et.player_id = :playerId
             GROUP BY t.trophy_type
             """, nativeQuery = true)
-    List<TrophyCountProjection> fetchTrophyCount(@Param("userId") UUID userId);
+    List<TrophyCountProjection> fetchTrophyCountForPlayer(@Param("playerId") UUID playerId);
 
     @Query(value = """
             SELECT t.id,
@@ -33,27 +33,27 @@ public interface TrophyRepository extends JpaRepository<Trophy, UUID> {
                    t.icon_url,
                    g.title as game_title,
                    t.game_group_id as game_group,
-                   ut.earned_at
-            FROM app.user_trophy ut
-            JOIN app.trophy t ON ut.trophy_id = t.id
+                   et.earned_at
+            FROM app.earned_trophy et
+            JOIN app.trophy t ON et.trophy_id = t.id
             JOIN app.trophy_collection tc ON t.trophy_collection_id = tc.id
             JOIN app.game g ON tc.game_id = g.id
-            WHERE user_id = :userId
+            WHERE et.played_id = :playerId
             ORDER BY earned_at DESC
             LIMIT :limit OFFSET :offset
             """, nativeQuery = true)
-    List<TrophyProjection> searchUserEarnedTrophies(
-            @Param("userId") UUID userId,
+    List<TrophyProjection> searchPlayerEarnedTrophies(
+            @Param("playerId") UUID playerId,
             @Param("limit") int limit,
             @Param("offset") int offset
     );
 
     @Query(value = """
             SELECT COUNT(*)
-            FROM app.user_trophy
-            WHERE user_id = :userId
+            FROM app.earned_trophy
+            WHERE player_id = :playerId
             """, nativeQuery = true)
-    long getTotalEarnedTrophiesForUser(@Param("userId") UUID userId);
+    long getEarnedTrophyCountForPlayer(@Param("playerId") UUID playerId);
 
 
     @Query(value = """
@@ -66,16 +66,16 @@ public interface TrophyRepository extends JpaRepository<Trophy, UUID> {
                    t.icon_url,
                    g.title as game_title,
                    t.game_group_id as game_group,
-                   ut.earned_at
+                   et.earned_at
             FROM app.trophy t
                      JOIN app.trophy_collection tc ON t.trophy_collection_id = tc.id
                      JOIN app.game g ON tc.game_id = g.id
-                     LEFT JOIN app.user_trophy ut ON ut.trophy_id = t.id AND ut.user_id = :userId
+                     LEFT JOIN app.earned_trophy ut ON et.trophy_id = t.id AND et.player_id = :playerId
             WHERE tc.id = :collectionId
             ORDER BY rank
             """, nativeQuery = true)
-    List<TrophyProjection> fetchUserCollectionTrophies(
-            @Param("userId") UUID userId,
+    List<TrophyProjection> fetchPlayerTrophyCollections(
+            @Param("playerId") UUID playerId,
             @Param("collectionId") UUID collectionId
     );
 
@@ -86,13 +86,13 @@ public interface TrophyRepository extends JpaRepository<Trophy, UUID> {
                    t.description as trophy_description,
                    t.icon_url    as trophy_icon_url,
                    g.title       as game_title,
-                   ut.earned_at  as obtained_at,
-                   up.name       as obtained_by
+                   et.earned_at  as obtained_at,
+                   p.pseudo       as obtained_by
             FROM app.trophy t
-                     JOIN app.user_trophy ut ON ut.trophy_id = t.id
+                     JOIN app.earned_trophy et ON et.trophy_id = t.id
                      JOIN app.trophy_collection tc ON tc.id = t.trophy_collection_id
                      JOIN app.game g ON g.id = tc.game_id
-                     JOIN app.user_profile up ON up.id = ut.user_id
+                     JOIN app.player p ON p.id = et.player_id
             ORDER BY obtained_at DESC
             LIMIT :limit OFFSET :offset
             """, nativeQuery = true)
@@ -100,7 +100,7 @@ public interface TrophyRepository extends JpaRepository<Trophy, UUID> {
 
     @Query(value = """
             SELECT COUNT(*)
-            FROM app.user_trophy
+            FROM app.earned_trophy
             """, nativeQuery = true)
     long getTotalEarnedTrophies();
 }

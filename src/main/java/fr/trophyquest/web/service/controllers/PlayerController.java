@@ -1,14 +1,14 @@
 package fr.trophyquest.web.service.controllers;
 
 import fr.trophyquest.web.service.dto.GameGroupTrophiesDTO;
+import fr.trophyquest.web.service.dto.PlayedGameDTO;
+import fr.trophyquest.web.service.dto.PlayerDTO;
 import fr.trophyquest.web.service.dto.SearchDTO;
 import fr.trophyquest.web.service.dto.TrophyCountDTO;
 import fr.trophyquest.web.service.dto.TrophyDTO;
-import fr.trophyquest.web.service.dto.UserGameDTO;
-import fr.trophyquest.web.service.dto.UserProfileDTO;
 import fr.trophyquest.web.service.service.GameService;
+import fr.trophyquest.web.service.service.PlayerService;
 import fr.trophyquest.web.service.service.TrophyService;
-import fr.trophyquest.web.service.service.UserService;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,69 +20,69 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/player")
 @CrossOrigin(origins = "*")
-public class UserController {
+public class PlayerController {
 
-    private final UserService userService;
+    private final PlayerService playerService;
     private final GameService gameService;
     private final TrophyService trophyService;
 
-    public UserController(UserService userService, GameService gameService, TrophyService trophyService) {
-        this.userService = userService;
+    public PlayerController(PlayerService playerService, GameService gameService, TrophyService trophyService) {
+        this.playerService = playerService;
         this.gameService = gameService;
         this.trophyService = trophyService;
     }
 
 
     @GetMapping("/search")
-    public SearchDTO<UserProfileDTO> searchUsers(
+    public SearchDTO<PlayerDTO> search(
             @RequestParam(name = "pageNumber", defaultValue = "0") String pageNumberParam,
             @RequestParam(name = "pageSize", defaultValue = "50") String pageSizeParam
     ) {
         final int pageNumber = Integer.parseInt(pageNumberParam);
         final int pageSize = Integer.parseInt(pageSizeParam);
-        return this.userService.search(pageNumber, pageSize);
+        return this.playerService.search(pageNumber, pageSize);
     }
 
-    @GetMapping("/{userId}")
-    public UserProfileDTO fetchUser(@PathVariable UUID userId) {
-        return userService.findById(userId);
+    @GetMapping("/{playerId}")
+    public PlayerDTO fetch(@PathVariable UUID playerId) {
+        return playerService.findById(playerId);
     }
 
-    @GetMapping("/{userId}/trophy-count")
-    public TrophyCountDTO fetchTrophySummary(@PathVariable UUID userId) {
-        return this.trophyService.getUserTrophyCount(userId);
+    @GetMapping("/{playerId}/trophy-count")
+    public TrophyCountDTO fetchTrophyCount(@PathVariable UUID playerId) {
+        return this.trophyService.getPlayerTrophyCount(playerId);
     }
 
-    @GetMapping("/{userId}/games")
-    public SearchDTO<UserGameDTO> fetchGames(
-            @PathVariable UUID userId,
+    @GetMapping("/{playerId}/games")
+    public SearchDTO<PlayedGameDTO> fetchGames(
+            @PathVariable UUID playerId,
             @RequestParam(name = "pageNumber", defaultValue = "0") String pageNumberParam,
             @RequestParam(name = "pageSize", defaultValue = "50") String pageSizeParam
     ) {
         final int pageNumber = Integer.parseInt(pageNumberParam);
         final int pageSize = Integer.parseInt(pageSizeParam);
-        return this.gameService.searchUserGames(userId, pageNumber, pageSize);
+        return this.gameService.searchGamesPlayedBy(playerId, pageNumber, pageSize);
     }
 
-    @GetMapping("/{userId}/collection/{collectionId}/trophies")
-    public List<GameGroupTrophiesDTO> fetchUserCollectionTrophies(
-            @PathVariable UUID userId,
+    @GetMapping("/{playerId}/collection/{collectionId}/trophies")
+    public List<GameGroupTrophiesDTO> fetchTrophiesOfCollection(
+            @PathVariable UUID playerId,
             @PathVariable UUID collectionId
     ) {
-        return this.trophyService.fetchUserCollectionTrophies(userId, collectionId);
+        return this.trophyService.fetchPlayerCollectionTrophies(playerId, collectionId);
     }
 
-    @GetMapping("/{userId}/trophies")
+    @GetMapping("/{playerId}/trophies")
     public SearchDTO<TrophyDTO> fetchTrophies(
-            @PathVariable UUID userId,
+            @PathVariable UUID playerId,
             @RequestParam(name = "pageNumber", defaultValue = "0") String pageNumberParam,
             @RequestParam(name = "pageSize", defaultValue = "50") String pageSizeParam
     ) {
         final int pageNumber = Integer.parseInt(pageNumberParam);
         final int pageSize = Integer.parseInt(pageSizeParam);
-        return this.trophyService.searchUserEarnedTrophies(userId, pageNumber, pageSize);
+        return this.trophyService.searchEarnedTrophiesByPlayer(playerId, pageNumber, pageSize);
     }
 
 }

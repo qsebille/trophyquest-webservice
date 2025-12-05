@@ -1,18 +1,18 @@
 databaseChangeLog:
   - changeSet:
-      id: 02-app-setup/006-create-user-game-table
+      id: 02-app-setup/006-create-played-game-table
       author: Quentin Sebille
       changes:
         - createTable:
             schemaName: app
-            tableName: user_game
+            tableName: played_game
             columns:
-              - column: { name: user_id, type: uuid, constraints: { nullable: false, foreignKeyName: fk_user, references: app.user_profile(id) } }
+              - column: { name: player_id, type: uuid, constraints: { nullable: false, foreignKeyName: fk_player, references: app.player(id) } }
               - column: { name: game_id, type: uuid, constraints: { nullable: false, foreignKeyName: fk_game, references: app.game(id) } }
               - column: { name: last_played_at, type: timestamptz, constraints: { nullable: false } }
               - column: { name: created_at, type: timestamptz, defaultValueComputed: CURRENT_TIMESTAMP, constraints: { nullable: false } }
         - addPrimaryKey:
             schemaName: app
-            tableName: user_game
-            columnNames: user_id,game_id
-            constraintName: pk_user_game
+            tableName: played_game
+            columnNames: player_id,game_id
+            constraintName: pk_played_game

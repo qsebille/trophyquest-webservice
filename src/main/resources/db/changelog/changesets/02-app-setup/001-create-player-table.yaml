@@ -1,18 +1,18 @@
 databaseChangeLog:
   - changeSet:
-      id: 02-app-setup/002-create-user-profile-table
+      id: 02-app-setup/002-create-player-table
       author: Quentin Sebille
       changes:
         - createTable:
             schemaName: app
-            tableName: user_profile
+            tableName: player
             columns:
               - column: { name: id, type: uuid, constraints: { nullable: false } }
-              - column: { name: name, type: varchar(30), constraints: { nullable: false, unique: true } }
+              - column: { name: pseudo, type: varchar(30), constraints: { nullable: false, unique: true } }
               - column: { name: avatar_url, type: varchar(300) }
               - column: { name: created_at, type: timestamptz, defaultValueComputed: CURRENT_TIMESTAMP, constraints: { nullable: false } }
         - addPrimaryKey:
             schemaName: app
-            tableName: user_profile
+            tableName: player
             columnNames: id
-            constraintName: pk_user_profile
+            constraintName: pk_player

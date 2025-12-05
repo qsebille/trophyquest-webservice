@@ -36,41 +36,45 @@ public class TrophyService {
     }
 
     /**
-     * Retrieves the trophy count for a specific user in the form of a TrophyCountDTO object.
+     * Retrieves the trophy count for a specific player in the form of a TrophyCountDTO object.
      *
-     * @param userId the unique identifier of the user whose trophy count is being queried
+     * @param playerId the unique identifier of the player whose trophy count is being queried
      * @return a TrophyCountDTO containing the counts of platinum, gold, silver, and bronze trophies
      */
-    public TrophyCountDTO getUserTrophyCount(UUID userId) {
-        List<TrophyCountProjection> counts = this.trophyRepository.fetchTrophyCount(userId);
+    public TrophyCountDTO getPlayerTrophyCount(UUID playerId) {
+        List<TrophyCountProjection> counts = this.trophyRepository.fetchTrophyCountForPlayer(playerId);
         return this.trophyCountMapper.toDTO(counts);
     }
 
     /**
-     * Searches and retrieves a paginated list of trophies earned by a specific user.
+     * Searches and retrieves a paginated list of trophies earned by a specific player.
      *
-     * @param userId     the unique identifier of the user whose earned trophies are being queried
+     * @param playerId   the unique identifier of the player whose earned trophies are being queried
      * @param pageNumber the page number for the paginated results
      * @param pageSize   the number of items to include on each page of the results
-     * @return a list of EarnedTrophyDTO objects representing the user's earned trophies
+     * @return a list of EarnedTrophyDTO objects representing the player's earned trophies
      */
-    public SearchDTO<TrophyDTO> searchUserEarnedTrophies(UUID userId, int pageNumber, int pageSize) {
+    public SearchDTO<TrophyDTO> searchEarnedTrophiesByPlayer(UUID playerId, int pageNumber, int pageSize) {
         int offset = pageNumber * pageSize;
-        List<TrophyProjection> projections = this.trophyRepository.searchUserEarnedTrophies(userId, pageSize, offset);
+        List<TrophyProjection> projections = this.trophyRepository.searchPlayerEarnedTrophies(
+                playerId,
+                pageSize,
+                offset
+        );
         List<TrophyDTO> trophies = projections.stream().map(this.trophyMapper::toTrophyDTO).toList();
-        long totalEarnedTrophies = this.trophyRepository.getTotalEarnedTrophiesForUser(userId);
+        long totalEarnedTrophies = this.trophyRepository.getEarnedTrophyCountForPlayer(playerId);
         return new SearchDTO<>(trophies, totalEarnedTrophies);
     }
 
     /**
-     * Retrieves a list of trophies earned by a specific user from a particular collection.
+     * Retrieves a list of trophies earned by a specific player from a particular collection.
      *
-     * @param userId       the unique identifier of the user whose trophies are being queried
+     * @param playerId     the unique identifier of the player whose trophies are being queried
      * @param collectionId the unique identifier of the trophy collection being queried
-     * @return a list of EarnedTrophyDTO objects representing the trophies earned by the user in the specified collection
+     * @return a list of EarnedTrophyDTO objects representing the trophies earned by the player in the specified collection
      */
-    public List<GameGroupTrophiesDTO> fetchUserCollectionTrophies(UUID userId, UUID collectionId) {
-        List<TrophyProjection> projections = this.trophyRepository.fetchUserCollectionTrophies(userId, collectionId);
+    public List<GameGroupTrophiesDTO> fetchPlayerCollectionTrophies(UUID playerId, UUID collectionId) {
+        List<TrophyProjection> projections = this.trophyRepository.fetchPlayerTrophyCollections(playerId, collectionId);
 
         Set<String> gameGroups = projections.stream().map(TrophyProjection::getGameGroup).collect(Collectors.toSet());
         List<GameGroupTrophiesDTO> result = new ArrayList<>();

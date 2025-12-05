@@ -2,9 +2,9 @@ package fr.trophyquest.web.service.dto;
 
 import java.util.UUID;
 
-public record UserProfileDTO(
+public record PlayerDTO(
         UUID id,
-        String profileName,
+        String pseudo,
         String avatarUrl
 ) {
 }

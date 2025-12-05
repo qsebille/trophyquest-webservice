@@ -8,14 +8,14 @@ import lombok.Data;
 import java.util.UUID;
 
 @Entity
-@Table(name = "user_profile")
+@Table(name = "player")
 @Data
-public class UserProfile {
+public class Player {
 
     @Id
     private UUID id;
 
-    private String name;
+    private String pseudo;
 
     private String avatarUrl;
 

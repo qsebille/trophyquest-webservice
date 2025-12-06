@@ -3,6 +3,7 @@ package fr.trophyquest.web.service.controllers;
 import fr.trophyquest.web.service.dto.GameGroupTrophiesDTO;
 import fr.trophyquest.web.service.dto.PlayedGameDTO;
 import fr.trophyquest.web.service.dto.PlayerDTO;
+import fr.trophyquest.web.service.dto.PlayerSummaryDTO;
 import fr.trophyquest.web.service.dto.SearchDTO;
 import fr.trophyquest.web.service.dto.TrophyCountDTO;
 import fr.trophyquest.web.service.dto.TrophyDTO;
@@ -36,7 +37,7 @@ public class PlayerController {
 
 
     @GetMapping("/search")
-    public SearchDTO<PlayerDTO> search(
+    public SearchDTO<PlayerSummaryDTO> search(
             @RequestParam(name = "pageNumber", defaultValue = "0") String pageNumberParam,
             @RequestParam(name = "pageSize", defaultValue = "50") String pageSizeParam
     ) {

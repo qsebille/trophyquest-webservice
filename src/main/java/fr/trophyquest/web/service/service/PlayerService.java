@@ -39,8 +39,12 @@ public class PlayerService {
     }
 
     public PlayerDTO findById(UUID id) {
-        Player player = playerRepository.findById(id).orElseThrow();
+        Player player = this.playerRepository.findById(id).orElseThrow();
         return this.playerMapper.toDTO(player);
+    }
+
+    public int count() {
+        return (int) this.playerRepository.count();
     }
 
 }

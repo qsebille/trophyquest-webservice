@@ -86,4 +86,9 @@ public class PlayerController {
         return this.trophyService.searchEarnedTrophiesByPlayer(playerId, pageNumber, pageSize);
     }
 
+    @GetMapping("/count")
+    public int count() {
+        return this.playerService.count();
+    }
+
 }

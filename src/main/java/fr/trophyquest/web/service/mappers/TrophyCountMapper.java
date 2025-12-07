@@ -16,9 +16,9 @@ public class TrophyCountMapper {
                 .collect(Collectors.toMap(
                         TrophyCountProjection::getTrophyType,
                         p -> Integer.parseInt(p.getTrophyCount()),
-                        Integer::sum // au cas où il y ait plusieurs lignes par type
+                        Integer::sum
                 ));
-        
+
         return new TrophyCountDTO(
                 counts.getOrDefault("platinum", 0),
                 counts.getOrDefault("gold", 0),

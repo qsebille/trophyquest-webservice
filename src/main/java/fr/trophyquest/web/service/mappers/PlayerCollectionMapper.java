@@ -30,7 +30,6 @@ public class PlayerCollectionMapper {
                 .collectionImageUrl(projection.getCollectionImageUrl())
                 .gameId(projection.getGameId())
                 .gameTitle(projection.getGameTitle())
-                .gameImageUrl(projection.getGameImageUrl())
                 .collectionTrophies(collectionTrophies)
                 .earnedTrophies(earnedTrophies)
                 .build();

@@ -13,8 +13,6 @@ public interface PlayerCollectionProjection {
 
     String getGameTitle();
 
-    String getGameImageUrl();
-
     int getPlatinumCount();
 
     int getGoldCount();

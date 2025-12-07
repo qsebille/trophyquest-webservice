@@ -10,7 +10,6 @@ public record PlayerCollectionDTO(
         String collectionImageUrl,
         String gameId,
         String gameTitle,
-        String gameImageUrl,
         TrophyCountDTO collectionTrophies,
         TrophyCountDTO earnedTrophies
 ) {

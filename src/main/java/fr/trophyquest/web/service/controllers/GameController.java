@@ -35,7 +35,7 @@ public class GameController {
 
     @GetMapping("/{id}")
     public GameDTO getGameById(@PathVariable UUID id) {
-        return this.gameService.getGame(id);
+        return this.gameService.retrieve(id);
     }
 
 }

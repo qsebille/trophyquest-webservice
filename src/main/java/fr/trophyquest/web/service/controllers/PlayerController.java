@@ -1,12 +1,13 @@
 package fr.trophyquest.web.service.controllers;
 
 import fr.trophyquest.web.service.dto.GameGroupTrophiesDTO;
-import fr.trophyquest.web.service.dto.PlayedGameDTO;
+import fr.trophyquest.web.service.dto.PlayerCollectionDTO;
 import fr.trophyquest.web.service.dto.PlayerDTO;
 import fr.trophyquest.web.service.dto.PlayerSummaryDTO;
 import fr.trophyquest.web.service.dto.SearchDTO;
 import fr.trophyquest.web.service.dto.TrophyCountDTO;
 import fr.trophyquest.web.service.dto.TrophyDTO;
+import fr.trophyquest.web.service.service.CollectionService;
 import fr.trophyquest.web.service.service.GameService;
 import fr.trophyquest.web.service.service.PlayerService;
 import fr.trophyquest.web.service.service.TrophyService;
@@ -27,11 +28,18 @@ public class PlayerController {
 
     private final PlayerService playerService;
     private final GameService gameService;
+    private final CollectionService collectionService;
     private final TrophyService trophyService;
 
-    public PlayerController(PlayerService playerService, GameService gameService, TrophyService trophyService) {
+    public PlayerController(
+            PlayerService playerService,
+            GameService gameService,
+            CollectionService collectionService,
+            TrophyService trophyService
+    ) {
         this.playerService = playerService;
         this.gameService = gameService;
+        this.collectionService = collectionService;
         this.trophyService = trophyService;
     }
 
@@ -51,20 +59,20 @@ public class PlayerController {
         return playerService.findById(playerId);
     }
 
-    @GetMapping("/{playerId}/trophy-count")
+    @GetMapping("/{playerId}/trophy/count")
     public TrophyCountDTO fetchTrophyCount(@PathVariable UUID playerId) {
         return this.trophyService.getPlayerTrophyCount(playerId);
     }
 
-    @GetMapping("/{playerId}/games")
-    public SearchDTO<PlayedGameDTO> fetchGames(
+    @GetMapping("/{playerId}/collection/search")
+    public SearchDTO<PlayerCollectionDTO> fetchGames(
             @PathVariable UUID playerId,
             @RequestParam(name = "pageNumber", defaultValue = "0") String pageNumberParam,
             @RequestParam(name = "pageSize", defaultValue = "50") String pageSizeParam
     ) {
         final int pageNumber = Integer.parseInt(pageNumberParam);
         final int pageSize = Integer.parseInt(pageSizeParam);
-        return this.gameService.searchGamesPlayedBy(playerId, pageNumber, pageSize);
+        return this.collectionService.searchForPlayer(playerId, pageNumber, pageSize);
     }
 
     @GetMapping("/{playerId}/collection/{collectionId}/trophies")
@@ -89,6 +97,11 @@ public class PlayerController {
     @GetMapping("/count")
     public int count() {
         return this.playerService.count();
+    }
+
+    @GetMapping("/{playerId}/game/count")
+    public long countPlayedGames(@PathVariable UUID playerId) {
+        return this.gameService.countPlayedGamesByUser(playerId);
     }
 
 }

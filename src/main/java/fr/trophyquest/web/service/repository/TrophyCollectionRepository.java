@@ -24,13 +24,13 @@ public interface TrophyCollectionRepository extends JpaRepository<TrophyCollecti
                    COUNT(*) FILTER (WHERE t.trophy_type = 'gold')                                  AS gold_count,
                    COUNT(*) FILTER (WHERE t.trophy_type = 'silver')                                AS silver_count,
                    COUNT(*) FILTER (WHERE t.trophy_type = 'bronze')                                AS bronze_count,
-                   COUNT(*) FILTER (WHERE t.trophy_type = 'platinum' AND et.player_id IS NOT NULL) AS earned_platinum_count,
-                   COUNT(*) FILTER (WHERE t.trophy_type = 'gold' AND et.player_id IS NOT NULL)     AS earned_gold_count,
-                   COUNT(*) FILTER (WHERE t.trophy_type = 'silver' AND et.player_id IS NOT NULL)   AS earned_silver_count,
-                   COUNT(*) FILTER (WHERE t.trophy_type = 'bronze' AND et.player_id IS NOT NULL)   AS earned_bronze_count
+                   COUNT(*) FILTER (WHERE t.trophy_type = 'platinum' AND et.player_id = :playerId) AS earned_platinum_count,
+                   COUNT(*) FILTER (WHERE t.trophy_type = 'gold' AND et.player_id = :playerId)     AS earned_gold_count,
+                   COUNT(*) FILTER (WHERE t.trophy_type = 'silver' AND et.player_id = :playerId)   AS earned_silver_count,
+                   COUNT(*) FILTER (WHERE t.trophy_type = 'bronze' AND et.player_id = :playerId)   AS earned_bronze_count
             FROM app.trophy_collection tc
                      JOIN app.game g ON g.id = tc.game_id
-                     JOIN app.played_trophy_collection ptc ON ptc.trophy_collection_id = tc.id
+                     JOIN app.played_trophy_collection ptc ON ptc.trophy_collection_id = tc.id AND ptc.player_id = :playerId
                      JOIN app.trophy t ON t.trophy_collection_id = tc.id
                      LEFT JOIN app.earned_trophy et ON et.trophy_id = t.id
             WHERE ptc.player_id = :playerId

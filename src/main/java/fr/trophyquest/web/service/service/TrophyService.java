@@ -1,6 +1,5 @@
 package fr.trophyquest.web.service.service;
 
-import fr.trophyquest.web.service.dto.GameGroupTrophiesDTO;
 import fr.trophyquest.web.service.dto.ObtainedTrophyDTO;
 import fr.trophyquest.web.service.dto.SearchDTO;
 import fr.trophyquest.web.service.dto.TrophyCountDTO;
@@ -12,11 +11,8 @@ import fr.trophyquest.web.service.mappers.TrophyMapper;
 import fr.trophyquest.web.service.repository.TrophyRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class TrophyService {
@@ -66,25 +62,9 @@ public class TrophyService {
         return new SearchDTO<>(trophies, totalEarnedTrophies);
     }
 
-    /**
-     * Retrieves a list of trophies earned by a specific player from a particular collection.
-     *
-     * @param playerId     the unique identifier of the player whose trophies are being queried
-     * @param collectionId the unique identifier of the trophy collection being queried
-     * @return a list of EarnedTrophyDTO objects representing the trophies earned by the player in the specified collection
-     */
-    public List<GameGroupTrophiesDTO> fetchPlayerCollectionTrophies(UUID playerId, UUID collectionId) {
+    public List<TrophyDTO> fetchPlayerCollectionTrophies(UUID playerId, UUID collectionId) {
         List<TrophyProjection> projections = this.trophyRepository.fetchPlayerTrophyCollections(playerId, collectionId);
-
-        Set<String> gameGroups = projections.stream().map(TrophyProjection::getGameGroup).collect(Collectors.toSet());
-        List<GameGroupTrophiesDTO> result = new ArrayList<>();
-        for (String gameGroup : gameGroups) {
-            List<TrophyDTO> groupTrophies = projections.stream().filter(t -> t.getGameGroup().equals(gameGroup)).map(
-                    this.trophyMapper::toTrophyDTO).toList();
-            result.add(new GameGroupTrophiesDTO(gameGroup, groupTrophies));
-        }
-
-        return result;
+        return projections.stream().map(this.trophyMapper::toTrophyDTO).toList();
     }
 
     public SearchDTO<ObtainedTrophyDTO> searchLastObtained(int pageNumber, int pageSize) {

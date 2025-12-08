@@ -1,6 +1,5 @@
 package fr.trophyquest.web.service.controllers;
 
-import fr.trophyquest.web.service.dto.GameGroupTrophiesDTO;
 import fr.trophyquest.web.service.dto.PlayerCollectionDTO;
 import fr.trophyquest.web.service.dto.PlayerDTO;
 import fr.trophyquest.web.service.dto.PlayerSummaryDTO;
@@ -76,7 +75,7 @@ public class PlayerController {
     }
 
     @GetMapping("/{playerId}/collection/{collectionId}/trophies")
-    public List<GameGroupTrophiesDTO> fetchTrophiesOfCollection(
+    public List<TrophyDTO> fetchTrophiesOfCollection(
             @PathVariable UUID playerId,
             @PathVariable UUID collectionId
     ) {

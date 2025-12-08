@@ -54,6 +54,7 @@ public class CollectionService {
 
     public CollectionDTO retrieve(UUID id) {
         CollectionProjection projection = this.trophyCollectionRepository.retrieveCollection(id);
+        if (null == projection) throw new IllegalArgumentException("No collection found with ID: " + id);
         return this.collectionMapper.toDTO(projection);
     }
 

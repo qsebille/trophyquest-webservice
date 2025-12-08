@@ -37,16 +37,11 @@ public class GameService {
     }
 
     /**
-     * Retrieves a game by its unique identifier and maps it to a GameDTO.
+     * Counts the total number of games played by a specific user.
      *
-     * @param gameId the unique identifier of the game to retrieve
-     * @return a GameDTO containing the details of the game
+     * @param playerId the unique identifier of the player whose played games are being counted
+     * @return the total number of games played by the specified player
      */
-    public GameDTO retrieve(UUID gameId) {
-        Game game = this.gameRepository.findById(gameId).orElseThrow();
-        return gameMapper.toDTO(game);
-    }
-
     public long countPlayedGamesByUser(UUID playerId) {
         return this.gameRepository.getTotalPlayerGamesPlayed(playerId);
     }

@@ -1,6 +1,7 @@
 package fr.trophyquest.web.service.repository;
 
 import fr.trophyquest.web.service.entity.TrophyCollection;
+import fr.trophyquest.web.service.entity.projections.CollectionProjection;
 import fr.trophyquest.web.service.entity.projections.PlayerCollectionProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -65,5 +66,26 @@ public interface TrophyCollectionRepository extends JpaRepository<TrophyCollecti
             WHERE ptc.player_id = :playerId
             """, nativeQuery = true)
     long getTotalPlayerTrophyCollections(@Param("playerId") UUID playerId);
+
+
+    @Query(value = """
+            SELECT tc.id                                              AS collection_id,
+                   tc.title                                           AS collection_title,
+                   tc.platform                                        AS collection_platform,
+                   tc.image_url                                       AS collection_image_url,
+                   g.id                                               AS game_id,
+                   g.title                                            AS game_title,
+                   g.image_url                                        AS game_image_url,
+                   COUNT(*) FILTER (WHERE t.trophy_type = 'platinum') AS platinum_count,
+                   COUNT(*) FILTER ( WHERE t.trophy_type = 'gold' )   AS gold_count,
+                   COUNT(*) FILTER ( WHERE t.trophy_type = 'silver' ) AS silver_count,
+                   COUNT(*) FILTER ( WHERE t.trophy_type = 'bronze' ) AS bronze_count
+            FROM app.trophy_collection tc
+                     JOIN app.game g ON g.id = tc.game_id
+                     JOIN app.trophy t ON t.trophy_collection_id = tc.id
+            WHERE tc.id = :collectionId
+            GROUP BY tc.id, tc.title, tc.id, tc.platform, tc.image_url, g.id, g.title, g.image_url
+            """, nativeQuery = true)
+    CollectionProjection retrieveCollection(@Param("collectionId") UUID collectionId);
 
 }

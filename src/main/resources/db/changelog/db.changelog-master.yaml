@@ -18,3 +18,4 @@ databaseChangeLog:
   - include: { file: changesets/02-app-setup/006-create-played-trophy-collection-table.yaml, relativeToChangelogFile: true }
   - include: { file: changesets/02-app-setup/007-create-earned-trophy-table.yaml, relativeToChangelogFile: true }
   - include: { file: changesets/02-app-setup/008-add-updated-at-columns.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/02-app-setup/009-add-aws-image-columns.yaml, relativeToChangelogFile: true }

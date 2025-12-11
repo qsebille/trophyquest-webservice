@@ -1,11 +1,14 @@
 package fr.trophyquest.web.service.entity.projections;
 
+import java.util.Optional;
 import java.util.UUID;
 
 public interface PlayerWithTrophyCountProjection {
     UUID getId();
 
     String getPseudo();
+
+    Optional<String> getAwsAvatarUrl();
 
     String getAvatarUrl();
 
@@ -24,6 +27,8 @@ public interface PlayerWithTrophyCountProjection {
     UUID getLastGameId();
 
     String getLastGameTitle();
+
+    Optional<String> getLastGameAwsImageUrl();
 
     String getLastGameImageUrl();
 }

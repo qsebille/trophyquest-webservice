@@ -9,6 +9,9 @@ import org.springframework.stereotype.Component;
 public class CollectionMapper {
 
     public CollectionDTO toDTO(CollectionProjection projection) {
+        String collectionImageUrl = projection.getCollectionAwsImageUrl().orElse(projection.getCollectionImageUrl());
+        String gameImageUrl = projection.getGameAwsImageUrl().orElse(projection.getGameImageUrl());
+
         TrophyCountDTO trophyCount = TrophyCountDTO.builder()
                 .platinum(projection.getPlatinumCount())
                 .gold(projection.getGoldCount())
@@ -20,10 +23,10 @@ public class CollectionMapper {
                 .id(projection.getCollectionId())
                 .title(projection.getCollectionTitle())
                 .platform(projection.getCollectionPlatform())
-                .imageUrl(projection.getCollectionImageUrl())
+                .imageUrl(collectionImageUrl)
                 .gameId(projection.getGameId())
                 .gameTitle(projection.getGameTitle())
-                .gameImageUrl(projection.getGameImageUrl())
+                .gameImageUrl(gameImageUrl)
                 .trophyCount(trophyCount)
                 .build();
     }

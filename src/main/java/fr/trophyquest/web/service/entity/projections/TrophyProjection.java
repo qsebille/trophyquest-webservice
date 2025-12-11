@@ -1,6 +1,7 @@
 package fr.trophyquest.web.service.entity.projections;
 
 import java.time.Instant;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface TrophyProjection {
@@ -15,6 +16,8 @@ public interface TrophyProjection {
     String getTrophyType();
 
     Boolean getIsHidden();
+
+    Optional<String> getAwsIconUrl();
 
     String getIconUrl();
 

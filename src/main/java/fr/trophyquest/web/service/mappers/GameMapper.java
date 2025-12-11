@@ -8,11 +8,14 @@ import org.springframework.stereotype.Component;
 public class GameMapper {
 
     public GameDTO toDTO(Game game) {
-        return new GameDTO(
-                game.getId(),
-                game.getTitle(),
-                game.getImageUrl()
-        );
+        String imageUrl = game.getAwsImageUrl();
+        if (null == imageUrl) imageUrl = game.getImageUrl();
+
+        return GameDTO.builder()
+                .id(game.getId())
+                .title(game.getTitle())
+                .imageUrl(imageUrl)
+                .build();
     }
 
 }

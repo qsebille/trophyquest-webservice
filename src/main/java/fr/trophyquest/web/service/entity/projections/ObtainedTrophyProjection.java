@@ -1,6 +1,7 @@
 package fr.trophyquest.web.service.entity.projections;
 
 import java.time.Instant;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface ObtainedTrophyProjection {
@@ -12,6 +13,8 @@ public interface ObtainedTrophyProjection {
 
     String getTrophyDescription();
 
+    Optional<String> getTrophyAwsIconUrl();
+
     String getTrophyIconUrl();
 
     String getGameTitle();
@@ -19,6 +22,8 @@ public interface ObtainedTrophyProjection {
     String getPlayerId();
 
     String getPlayerPseudo();
+
+    Optional<String> getPlayerAwsAvatarUrl();
 
     String getPlayerAvatarUrl();
 

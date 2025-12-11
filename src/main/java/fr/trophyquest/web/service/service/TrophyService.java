@@ -57,9 +57,12 @@ public class TrophyService {
                 pageSize,
                 offset
         );
-        List<TrophyDTO> trophies = projections.stream().map(this.trophyMapper::toTrophyDTO).toList();
         long totalEarnedTrophies = this.trophyRepository.getEarnedTrophyCountForPlayer(playerId);
-        return new SearchDTO<>(trophies, totalEarnedTrophies);
+
+        return SearchDTO.<TrophyDTO>builder()
+                .content(projections.stream().map(this.trophyMapper::toTrophyDTO).toList())
+                .total(totalEarnedTrophies)
+                .build();
     }
 
     public List<TrophyDTO> fetchPlayerCollectionTrophies(UUID playerId, UUID collectionId) {
@@ -72,7 +75,11 @@ public class TrophyService {
         List<ObtainedTrophyDTO> trophies = this.trophyRepository.searchObtainedTrophies(pageSize, offset).stream().map(
                 trophyMapper::toObtainedDTO).toList();
         long total = this.trophyRepository.getTotalEarnedTrophies();
-        return new SearchDTO<>(trophies, total);
+
+        return SearchDTO.<ObtainedTrophyDTO>builder()
+                .content(trophies)
+                .total(total)
+                .build();
     }
 
 }

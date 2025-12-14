@@ -2,7 +2,7 @@ name: Deploy TrophyQuest Backend
 
 on:
   push:
-    branches: [ main, migration-aws ]
+    branches: [ main ]
 
 jobs:
   build-and-deploy:

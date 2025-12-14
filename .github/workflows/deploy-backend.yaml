@@ -32,6 +32,8 @@ jobs:
         run: |
           chmod +x gradlew
           ./gradlew clean bootJar
+          APP_VERSION=$(grep '^version=' gradle.properties | cut -d'=' -f2)
+          echo "Building TrophyQuest backend version $APP_VERSION"
 
       - name: Copy jar to EC2
         run: |

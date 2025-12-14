@@ -5,13 +5,16 @@ plugins {
 }
 
 group = 'fr.trophyquest'
-version = '1.0.0-SNAPSHOT'
 description = 'Web Service for TrophyQuest'
 
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(17)
     }
+}
+
+springBoot {
+    buildInfo()
 }
 
 configurations {

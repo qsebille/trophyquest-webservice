@@ -45,6 +45,13 @@ public class PlayerService {
         return SearchDTO.<PlayerSummaryDTO>builder().content(players).total(nbPlayers).build();
     }
 
+    /**
+     * Finds a player by their unique identifier and converts the entity into a Data Transfer Object (DTO).
+     *
+     * @param id the unique identifier of the player to retrieve
+     * @return a PlayerDTO containing data of the found player
+     * @throws java.util.NoSuchElementException if no player is found with the provided identifier
+     */
     public PlayerDTO findById(UUID id) {
         Player player = this.playerRepository.findById(id).orElseThrow();
         return this.playerMapper.toDTO(player);

@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -48,4 +49,18 @@ public class GameService {
     public long countPlayedGamesByUser(UUID playerId) {
         return this.gameRepository.getTotalPlayerGamesPlayed(playerId);
     }
+
+    /**
+     * Fetches a list of recently played games based on the provided pagination parameters.
+     *
+     * @param pageNumber the number of the page to fetch, starting at 0
+     * @param pageSize   the number of games to fetch per page
+     * @return a list of GameDTO objects representing the recently played games
+     */
+    public List<GameDTO> fetchRecentlyPlayed(int pageNumber, int pageSize) {
+        int offset = pageNumber * pageSize;
+        List<Game> games = this.gameRepository.fetchRecentlyPlayedGames(pageSize, offset);
+        return games.stream().map(this.gameMapper::toDTO).toList();
+    }
+
 }

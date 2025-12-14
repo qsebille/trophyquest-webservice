@@ -26,7 +26,9 @@ jobs:
           java-version: 21
 
       - name: Build Spring Boot jar
-        run: ./gradlew clean bootJar
+        run: |
+          chmod +x gradlew
+          ./gradlew clean bootJar
 
       - name: Prepare SSH key
         run: |

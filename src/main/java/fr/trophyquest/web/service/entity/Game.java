@@ -24,6 +24,8 @@ public class Game {
 
     private String imageUrl;
 
+    private String awsImageUrl;
+
     @OneToMany(mappedBy = "game")
     private Set<TrophyCollection> trophyCollections;
 

@@ -1,0 +1,33 @@
+databaseChangeLog:
+  - changeSet:
+      id: 02-app-setup/009-add-aws-image-columns
+      author: Quentin Sebille
+      changes:
+        - addColumn:
+            schemaName: app
+            tableName: player
+            columns:
+              - column:
+                  name: aws_avatar_url
+                  type: varchar
+        - addColumn:
+            schemaName: app
+            tableName: game
+            columns:
+              - column:
+                  name: aws_image_url
+                  type: varchar
+        - addColumn:
+            schemaName: app
+            tableName: trophy_collection
+            columns:
+              - column:
+                  name: aws_image_url
+                  type: varchar
+        - addColumn:
+            schemaName: app
+            tableName: trophy
+            columns:
+              - column:
+                  name: aws_icon_url
+                  type: varchar

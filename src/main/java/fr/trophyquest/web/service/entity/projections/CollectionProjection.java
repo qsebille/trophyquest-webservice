@@ -1,5 +1,7 @@
 package fr.trophyquest.web.service.entity.projections;
 
+import java.util.Optional;
+
 public interface CollectionProjection {
     String getCollectionId();
 
@@ -9,11 +11,15 @@ public interface CollectionProjection {
 
     String getCollectionImageUrl();
 
+    Optional<String> getCollectionAwsImageUrl();
+
     String getGameId();
 
     String getGameTitle();
 
     String getGameImageUrl();
+
+    Optional<String> getGameAwsImageUrl();
 
     int getPlatinumCount();
 

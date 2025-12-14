@@ -31,6 +31,7 @@ public interface TrophyRepository extends JpaRepository<Trophy, UUID> {
                    t.trophy_type AS trophy_type,
                    t.is_hidden,
                    t.icon_url,
+                   t.aws_icon_url,
                    g.title as game_title,
                    t.game_group_id as game_group,
                    et.earned_at
@@ -64,6 +65,7 @@ public interface TrophyRepository extends JpaRepository<Trophy, UUID> {
                    t.trophy_type AS trophy_type,
                    t.is_hidden,
                    t.icon_url,
+                   t.aws_icon_url,
                    g.title as game_title,
                    t.game_group_id as game_group,
                    et.earned_at
@@ -81,15 +83,17 @@ public interface TrophyRepository extends JpaRepository<Trophy, UUID> {
 
     @Query(value = """
             SELECT t.id,
-               t.title       as trophy_title,
-               t.trophy_type,
-               t.description as trophy_description,
-               t.icon_url    as trophy_icon_url,
-               g.title       as game_title,
-               et.earned_at  as obtained_at,
-               p.id          as player_id,
-               p.pseudo      as player_pseudo,
-               p.avatar_url  as player_avatar_url
+                   t.title            AS trophy_title,
+                   t.trophy_type      AS trophy_type,
+                   t.description      AS trophy_description,
+                   t.icon_url         AS trophy_icon_url,
+                   t.aws_icon_url     AS trophy_aws_icon_url,
+                   g.title            AS game_title,
+                   et.earned_at       AS obtained_at,
+                   p.id               AS player_id,
+                   p.pseudo           AS player_pseudo,
+                   p.aws_avatar_url   AS player_aws_avatar_url,
+                   p.avatar_url       AS player_avatar_url
             FROM app.trophy t
                  JOIN app.earned_trophy et ON et.trophy_id = t.id
                  JOIN app.trophy_collection tc ON tc.id = t.trophy_collection_id

@@ -10,10 +10,13 @@ import org.springframework.stereotype.Component;
 public class PlayerWithTrophyCountMapper {
 
     public PlayerSummaryDTO toDTO(PlayerWithTrophyCountProjection projection) {
+        String avatarUrl = projection.getAwsAvatarUrl().orElse(projection.getAvatarUrl());
+        String lastPlayedGameImageUrl = projection.getLastGameAwsImageUrl().orElse(projection.getLastGameImageUrl());
+
         PlayerDTO player = PlayerDTO.builder()
                 .id(projection.getId())
                 .pseudo(projection.getPseudo())
-                .avatarUrl(projection.getAvatarUrl())
+                .avatarUrl(avatarUrl)
                 .build();
 
         TrophyCountDTO trophyCountDTO = TrophyCountDTO.builder()
@@ -30,7 +33,7 @@ public class PlayerWithTrophyCountMapper {
                 .lastPlayedCollectionId(projection.getLastCollectionId())
                 .lastPlayedGameId(projection.getLastGameId())
                 .lastPlayedGameTitle(projection.getLastGameTitle())
-                .lastPlayedGameImageUrl(projection.getLastGameImageUrl())
+                .lastPlayedGameImageUrl(lastPlayedGameImageUrl)
                 .build();
     }
 

@@ -5,13 +5,16 @@ plugins {
 }
 
 group = 'fr.trophyquest'
-version = '1.0.0-SNAPSHOT'
 description = 'Web Service for TrophyQuest'
 
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(17)
     }
+}
+
+springBoot {
+    buildInfo()
 }
 
 configurations {
@@ -28,6 +31,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.liquibase:liquibase-core'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'org.postgresql:postgresql'

@@ -1,16 +1,25 @@
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    info:
+      enabled: true
+
 spring:
   application.name: trophyquest-web-service
   datasource:
-    url: jdbc:postgresql://localhost:5432/trophyquest?currentSchema=app
-    username: postgres
-    password: postgres
+    url:
+    username:
+    password:
   jpa:
     properties:
       hibernate:
         default_schema: app
     show-sql: true
     hibernate:
-      ddl-auto: validate
+      ddl-auto: none
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.yaml
     default-schema: public

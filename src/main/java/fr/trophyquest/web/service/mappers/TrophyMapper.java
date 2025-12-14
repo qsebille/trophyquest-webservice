@@ -27,31 +27,36 @@ public class TrophyMapper {
     }
 
     public TrophyDTO toTrophyDTO(TrophyProjection projection) {
-        return new TrophyDTO(
-                projection.getId(),
-                projection.getRank(),
-                projection.getTrophyTitle(),
-                projection.getTrophyDescription(),
-                projection.getTrophyType(),
-                projection.getIsHidden(),
-                projection.getIconUrl(),
-                projection.getGameTitle(),
-                projection.getGameGroup(),
-                this.toZonedDateTime(projection.getEarnedAt())
-        );
+        String iconUrl = projection.getAwsIconUrl().orElse(projection.getIconUrl());
+
+        return TrophyDTO.builder()
+                .id(projection.getId())
+                .rank(projection.getRank())
+                .trophyTitle(projection.getTrophyTitle())
+                .trophyDescription(projection.getTrophyDescription())
+                .trophyType(projection.getTrophyType())
+                .isHidden(projection.getIsHidden())
+                .iconUrl(iconUrl)
+                .gameTitle(projection.getGameTitle())
+                .gameGroup(projection.getGameGroup())
+                .earnedDate(this.toZonedDateTime(projection.getEarnedAt()))
+                .build();
     }
 
     public ObtainedTrophyDTO toObtainedDTO(ObtainedTrophyProjection projection) {
+        String avatarUrl = projection.getPlayerAwsAvatarUrl().orElse(projection.getPlayerAvatarUrl());
+        String iconUrl = projection.getTrophyAwsIconUrl().orElse(projection.getTrophyIconUrl());
+
         return ObtainedTrophyDTO.builder()
                 .id(projection.getId())
                 .trophyTitle(projection.getTrophyTitle())
                 .trophyType(projection.getTrophyType())
                 .trophyDescription(projection.getTrophyDescription())
-                .trophyIconUrl(projection.getTrophyIconUrl())
+                .trophyIconUrl(iconUrl)
                 .gameTitle(projection.getGameTitle())
                 .playerId(projection.getPlayerId())
                 .playerPseudo(projection.getPlayerPseudo())
-                .playerAvatarUrl(projection.getPlayerAvatarUrl())
+                .playerAvatarUrl(avatarUrl)
                 .obtainedDate(projection.getObtainedAt().atZone(ZONE_ID))
                 .build();
     }

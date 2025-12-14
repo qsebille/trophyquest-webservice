@@ -19,12 +19,17 @@ public class TrophyCountMapper {
                         Integer::sum
                 ));
 
-        return new TrophyCountDTO(
-                counts.getOrDefault("platinum", 0),
-                counts.getOrDefault("gold", 0),
-                counts.getOrDefault("silver", 0),
-                counts.getOrDefault("bronze", 0)
-        );
+        int countPlatinum = counts.getOrDefault("platinum", 0);
+        int countGold = counts.getOrDefault("gold", 0);
+        int countSilver = counts.getOrDefault("silver", 0);
+        int countBronze = counts.getOrDefault("bronze", 0);
+
+        return TrophyCountDTO.builder()
+                .platinum(countPlatinum)
+                .gold(countGold)
+                .silver(countSilver)
+                .bronze(countBronze)
+                .build();
     }
 
 }

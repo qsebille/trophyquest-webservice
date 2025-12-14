@@ -52,6 +52,14 @@ public class CollectionService {
                 .build();
     }
 
+    /**
+     * Retrieves a trophy collection by its unique identifier.
+     * Converts the retrieved collection data from a projection to a DTO format.
+     *
+     * @param id the unique identifier of the collection to retrieve
+     * @return a CollectionDTO containing the trophy collection's details
+     * @throws IllegalArgumentException if no collection is found with the specified ID
+     */
     public CollectionDTO retrieve(UUID id) {
         CollectionProjection projection = this.trophyCollectionRepository.retrieveCollection(id);
         if (null == projection) throw new IllegalArgumentException("No collection found with ID: " + id);

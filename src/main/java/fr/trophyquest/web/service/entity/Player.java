@@ -19,4 +19,6 @@ public class Player {
 
     private String avatarUrl;
 
+    private String awsAvatarUrl;
+
 }

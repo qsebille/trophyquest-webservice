@@ -14,12 +14,14 @@ public interface PlayerRepository extends JpaRepository<Player, UUID> {
     @Query(value = """
             SELECT p.id,
                    p.pseudo,
+                   p.aws_avatar_url,
                    p.avatar_url,
                    pg_stats.total_games_played,
                    lg.last_collection_id,
                    lg.last_game_id,
                    lg.last_game_title,
                    lg.last_game_image_url,
+                   lg.last_game_aws_image_url,
                    lg.last_earned_at,
                    COUNT(*) FILTER (WHERE t.trophy_type = 'platinum') AS platinum_trophy_count,
                    COUNT(*) FILTER (WHERE t.trophy_type = 'gold')     AS gold_trophy_count,
@@ -37,11 +39,12 @@ public interface PlayerRepository extends JpaRepository<Player, UUID> {
             
                 -- Last earned trophy game
                      LEFT JOIN (SELECT DISTINCT ON (et.player_id) et.player_id,
-                                                                  g.id         AS last_game_id,
-                                                                  g.image_url  AS last_game_image_url,
-                                                                  g.title      AS last_game_title,
-                                                                  tc.id        AS last_collection_id,
-                                                                  et.earned_at AS last_earned_at
+                                                                  g.id             AS last_game_id,
+                                                                  g.title          AS last_game_title,
+                                                                  g.image_url      AS last_game_image_url,
+                                                                  g.aws_image_url  AS last_game_aws_image_url,
+                                                                  tc.id            AS last_collection_id,
+                                                                  et.earned_at     AS last_earned_at
                                 FROM app.earned_trophy et
                                          JOIN app.trophy t ON t.id = et.trophy_id
                                          JOIN app.trophy_collection tc ON tc.id = t.trophy_collection_id
@@ -50,12 +53,14 @@ public interface PlayerRepository extends JpaRepository<Player, UUID> {
             
             GROUP BY p.id,
                      p.pseudo,
+                     p.aws_avatar_url,
                      p.avatar_url,
                      pg_stats.total_games_played,
                      lg.last_collection_id,
                      lg.last_game_id,
                      lg.last_game_title,
                      lg.last_game_image_url,
+                     lg.last_game_aws_image_url,
                      lg.last_earned_at
             ORDER BY last_earned_at DESC
             LIMIT :limit OFFSET :offset

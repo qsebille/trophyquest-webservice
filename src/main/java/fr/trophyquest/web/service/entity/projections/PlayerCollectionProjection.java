@@ -1,11 +1,15 @@
 package fr.trophyquest.web.service.entity.projections;
 
+import java.util.Optional;
+
 public interface PlayerCollectionProjection {
     String getCollectionId();
 
     String getCollectionTitle();
 
     String getCollectionPlatform();
+
+    Optional<String> getCollectionAwsImageUrl();
 
     String getCollectionImageUrl();
 

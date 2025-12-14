@@ -29,6 +29,13 @@ public class PlayerService {
         this.playerWithTrophyCountMapper = playerWithTrophyCountMapper;
     }
 
+    /**
+     * Retrieves a paginated list of players, mapped to a summary DTO, and the total number of players.
+     *
+     * @param pageNumber the current page number (0-based index)
+     * @param pageSize   the number of players to retrieve per page
+     * @return a SearchDTO containing the list of PlayerSummaryDTOs for the given page and the total number of players
+     */
     public SearchDTO<PlayerSummaryDTO> search(int pageNumber, int pageSize) {
         int offset = pageNumber * pageSize;
         List<PlayerSummaryDTO> players = this.playerRepository.search(pageSize, offset).stream().map(
@@ -38,6 +45,13 @@ public class PlayerService {
         return SearchDTO.<PlayerSummaryDTO>builder().content(players).total(nbPlayers).build();
     }
 
+    /**
+     * Finds a player by their unique identifier and converts the entity into a Data Transfer Object (DTO).
+     *
+     * @param id the unique identifier of the player to retrieve
+     * @return a PlayerDTO containing data of the found player
+     * @throws java.util.NoSuchElementException if no player is found with the provided identifier
+     */
     public PlayerDTO findById(UUID id) {
         Player player = this.playerRepository.findById(id).orElseThrow();
         return this.playerMapper.toDTO(player);

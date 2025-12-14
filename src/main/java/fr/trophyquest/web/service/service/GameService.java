@@ -33,7 +33,10 @@ public class GameService {
         PageRequest pageRequest = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.ASC, "title"));
         Page<Game> games = this.gameRepository.findAll(pageRequest);
 
-        return new SearchDTO<>(games.stream().map(this.gameMapper::toDTO).toList(), games.getTotalElements());
+        return SearchDTO.<GameDTO>builder()
+                .content(games.stream().map(this.gameMapper::toDTO).toList())
+                .total(games.getTotalElements())
+                .build();
     }
 
     /**

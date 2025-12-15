@@ -51,16 +51,23 @@ public class GameService {
     }
 
     /**
-     * Fetches a list of recently played games based on the provided pagination parameters.
+     * Fetches a paginated list of recently played games, ordered by the frequency of players
+     * and the recency of their playtime, within the last 7 days.
      *
-     * @param pageNumber the number of the page to fetch, starting at 0
-     * @param pageSize   the number of games to fetch per page
-     * @return a list of GameDTO objects representing the recently played games
+     * @param pageNumber the page number for pagination, starting at 0
+     * @param pageSize   the number of games to retrieve per page
+     * @return a SearchDTO containing a list of recently played GameDTO objects and the total
+     * number of recently played games
      */
-    public List<GameDTO> fetchRecentlyPlayed(int pageNumber, int pageSize) {
+    public SearchDTO<GameDTO> fetchRecentlyPlayed(int pageNumber, int pageSize) {
         int offset = pageNumber * pageSize;
         List<Game> games = this.gameRepository.fetchRecentlyPlayedGames(pageSize, offset);
-        return games.stream().map(this.gameMapper::toDTO).toList();
+        long total = this.gameRepository.countRecentlyPlayedGames();
+
+        return SearchDTO.<GameDTO>builder()
+                .content(games.stream().map(this.gameMapper::toDTO).toList())
+                .total(total)
+                .build();
     }
 
 }

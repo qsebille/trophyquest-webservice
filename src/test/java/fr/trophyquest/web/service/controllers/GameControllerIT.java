@@ -10,23 +10,24 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class PlayerControllerIT extends IntegrationTestBase {
+class GameControllerIT extends IntegrationTestBase {
 
     @Autowired
     MockMvc mockMvc;
 
     @Test
-    void should_return_players_with_earned_trophies() throws Exception {
+    void should_return_recently_most_played_games() throws Exception {
         runScript("/sql/clean-db.sql");
-        runScript("/sql/players/player-controller-it-data.sql");
+        runScript("/sql/games/game-controller-it-recently-played-endpoint-data.sql");
 
-        mockMvc.perform(get("/api/player/search?pageNumber=0&pageSize=50"))
+        mockMvc.perform(get("/api/game/recently-played?pageNumber=0&pageSize=50"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("total").value(2))
+                .andExpect(jsonPath("total").value(3))
                 .andExpect(jsonPath("content").exists())
-                .andExpect(jsonPath("content", hasSize(2)))
-                .andExpect(jsonPath("content[0].player.pseudo").value("PlayerTwo"))
-                .andExpect(jsonPath("content[1].player.pseudo").value("PlayerOne"))
+                .andExpect(jsonPath("content", hasSize(3)))
+                .andExpect(jsonPath("content[0].title").value("Horizon"))
+                .andExpect(jsonPath("content[1].title").value("Outer Wilds"))
+                .andExpect(jsonPath("content[2].title").value("Tomb Raider"))
         ;
     }
 }

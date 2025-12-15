@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/api/game")
 @CrossOrigin(origins = "*")
@@ -33,9 +31,9 @@ public class GameController {
     }
 
     @GetMapping("/recently-played")
-    public List<GameDTO> recentlyPlayedGames(
+    public SearchDTO<GameDTO> recentlyPlayedGames(
             @RequestParam(name = "pageNumber", defaultValue = "0") String pageNumberParam,
-            @RequestParam(name = "pageSize", defaultValue = "20") String pageSizeParam
+            @RequestParam(name = "pageSize", defaultValue = "10") String pageSizeParam
     ) {
         final int pageNumber = Integer.parseInt(pageNumberParam);
         final int pageSize = Integer.parseInt(pageSizeParam);

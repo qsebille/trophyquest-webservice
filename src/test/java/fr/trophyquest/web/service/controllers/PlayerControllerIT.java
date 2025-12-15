@@ -15,7 +15,7 @@ class PlayerControllerIT extends IntegrationTestBase {
 
     @Test
     void should_return_players_with_stats() throws Exception {
-        mockMvc.perform(get("/api/player"))
+        mockMvc.perform(get("/api/player/search?pageNumber=0&pageSize=50"))
                 .andExpect(status().isOk());
     }
 }

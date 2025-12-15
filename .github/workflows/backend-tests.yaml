@@ -19,4 +19,6 @@ jobs:
           cache: gradle
 
       - name: Build and test
-        run: ./gradlew clean test
+        run: |
+          chmod +x gradlew
+          ./gradlew clean test

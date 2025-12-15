@@ -19,17 +19,23 @@ public interface GameRepository extends JpaRepository<Game, UUID> {
     long getTotalPlayerGamesPlayed(@Param("playerId") UUID playerId);
 
     @Query(value = """
-            SELECT g.*
-            FROM app.game g
-                     INNER JOIN (SELECT pg.game_id,
-                                        pg.player_id,
-                                        pg.last_played_at AS last_played_at,
-                                        COUNT(*) AS players_count
-                                 FROM app.played_game pg
-                                 WHERE pg.last_played_at >= now() - interval '7 days'
-                                 GROUP BY pg.game_id, pg.player_id) player_count ON g.id = player_count.game_id
+            SELECT g.*,
+                   MAX(pg.last_played_at) AS last_played_at,
+                   COUNT(*) AS players_count
+            FROM app.played_game pg
+                     JOIN app.game g ON pg.game_id = g.id
+            WHERE pg.last_played_at >= now() - interval '7 days'
+            GROUP BY g.id, g.title, g.image_url, g.created_at, g.updated_at, g.aws_image_url
             ORDER BY players_count DESC, last_played_at DESC
             LIMIT :limit OFFSET :offset
             """, nativeQuery = true)
     List<Game> fetchRecentlyPlayedGames(@Param("limit") int limit, @Param("offset") int offset);
+
+    @Query(value = """
+            SELECT COUNT( DISTINCT game_id )
+            FROM app.played_game pg
+            WHERE pg.last_played_at >= now() - interval '7 days'
+            """, nativeQuery = true)
+    long countRecentlyPlayedGames();
+
 }

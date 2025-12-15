@@ -40,7 +40,7 @@ public class PlayerService {
         int offset = pageNumber * pageSize;
         List<PlayerSummaryDTO> players = this.playerRepository.search(pageSize, offset).stream().map(
                 this.playerWithTrophyCountMapper::toDTO).toList();
-        long nbPlayers = this.playerRepository.count();
+        long nbPlayers = this.playerRepository.countAll();
 
         return SearchDTO.<PlayerSummaryDTO>builder().content(players).total(nbPlayers).build();
     }

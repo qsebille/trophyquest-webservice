@@ -67,4 +67,10 @@ public interface PlayerRepository extends JpaRepository<Player, UUID> {
             """, nativeQuery = true)
     List<PlayerWithTrophyCountProjection> search(@Param("limit") int limit, @Param("offset") int offset);
 
+    @Query(value = """
+            SELECT COUNT(*) FROM app.player p
+                        JOIN app.earned_trophy et ON et.player_id = p.id
+                        JOIN app.trophy t ON t.id = et.trophy_id
+            """, nativeQuery = true)
+    long countAll();
 }

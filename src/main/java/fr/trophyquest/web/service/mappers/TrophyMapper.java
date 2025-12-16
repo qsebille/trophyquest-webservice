@@ -1,8 +1,6 @@
 package fr.trophyquest.web.service.mappers;
 
-import fr.trophyquest.web.service.dto.ObtainedTrophyDTO;
 import fr.trophyquest.web.service.dto.TrophyDTO;
-import fr.trophyquest.web.service.entity.projections.ObtainedTrophyProjection;
 import fr.trophyquest.web.service.entity.projections.TrophyProjection;
 import org.springframework.stereotype.Component;
 
@@ -20,13 +18,12 @@ public class TrophyMapper {
         if (null == earnedAt) {
             return Optional.empty();
         } else {
-            ZoneId zoneId = ZoneId.of("Europe/Paris");
-            ZonedDateTime zonedEarnedAt = earnedAt.atZone(zoneId);
+            ZonedDateTime zonedEarnedAt = earnedAt.atZone(ZONE_ID);
             return Optional.of(zonedEarnedAt);
         }
     }
 
-    public TrophyDTO toTrophyDTO(TrophyProjection projection) {
+    public TrophyDTO toDTO(TrophyProjection projection) {
         String iconUrl = projection.getAwsIconUrl().orElse(projection.getIconUrl());
 
         return TrophyDTO.builder()
@@ -40,24 +37,6 @@ public class TrophyMapper {
                 .gameTitle(projection.getGameTitle())
                 .gameGroup(projection.getGameGroup())
                 .earnedDate(this.toZonedDateTime(projection.getEarnedAt()))
-                .build();
-    }
-
-    public ObtainedTrophyDTO toObtainedDTO(ObtainedTrophyProjection projection) {
-        String avatarUrl = projection.getPlayerAwsAvatarUrl().orElse(projection.getPlayerAvatarUrl());
-        String iconUrl = projection.getTrophyAwsIconUrl().orElse(projection.getTrophyIconUrl());
-
-        return ObtainedTrophyDTO.builder()
-                .id(projection.getId())
-                .trophyTitle(projection.getTrophyTitle())
-                .trophyType(projection.getTrophyType())
-                .trophyDescription(projection.getTrophyDescription())
-                .trophyIconUrl(iconUrl)
-                .gameTitle(projection.getGameTitle())
-                .playerId(projection.getPlayerId())
-                .playerPseudo(projection.getPlayerPseudo())
-                .playerAvatarUrl(avatarUrl)
-                .obtainedDate(projection.getObtainedAt().atZone(ZONE_ID))
                 .build();
     }
 

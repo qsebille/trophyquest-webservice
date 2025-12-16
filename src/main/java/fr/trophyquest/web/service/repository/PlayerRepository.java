@@ -1,7 +1,8 @@
 package fr.trophyquest.web.service.repository;
 
 import fr.trophyquest.web.service.entity.Player;
-import fr.trophyquest.web.service.entity.projections.PlayerWithTrophyCountProjection;
+import fr.trophyquest.web.service.entity.projections.ActivePlayerTrophyProjection;
+import fr.trophyquest.web.service.entity.projections.PlayerSummaryProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -65,7 +66,7 @@ public interface PlayerRepository extends JpaRepository<Player, UUID> {
             ORDER BY last_earned_at DESC
             LIMIT :limit OFFSET :offset
             """, nativeQuery = true)
-    List<PlayerWithTrophyCountProjection> search(@Param("limit") int limit, @Param("offset") int offset);
+    List<PlayerSummaryProjection> search(@Param("limit") int limit, @Param("offset") int offset);
 
     @Query(value = """
             SELECT COUNT(*) FROM app.player p
@@ -73,4 +74,40 @@ public interface PlayerRepository extends JpaRepository<Player, UUID> {
                         JOIN app.trophy t ON t.id = et.trophy_id
             """, nativeQuery = true)
     long countAll();
+
+    @Query(value = """
+            SELECT p.id                             AS player_id,
+                   p.pseudo                         AS player_pseudo,
+                   p.aws_avatar_url                 AS player_aws_avatar_url,
+                   p.avatar_url                     AS player_avatar_url,
+                   recent_trophy_count.trophy_count AS trophy_count,
+                   t.id                             AS trophy_id,
+                   t.title                          AS trophy_title,
+                   t.description                    AS trophy_description,
+                   t.trophy_type                    AS trophy_type,
+                   t.aws_icon_url                   AS trophy_aws_icon_url,
+                   t.icon_url                       AS trophy_icon_url,
+                   g.title                          AS game_title,
+                   recent_trophy_earned.earned_at   AS obtained_at
+            FROM app.player p
+                     JOIN (SELECT et1.player_id,
+                                  COUNT(*) AS trophy_count
+                           FROM app.earned_trophy et1
+                           WHERE et1.earned_at > now() - interval '7 days'
+                           GROUP BY et1.player_id
+                           ORDER BY trophy_count DESC) recent_trophy_count ON p.id = recent_trophy_count.player_id
+                     JOIN (SELECT et2.player_id,
+                                  et2.trophy_id,
+                                  et2.earned_at,
+                                  row_number() over (partition by et2.player_id order by et2.earned_at desc) AS row_number
+                           FROM app.earned_trophy et2
+                           WHERE et2.earned_at > now() - interval '7 days') recent_trophy_earned
+                          ON recent_trophy_earned.player_id = p.id AND recent_trophy_earned.row_number <= 5
+                     JOIN app.trophy t ON t.id = recent_trophy_earned.trophy_id
+                     JOIN app.trophy_collection tc ON tc.id = t.trophy_collection_id
+                     JOIN app.game g ON g.id = tc.game_id
+            ORDER BY trophy_count DESC, obtained_at DESC
+            LIMIT :limit
+            """, nativeQuery = true)
+    List<ActivePlayerTrophyProjection> fetchMostActivePlayerTrophies(@Param("limit") int limit);
 }

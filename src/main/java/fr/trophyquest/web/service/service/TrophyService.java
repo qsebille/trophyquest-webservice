@@ -1,6 +1,5 @@
 package fr.trophyquest.web.service.service;
 
-import fr.trophyquest.web.service.dto.ObtainedTrophyDTO;
 import fr.trophyquest.web.service.dto.SearchDTO;
 import fr.trophyquest.web.service.dto.TrophyCountDTO;
 import fr.trophyquest.web.service.dto.TrophyDTO;
@@ -57,29 +56,20 @@ public class TrophyService {
                 pageSize,
                 offset
         );
-        long totalEarnedTrophies = this.trophyRepository.getEarnedTrophyCountForPlayer(playerId);
+        long totalEarnedTrophies = this.trophyRepository.countEarnedTrophiesForPlayer(playerId);
 
         return SearchDTO.<TrophyDTO>builder()
-                .content(projections.stream().map(this.trophyMapper::toTrophyDTO).toList())
+                .content(projections.stream().map(this.trophyMapper::toDTO).toList())
                 .total(totalEarnedTrophies)
                 .build();
     }
 
     public List<TrophyDTO> fetchPlayerCollectionTrophies(UUID playerId, UUID collectionId) {
         List<TrophyProjection> projections = this.trophyRepository.fetchPlayerTrophyCollections(playerId, collectionId);
-        return projections.stream().map(this.trophyMapper::toTrophyDTO).toList();
+        return projections.stream().map(this.trophyMapper::toDTO).toList();
     }
 
-    public SearchDTO<ObtainedTrophyDTO> searchLastObtained(int pageNumber, int pageSize) {
-        int offset = pageNumber * pageSize;
-        List<ObtainedTrophyDTO> trophies = this.trophyRepository.searchObtainedTrophies(pageSize, offset).stream().map(
-                trophyMapper::toObtainedDTO).toList();
-        long total = this.trophyRepository.getTotalEarnedTrophies();
-
-        return SearchDTO.<ObtainedTrophyDTO>builder()
-                .content(trophies)
-                .total(total)
-                .build();
+    public long countObtainedTrophies() {
+        return this.trophyRepository.countEarnedTrophies();
     }
-
 }

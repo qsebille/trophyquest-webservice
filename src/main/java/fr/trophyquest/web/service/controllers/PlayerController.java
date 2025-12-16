@@ -1,5 +1,6 @@
 package fr.trophyquest.web.service.controllers;
 
+import fr.trophyquest.web.service.dto.MostActivePlayerResponseDTO;
 import fr.trophyquest.web.service.dto.PlayerCollectionDTO;
 import fr.trophyquest.web.service.dto.PlayerDTO;
 import fr.trophyquest.web.service.dto.PlayerSummaryDTO;
@@ -101,6 +102,13 @@ public class PlayerController {
     @GetMapping("/{playerId}/game/count")
     public long countPlayedGames(@PathVariable UUID playerId) {
         return this.gameService.countPlayedGamesByUser(playerId);
+    }
+
+    @GetMapping("/most-active")
+    public List<MostActivePlayerResponseDTO> mostActivePlayers(
+    ) {
+        final int limit = 10;
+        return this.playerService.fetchMostActive(limit);
     }
 
 }

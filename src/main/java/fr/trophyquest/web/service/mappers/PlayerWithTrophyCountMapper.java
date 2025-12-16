@@ -3,13 +3,13 @@ package fr.trophyquest.web.service.mappers;
 import fr.trophyquest.web.service.dto.PlayerDTO;
 import fr.trophyquest.web.service.dto.PlayerSummaryDTO;
 import fr.trophyquest.web.service.dto.TrophyCountDTO;
-import fr.trophyquest.web.service.entity.projections.PlayerWithTrophyCountProjection;
+import fr.trophyquest.web.service.entity.projections.PlayerSummaryProjection;
 import org.springframework.stereotype.Component;
 
 @Component
 public class PlayerWithTrophyCountMapper {
 
-    public PlayerSummaryDTO toDTO(PlayerWithTrophyCountProjection projection) {
+    public PlayerSummaryDTO toDTO(PlayerSummaryProjection projection) {
         String avatarUrl = projection.getAwsAvatarUrl().orElse(projection.getAvatarUrl());
         String lastPlayedGameImageUrl = projection.getLastGameAwsImageUrl().orElse(projection.getLastGameImageUrl());
 

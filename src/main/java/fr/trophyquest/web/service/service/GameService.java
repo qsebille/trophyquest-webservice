@@ -1,9 +1,12 @@
 package fr.trophyquest.web.service.service;
 
 import fr.trophyquest.web.service.dto.GameDTO;
+import fr.trophyquest.web.service.dto.RecentlyPlayedGameDTO;
 import fr.trophyquest.web.service.dto.SearchDTO;
 import fr.trophyquest.web.service.entity.Game;
+import fr.trophyquest.web.service.entity.projections.RecentlyPlayedGameProjection;
 import fr.trophyquest.web.service.mappers.GameMapper;
+import fr.trophyquest.web.service.mappers.RecentlyPlayedGameMapper;
 import fr.trophyquest.web.service.repository.GameRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,10 +20,15 @@ import java.util.UUID;
 public class GameService {
     private final GameRepository gameRepository;
     private final GameMapper gameMapper;
+    private final RecentlyPlayedGameMapper recentlyPlayedGameMapper;
 
-    public GameService(GameRepository gameRepository, GameMapper gameMapper) {
+    public GameService(
+            GameRepository gameRepository, GameMapper gameMapper,
+            RecentlyPlayedGameMapper recentlyPlayedGameMapper
+    ) {
         this.gameRepository = gameRepository;
         this.gameMapper = gameMapper;
+        this.recentlyPlayedGameMapper = recentlyPlayedGameMapper;
     }
 
     /**
@@ -50,24 +58,13 @@ public class GameService {
         return this.gameRepository.getTotalPlayerGamesPlayed(playerId);
     }
 
-    /**
-     * Fetches a paginated list of recently played games, ordered by the frequency of players
-     * and the recency of their playtime, within the last 7 days.
-     *
-     * @param pageNumber the page number for pagination, starting at 0
-     * @param pageSize   the number of games to retrieve per page
-     * @return a SearchDTO containing a list of recently played GameDTO objects and the total
-     * number of recently played games
-     */
-    public SearchDTO<GameDTO> fetchRecentlyPlayed(int pageNumber, int pageSize) {
-        int offset = pageNumber * pageSize;
-        List<Game> games = this.gameRepository.fetchRecentlyPlayedGames(pageSize, offset);
-        long total = this.gameRepository.countRecentlyPlayedGames();
+    public List<RecentlyPlayedGameDTO> fetchRecentlyPlayedGames(int limit) {
+        List<RecentlyPlayedGameProjection> projections = this.gameRepository.fetchRecentlyPlayedGames(limit);
+        return projections.stream().map(this.recentlyPlayedGameMapper::toDTO).toList();
+    }
 
-        return SearchDTO.<GameDTO>builder()
-                .content(games.stream().map(this.gameMapper::toDTO).toList())
-                .total(total)
-                .build();
+    public long countGames() {
+        return this.gameRepository.count();
     }
 
 }

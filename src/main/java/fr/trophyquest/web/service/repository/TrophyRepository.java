@@ -1,7 +1,6 @@
 package fr.trophyquest.web.service.repository;
 
 import fr.trophyquest.web.service.entity.Trophy;
-import fr.trophyquest.web.service.entity.projections.ObtainedTrophyProjection;
 import fr.trophyquest.web.service.entity.projections.TrophyCountProjection;
 import fr.trophyquest.web.service.entity.projections.TrophyProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -50,14 +49,6 @@ public interface TrophyRepository extends JpaRepository<Trophy, UUID> {
     );
 
     @Query(value = """
-            SELECT COUNT(*)
-            FROM app.earned_trophy
-            WHERE player_id = :playerId
-            """, nativeQuery = true)
-    long getEarnedTrophyCountForPlayer(@Param("playerId") UUID playerId);
-
-
-    @Query(value = """
             SELECT t.id,
                    t.rank,
                    t.title AS trophy_title,
@@ -82,31 +73,15 @@ public interface TrophyRepository extends JpaRepository<Trophy, UUID> {
     );
 
     @Query(value = """
-            SELECT t.id,
-                   t.title            AS trophy_title,
-                   t.trophy_type      AS trophy_type,
-                   t.description      AS trophy_description,
-                   t.icon_url         AS trophy_icon_url,
-                   t.aws_icon_url     AS trophy_aws_icon_url,
-                   g.title            AS game_title,
-                   et.earned_at       AS obtained_at,
-                   p.id               AS player_id,
-                   p.pseudo           AS player_pseudo,
-                   p.aws_avatar_url   AS player_aws_avatar_url,
-                   p.avatar_url       AS player_avatar_url
-            FROM app.trophy t
-                 JOIN app.earned_trophy et ON et.trophy_id = t.id
-                 JOIN app.trophy_collection tc ON tc.id = t.trophy_collection_id
-                 JOIN app.game g ON g.id = tc.game_id
-                 JOIN app.player p ON p.id = et.player_id
-            ORDER BY obtained_at DESC
-            LIMIT :limit OFFSET :offset
+            SELECT COUNT(*)
+            FROM app.earned_trophy
             """, nativeQuery = true)
-    List<ObtainedTrophyProjection> searchObtainedTrophies(@Param("limit") int limit, @Param("offset") int offset);
+    long countEarnedTrophies();
 
     @Query(value = """
             SELECT COUNT(*)
             FROM app.earned_trophy
+            WHERE player_id = :playerId
             """, nativeQuery = true)
-    long getTotalEarnedTrophies();
+    long countEarnedTrophiesForPlayer(@Param("playerId") UUID playerId);
 }

@@ -1,9 +1,12 @@
 package fr.trophyquest.web.service.service;
 
+import fr.trophyquest.web.service.dto.MostActivePlayerResponseDTO;
 import fr.trophyquest.web.service.dto.PlayerDTO;
 import fr.trophyquest.web.service.dto.PlayerSummaryDTO;
 import fr.trophyquest.web.service.dto.SearchDTO;
 import fr.trophyquest.web.service.entity.Player;
+import fr.trophyquest.web.service.entity.projections.ActivePlayerTrophyProjection;
+import fr.trophyquest.web.service.mappers.ActivePlayerMapper;
 import fr.trophyquest.web.service.mappers.PlayerMapper;
 import fr.trophyquest.web.service.mappers.PlayerWithTrophyCountMapper;
 import fr.trophyquest.web.service.repository.PlayerRepository;
@@ -17,15 +20,17 @@ public class PlayerService {
 
     private final PlayerRepository playerRepository;
     private final PlayerMapper playerMapper;
+    private final ActivePlayerMapper activePlayerMapper;
     private final PlayerWithTrophyCountMapper playerWithTrophyCountMapper;
 
     public PlayerService(
             PlayerRepository playerRepository,
-            PlayerMapper playerMapper,
+            PlayerMapper playerMapper, ActivePlayerMapper activePlayerMapper,
             PlayerWithTrophyCountMapper playerWithTrophyCountMapper
     ) {
         this.playerRepository = playerRepository;
         this.playerMapper = playerMapper;
+        this.activePlayerMapper = activePlayerMapper;
         this.playerWithTrophyCountMapper = playerWithTrophyCountMapper;
     }
 
@@ -59,6 +64,11 @@ public class PlayerService {
 
     public int count() {
         return (int) this.playerRepository.count();
+    }
+
+    public List<MostActivePlayerResponseDTO> fetchMostActive(int limit) {
+        List<ActivePlayerTrophyProjection> projections = this.playerRepository.fetchMostActivePlayerTrophies(limit);
+        return activePlayerMapper.toDTOList(projections);
     }
 
 }

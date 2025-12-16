@@ -13,9 +13,6 @@ public record ObtainedTrophyDTO(
         String trophyDescription,
         String trophyIconUrl,
         String gameTitle,
-        ZonedDateTime obtainedDate,
-        String playerId,
-        String playerPseudo,
-        String playerAvatarUrl
+        ZonedDateTime obtainedDate
 ) {
 }

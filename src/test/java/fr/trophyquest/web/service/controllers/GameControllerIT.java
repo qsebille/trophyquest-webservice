@@ -22,12 +22,10 @@ class GameControllerIT extends IntegrationTestBase {
 
         mockMvc.perform(get("/api/game/recently-played?pageNumber=0&pageSize=50"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("total").value(3))
-                .andExpect(jsonPath("content").exists())
-                .andExpect(jsonPath("content", hasSize(3)))
-                .andExpect(jsonPath("content[0].title").value("Horizon"))
-                .andExpect(jsonPath("content[1].title").value("Outer Wilds"))
-                .andExpect(jsonPath("content[2].title").value("Tomb Raider"))
+                .andExpect(jsonPath("$", hasSize(3)))
+                .andExpect(jsonPath("$[0].title").value("Horizon"))
+                .andExpect(jsonPath("$[1].title").value("Outer Wilds"))
+                .andExpect(jsonPath("$[2].title").value("Tomb Raider"))
         ;
     }
 }

@@ -1,21 +1,20 @@
 databaseChangeLog:
   - changeSet:
-      id: 01-psn-setup/-create-psn-trophy-set-table
+      id: 001-psn-setup/03-create-psn-title-table
       author: Quentin Sebille
       changes:
         - createTable:
             schemaName: psn
-            tableName: trophy_set
+            tableName: title
             columns:
               - column: { name: id, type: varchar(20), constraints: { nullable: false } }
               - column: { name: name, type: varchar(250), constraints: { nullable: false } }
               - column: { name: platform, type: varchar(10), constraints: { nullable: false } }
               - column: { name: version, type: varchar(10), constraints: { nullable: false } }
-              - column: { name: service_name, type: varchar(10), constraints: { nullable: false } }
               - column: { name: icon_url, type: varchar(300) }
               - column: { name: created_at, type: timestamptz, defaultValueComputed: CURRENT_TIMESTAMP, constraints: { nullable: false } }
         - addPrimaryKey:
             schemaName: psn
-            tableName: trophy_set
+            tableName: title
             columnNames: id
-            constraintName: pk_trophy_set
+            constraintName: pk_title

@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 02-app-setup/008-add-updated-at-columns
+      id: 002-app-setup/07-add-updated-at-columns
       author: GPT-5.1-Codex-Max
       changes:
         - addColumn:
@@ -25,16 +25,6 @@ databaseChangeLog:
                     nullable: false
         - addColumn:
             schemaName: app
-            tableName: trophy_collection
-            columns:
-              - column:
-                  name: updated_at
-                  type: timestamptz
-                  defaultValueComputed: CURRENT_TIMESTAMP
-                  constraints:
-                    nullable: false
-        - addColumn:
-            schemaName: app
             tableName: trophy
             columns:
               - column:
@@ -46,16 +36,6 @@ databaseChangeLog:
         - addColumn:
             schemaName: app
             tableName: played_game
-            columns:
-              - column:
-                  name: updated_at
-                  type: timestamptz
-                  defaultValueComputed: CURRENT_TIMESTAMP
-                  constraints:
-                    nullable: false
-        - addColumn:
-            schemaName: app
-            tableName: played_trophy_collection
             columns:
               - column:
                   name: updated_at
@@ -96,11 +76,6 @@ databaseChangeLog:
               FOR EACH ROW
               EXECUTE FUNCTION app.set_updated_at();
 
-              CREATE TRIGGER trg_app_trophy_collection_set_updated_at
-              BEFORE UPDATE ON app.trophy_collection
-              FOR EACH ROW
-              EXECUTE FUNCTION app.set_updated_at();
-
               CREATE TRIGGER trg_app_trophy_set_updated_at
               BEFORE UPDATE ON app.trophy
               FOR EACH ROW
@@ -108,11 +83,6 @@ databaseChangeLog:
 
               CREATE TRIGGER trg_app_played_game_set_updated_at
               BEFORE UPDATE ON app.played_game
-              FOR EACH ROW
-              EXECUTE FUNCTION app.set_updated_at();
-
-              CREATE TRIGGER trg_app_played_trophy_collection_set_updated_at
-              BEFORE UPDATE ON app.played_trophy_collection
               FOR EACH ROW
               EXECUTE FUNCTION app.set_updated_at();
 

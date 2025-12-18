@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 01-psn-setup/008-add-updated-at-columns
+      id: 001-psn-setup/07-add-updated-at-columns
       author: GPT-5.1-Codex-Max
       changes:
         - addColumn:
@@ -25,37 +25,17 @@ databaseChangeLog:
                     nullable: false
         - addColumn:
             schemaName: psn
-            tableName: user_played_title
-            columns:
-              - column:
-                  name: updated_at
-                  type: timestamptz
-                  defaultValueComputed: CURRENT_TIMESTAMP
-                  constraints:
-                    nullable: false
-        - addColumn:
-            schemaName: psn
-            tableName: trophy_set
-            columns:
-              - column:
-                  name: updated_at
-                  type: timestamptz
-                  defaultValueComputed: CURRENT_TIMESTAMP
-                  constraints:
-                    nullable: false
-        - addColumn:
-            schemaName: psn
-            tableName: title_trophy_set
-            columns:
-              - column:
-                  name: updated_at
-                  type: timestamptz
-                  defaultValueComputed: CURRENT_TIMESTAMP
-                  constraints:
-                    nullable: false
-        - addColumn:
-            schemaName: psn
             tableName: trophy
+            columns:
+              - column:
+                  name: updated_at
+                  type: timestamptz
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+        - addColumn:
+            schemaName: psn
+            tableName: user_played_title
             columns:
               - column:
                   name: updated_at
@@ -96,23 +76,13 @@ databaseChangeLog:
               FOR EACH ROW
               EXECUTE FUNCTION psn.set_updated_at();
 
-              CREATE TRIGGER trg_psn_user_played_title_set_updated_at
-              BEFORE UPDATE ON psn.user_played_title
-              FOR EACH ROW
-              EXECUTE FUNCTION psn.set_updated_at();
-
-              CREATE TRIGGER trg_psn_trophy_set_set_updated_at
-              BEFORE UPDATE ON psn.trophy_set
-              FOR EACH ROW
-              EXECUTE FUNCTION psn.set_updated_at();
-
-              CREATE TRIGGER trg_psn_title_trophy_set_set_updated_at
-              BEFORE UPDATE ON psn.title_trophy_set
-              FOR EACH ROW
-              EXECUTE FUNCTION psn.set_updated_at();
-
               CREATE TRIGGER trg_psn_trophy_set_updated_at
               BEFORE UPDATE ON psn.trophy
+              FOR EACH ROW
+              EXECUTE FUNCTION psn.set_updated_at();
+
+              CREATE TRIGGER trg_psn_user_played_title_set_updated_at
+              BEFORE UPDATE ON psn.user_played_title
               FOR EACH ROW
               EXECUTE FUNCTION psn.set_updated_at();
 

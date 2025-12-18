@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 01-psn-setup/000-create-psn-schema
+      id: 001-psn-setup/01-create-psn-schema
       author: Quentin Sebille
       changes:
         - sql:

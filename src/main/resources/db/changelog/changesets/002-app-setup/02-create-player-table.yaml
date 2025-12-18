@@ -1,18 +1,19 @@
 databaseChangeLog:
   - changeSet:
-      id: 02-app-setup/003-create-game-table
+      id: 002-app-setup/02-create-player-table
       author: Quentin Sebille
       changes:
         - createTable:
             schemaName: app
-            tableName: game
+            tableName: player
             columns:
               - column: { name: id, type: uuid, constraints: { nullable: false } }
-              - column: { name: title, type: varchar(200), constraints: { nullable: false } }
-              - column: { name: image_url, type: varchar(300) }
+              - column: { name: pseudo, type: varchar(30), constraints: { nullable: false, unique: true } }
+              - column: { name: avatar_url, type: varchar }
+              - column: { name: aws_avatar_url, type: varchar }
               - column: { name: created_at, type: timestamptz, defaultValueComputed: CURRENT_TIMESTAMP, constraints: { nullable: false } }
         - addPrimaryKey:
             schemaName: app
-            tableName: game
+            tableName: player
             columnNames: id
-            constraintName: pk_game
+            constraintName: pk_player

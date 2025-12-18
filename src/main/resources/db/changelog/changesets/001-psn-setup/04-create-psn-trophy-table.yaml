@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 01-psn-setup/006-create-psn-trophy-table
+      id: 001-psn-setup/04-create-psn-trophy-table
       author: Quentin Sebille
       changes:
         - createTable:
@@ -8,7 +8,7 @@ databaseChangeLog:
             tableName: trophy
             columns:
               - column: { name: id, type: varchar(30), constraints: { nullable: false } }
-              - column: { name: trophy_set_id, type: varchar(20), constraints: { nullable: false, foreignKeyName: fk_trophy_set, references: psn.trophy_set(id) } }
+              - column: { name: title_id, type: varchar(20), constraints: { nullable: false, foreignKeyName: fk_title, references: psn.title(id) } }
               - column: { name: rank, type: int, constraints: { nullable: false } }
               - column: { name: title, type: varchar(200), constraints: { nullable: false } }
               - column: { name: detail, type: varchar(1000), constraints: { nullable: false } }

@@ -1,5 +1,7 @@
 package fr.trophyquest.web.service.service;
 
+import fr.trophyquest.web.service.entity.Player;
+import fr.trophyquest.web.service.repository.PlayerRepository;
 import org.springframework.stereotype.Service;
 import software.amazon.awssdk.core.SdkBytes;
 import software.amazon.awssdk.services.lambda.LambdaClient;
@@ -7,22 +9,32 @@ import software.amazon.awssdk.services.lambda.model.InvocationType;
 import software.amazon.awssdk.services.lambda.model.InvokeRequest;
 import software.amazon.awssdk.services.lambda.model.InvokeResponse;
 
+import java.util.Optional;
+
 @Service
 public class PsnFetcherService {
-
     private final LambdaClient lambdaClient;
+    private final PlayerRepository playerRepository;
 
-    public PsnFetcherService(LambdaClient lambdaClient) {
+
+    public PsnFetcherService(LambdaClient lambdaClient, PlayerRepository playerRepository) {
         this.lambdaClient = lambdaClient;
+        this.playerRepository = playerRepository;
     }
 
-    public InvokeResponse trigger(String profileName) {
-        String safeProfileName = profileName.replace("\"", "\\\"").trim();
-        String payload = "{\"profileName\":\"" + safeProfileName + "\"}";
+    public InvokeResponse trigger(String profileName) throws Exception {
+        Optional<Player> player = playerRepository.findByPseudo(profileName).stream().findFirst();
+        if (player.isPresent()) {
+            throw new Exception("Player already in database!");
+        } else {
 
-        InvokeRequest req = InvokeRequest.builder().functionName("psn-fetcher").invocationType(
-                InvocationType.REQUEST_RESPONSE).payload(SdkBytes.fromUtf8String(payload)).build();
+            String safeProfileName = profileName.replace("\"", "\\\"").trim();
+            String payload = "{\"profileName\":\"" + safeProfileName + "\"}";
 
-        return lambdaClient.invoke(req);
+            InvokeRequest req = InvokeRequest.builder().functionName("psn-fetcher").invocationType(
+                    InvocationType.REQUEST_RESPONSE).payload(SdkBytes.fromUtf8String(payload)).build();
+
+            return lambdaClient.invoke(req);
+        }
     }
 }

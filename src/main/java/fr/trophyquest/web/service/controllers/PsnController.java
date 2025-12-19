@@ -21,7 +21,7 @@ public class PsnController {
     }
 
     @PostMapping("/{profileName}")
-    public ResponseEntity<?> addProfile(@PathVariable String profileName) {
+    public ResponseEntity<PsnFetchResponse> addProfile(@PathVariable String profileName) throws Exception {
         InvokeResponse response = psnFetcherService.trigger(profileName);
 
         boolean hasFuncError = response.functionError() != null && !response.functionError().isBlank();

@@ -105,4 +105,6 @@ public interface PlayerRepository extends JpaRepository<Player, UUID> {
             LIMIT :limit
             """, nativeQuery = true)
     List<ActivePlayerTrophyProjection> fetchMostActivePlayerTrophies(@Param("limit") int limit);
+
+    List<Player> findByPseudo(String pseudo);
 }

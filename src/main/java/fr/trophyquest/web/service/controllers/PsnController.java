@@ -1,6 +1,6 @@
 package fr.trophyquest.web.service.controllers;
 
-import fr.trophyquest.web.service.dto.PsnFetchResponse;
+import fr.trophyquest.web.service.dto.responses.PsnFetchResponse;
 import fr.trophyquest.web.service.service.PsnFetcherService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,11 +28,11 @@ public class PsnController {
         try {
             InvokeResponse response = psnFetcherService.trigger(profileName);
             boolean hasFuncError = response.functionError() != null && !response.functionError().isBlank();
-            var body = new PsnFetchResponse(
-                    hasFuncError ? "ERROR" : "OK",
-                    response.statusCode(),
-                    hasFuncError
-            );
+            PsnFetchResponse body = PsnFetchResponse.builder()
+                    .status(hasFuncError ? "ERROR" : "OK")
+                    .lambdaStatus(response.statusCode())
+                    .functionError(hasFuncError)
+                    .build();
 
             if (hasFuncError) {
                 return ResponseEntity.status(502).body(body);

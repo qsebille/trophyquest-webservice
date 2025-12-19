@@ -13,6 +13,7 @@ import fr.trophyquest.web.service.repository.PlayerRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -25,7 +26,8 @@ public class PlayerService {
 
     public PlayerService(
             PlayerRepository playerRepository,
-            PlayerMapper playerMapper, ActivePlayerMapper activePlayerMapper,
+            PlayerMapper playerMapper,
+            ActivePlayerMapper activePlayerMapper,
             PlayerWithTrophyCountMapper playerWithTrophyCountMapper
     ) {
         this.playerRepository = playerRepository;
@@ -60,6 +62,10 @@ public class PlayerService {
     public PlayerDTO findById(UUID id) {
         Player player = this.playerRepository.findById(id).orElseThrow();
         return this.playerMapper.toDTO(player);
+    }
+
+    public Optional<PlayerDTO> findByPseudo(String pseudo) {
+        return this.playerRepository.findByPseudo(pseudo).stream().map(this.playerMapper::toDTO).findFirst();
     }
 
     public int count() {

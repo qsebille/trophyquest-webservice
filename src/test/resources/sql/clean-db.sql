@@ -1,8 +1,5 @@
-TRUNCATE TABLE app.game CASCADE;
-TRUNCATE TABLE app.trophy_collection CASCADE;
-TRUNCATE TABLE app.trophy CASCADE;
-
 TRUNCATE TABLE app.player CASCADE;
+TRUNCATE TABLE app.game CASCADE;
+TRUNCATE TABLE app.trophy CASCADE;
 TRUNCATE TABLE app.played_game CASCADE;
-TRUNCATE TABLE app.played_trophy_collection CASCADE;
 TRUNCATE TABLE app.earned_trophy CASCADE;

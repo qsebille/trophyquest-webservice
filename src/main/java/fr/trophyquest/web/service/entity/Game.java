@@ -2,12 +2,10 @@ package fr.trophyquest.web.service.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -22,11 +20,10 @@ public class Game {
 
     private String title;
 
+    private String platform;
+
     private String imageUrl;
 
     private String awsImageUrl;
-
-    @OneToMany(mappedBy = "game")
-    private Set<TrophyCollection> trophyCollections;
 
 }

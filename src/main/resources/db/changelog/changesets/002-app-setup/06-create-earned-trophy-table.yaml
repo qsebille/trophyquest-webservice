@@ -1,0 +1,18 @@
+databaseChangeLog:
+  - changeSet:
+      id: 002-app-setup/06-create-earned-trophy-table
+      author: Quentin Sebille
+      changes:
+        - createTable:
+            schemaName: app
+            tableName: earned_trophy
+            columns:
+              - column: { name: player_id, type: uuid, constraints: { nullable: false, foreignKeyName: fk_player, references: app.player(id) } }
+              - column: { name: trophy_id, type: uuid, constraints: { nullable: false, foreignKeyName: fk_trophy, references: app.trophy(id) } }
+              - column: { name: earned_at, type: timestamptz, constraints: { nullable: false } }
+              - column: { name: created_at, type: timestamptz, defaultValueComputed: CURRENT_TIMESTAMP, constraints: { nullable: false } }
+        - addPrimaryKey:
+            schemaName: app
+            tableName: earned_trophy
+            columnNames: player_id,trophy_id
+            constraintName: pk_earned_trophy

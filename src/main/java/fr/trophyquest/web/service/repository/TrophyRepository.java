@@ -35,9 +35,8 @@ public interface TrophyRepository extends JpaRepository<Trophy, UUID> {
                    t.game_group_id as game_group,
                    et.earned_at
             FROM app.earned_trophy et
-            JOIN app.trophy t ON et.trophy_id = t.id
-            JOIN app.trophy_collection tc ON t.trophy_collection_id = tc.id
-            JOIN app.game g ON tc.game_id = g.id
+                JOIN app.trophy t ON et.trophy_id = t.id
+                JOIN app.game g ON g.id = t.game_id
             WHERE et.player_id = :playerId
             ORDER BY earned_at DESC
             LIMIT :limit OFFSET :offset
@@ -61,15 +60,14 @@ public interface TrophyRepository extends JpaRepository<Trophy, UUID> {
                    t.game_group_id as game_group,
                    et.earned_at
             FROM app.trophy t
-                     JOIN app.trophy_collection tc ON t.trophy_collection_id = tc.id
-                     JOIN app.game g ON tc.game_id = g.id
+                     JOIN app.game g ON g.id = t.game_id
                      LEFT JOIN app.earned_trophy et ON et.trophy_id = t.id AND et.player_id = :playerId
-            WHERE tc.id = :collectionId
+            WHERE g.id = :gameId
             ORDER BY rank
             """, nativeQuery = true)
-    List<TrophyProjection> fetchPlayerTrophyCollections(
+    List<TrophyProjection> fetchPlayerTrophiesForGame(
             @Param("playerId") UUID playerId,
-            @Param("collectionId") UUID collectionId
+            @Param("gameId") UUID gameId
     );
 
     @Query(value = """

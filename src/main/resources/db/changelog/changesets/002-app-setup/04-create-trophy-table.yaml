@@ -1,0 +1,25 @@
+databaseChangeLog:
+  - changeSet:
+      id: 002-app-setup/04-create-trophy-table
+      author: Quentin Sebille
+      changes:
+        - createTable:
+            schemaName: app
+            tableName: trophy
+            columns:
+              - column: { name: id, type: uuid, constraints: { nullable: false } }
+              - column: { name: game_id, type: uuid, constraints: { nullable: false, foreignKeyName: fk_game, references: app.game(id) } }
+              - column: { name: game_group_id, type: varchar(100), constraints: { nullable: false } }
+              - column: { name: rank, type: int, constraints: { nullable: false } }
+              - column: { name: title, type: varchar(200), constraints: { nullable: false } }
+              - column: { name: description, type: varchar(1000), constraints: { nullable: false } }
+              - column: { name: trophy_type, type: varchar(10), constraints: { nullable: false } }
+              - column: { name: is_hidden, type: boolean, constraints: { nullable: false } }
+              - column: { name: icon_url, type: varchar }
+              - column: { name: aws_icon_url, type: varchar }
+              - column: { name: created_at, type: timestamptz, defaultValueComputed: CURRENT_TIMESTAMP, constraints: { nullable: false } }
+        - addPrimaryKey:
+            schemaName: app
+            tableName: trophy
+            columnNames: id
+            constraintName: pk_trophy

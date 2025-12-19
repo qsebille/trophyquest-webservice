@@ -1,0 +1,24 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-psn-setup/04-create-psn-trophy-table
+      author: Quentin Sebille
+      changes:
+        - createTable:
+            schemaName: psn
+            tableName: trophy
+            columns:
+              - column: { name: id, type: varchar(30), constraints: { nullable: false } }
+              - column: { name: title_id, type: varchar(20), constraints: { nullable: false, foreignKeyName: fk_title, references: psn.title(id) } }
+              - column: { name: rank, type: int, constraints: { nullable: false } }
+              - column: { name: title, type: varchar(200), constraints: { nullable: false } }
+              - column: { name: detail, type: varchar(1000), constraints: { nullable: false } }
+              - column: { name: is_hidden, type: boolean, constraints: { nullable: false } }
+              - column: { name: trophy_type, type: varchar(10), constraints: { nullable: false } }
+              - column: { name: icon_url, type: varchar(300), constraints: { nullable: false } }
+              - column: { name: game_group_id, type: varchar(100), constraints: { nullable: false } }
+              - column: { name: created_at, type: timestamptz, defaultValueComputed: CURRENT_TIMESTAMP, constraints: { nullable: false } }
+        - addPrimaryKey:
+            schemaName: psn
+            tableName: trophy
+            columnNames: id
+            constraintName: pk_trophy

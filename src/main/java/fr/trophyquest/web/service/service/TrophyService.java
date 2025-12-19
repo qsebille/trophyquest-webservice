@@ -1,7 +1,7 @@
 package fr.trophyquest.web.service.service;
 
 import fr.trophyquest.web.service.dto.SearchDTO;
-import fr.trophyquest.web.service.dto.TrophyCountDTO;
+import fr.trophyquest.web.service.dto.TrophyCountByTypeDto;
 import fr.trophyquest.web.service.dto.TrophyDTO;
 import fr.trophyquest.web.service.entity.projections.TrophyCountProjection;
 import fr.trophyquest.web.service.entity.projections.TrophyProjection;
@@ -36,7 +36,7 @@ public class TrophyService {
      * @param playerId the unique identifier of the player whose trophy count is being queried
      * @return a TrophyCountDTO containing the counts of platinum, gold, silver, and bronze trophies
      */
-    public TrophyCountDTO getPlayerTrophyCount(UUID playerId) {
+    public TrophyCountByTypeDto getPlayerTrophyCount(UUID playerId) {
         List<TrophyCountProjection> counts = this.trophyRepository.fetchTrophyCountForPlayer(playerId);
         return this.trophyCountMapper.toDTO(counts);
     }
@@ -64,8 +64,8 @@ public class TrophyService {
                 .build();
     }
 
-    public List<TrophyDTO> fetchPlayerCollectionTrophies(UUID playerId, UUID collectionId) {
-        List<TrophyProjection> projections = this.trophyRepository.fetchPlayerTrophyCollections(playerId, collectionId);
+    public List<TrophyDTO> fetchPlayerTrophiesForGame(UUID playerId, UUID gameId) {
+        List<TrophyProjection> projections = this.trophyRepository.fetchPlayerTrophiesForGame(playerId, gameId);
         return projections.stream().map(this.trophyMapper::toDTO).toList();
     }
 

@@ -7,9 +7,8 @@ import java.util.UUID;
 @Builder
 public record PlayerSummaryDTO(
         PlayerDTO player,
-        TrophyCountDTO trophyCount,
+        TrophyCountByTypeDto trophyCount,
         int totalGamesPlayed,
-        UUID lastPlayedCollectionId,
         UUID lastPlayedGameId,
         String lastPlayedGameTitle,
         String lastPlayedGameImageUrl

@@ -9,11 +9,11 @@ VALUES ('11111111-0000-0000-0000-000000000000', 'Player One', 'avatar1.png'),
        ('33333333-0000-0000-0000-000000000000', 'Player Three', 'avatar3.png')
 ;
 
-INSERT INTO app.game(id, title, image_url, aws_image_url)
-VALUES ('00000000-1111-0000-0000-000000000000', 'Tomb Raider', 'game1.png', 'game1aws.png'),
-       ('00000000-2222-0000-0000-000000000000', 'Outer Wilds', 'game2.png', 'game2aws.png'),
-       ('00000000-3333-0000-0000-000000000000', 'Horizon', 'game3.png', 'game1aws.png'),
-       ('00000000-4444-0000-0000-000000000000', 'Dragon Age', 'game4.png', 'game1aws.png')
+INSERT INTO app.game(id, title, platform, image_url)
+VALUES ('00000000-1111-0000-0000-000000000000', 'Tomb Raider', 'PS5', 'game1.png'),
+       ('00000000-2222-0000-0000-000000000000', 'Outer Wilds', 'PS5', 'game2.png'),
+       ('00000000-3333-0000-0000-000000000000', 'Horizon', 'PS5', 'game3.png'),
+       ('00000000-4444-0000-0000-000000000000', 'Dragon Age', 'PS5', 'game4.png')
 ;
 
 -- Last-played timestamps are placeholders here

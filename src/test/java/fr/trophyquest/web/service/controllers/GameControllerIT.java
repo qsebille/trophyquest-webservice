@@ -16,11 +16,11 @@ class GameControllerIT extends IntegrationTestBase {
     MockMvc mockMvc;
 
     @Test
-    void should_return_recently_most_played_games() throws Exception {
+    void should_return_recently_most_popular_games() throws Exception {
         runScript("/sql/clean-db.sql");
-        runScript("/sql/games/game-controller-it-recently-played-endpoint-data.sql");
+        runScript("/sql/games/game-controller-it-most-popular-endpoint-data.sql");
 
-        mockMvc.perform(get("/api/game/recently-played?pageNumber=0&pageSize=50"))
+        mockMvc.perform(get("/api/game/most-popular?pageNumber=0&pageSize=50"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(3)))
                 .andExpect(jsonPath("$[0].title").value("Horizon"))

@@ -22,8 +22,6 @@ public interface PlayerSummaryProjection {
 
     int getTotalGamesPlayed();
 
-    UUID getLastCollectionId();
-
     UUID getLastGameId();
 
     String getLastGameTitle();

@@ -3,14 +3,22 @@ package fr.trophyquest.web.service.entity.projections;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface RecentlyPlayedGameProjection {
+public interface GameSummaryProjection {
     UUID getId();
 
     String getTitle();
+
+    String getPlatform();
 
     Optional<String> getAwsImageUrl();
 
     String getImageUrl();
 
-    long getPlayersCount();
+    int getPlatinumCount();
+
+    int getGoldCount();
+
+    int getSilverCount();
+
+    int getBronzeCount();
 }

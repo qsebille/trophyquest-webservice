@@ -2,7 +2,7 @@ package fr.trophyquest.web.service.mappers;
 
 import fr.trophyquest.web.service.dto.PlayerDTO;
 import fr.trophyquest.web.service.dto.PlayerSummaryDTO;
-import fr.trophyquest.web.service.dto.TrophyCountDTO;
+import fr.trophyquest.web.service.dto.TrophyCountByTypeDto;
 import fr.trophyquest.web.service.entity.projections.PlayerSummaryProjection;
 import org.springframework.stereotype.Component;
 
@@ -19,7 +19,7 @@ public class PlayerWithTrophyCountMapper {
                 .avatarUrl(avatarUrl)
                 .build();
 
-        TrophyCountDTO trophyCountDTO = TrophyCountDTO.builder()
+        TrophyCountByTypeDto trophyCountByTypeDto = TrophyCountByTypeDto.builder()
                 .platinum(projection.getPlatinumTrophyCount())
                 .gold(projection.getGoldTrophyCount())
                 .silver(projection.getSilverTrophyCount())
@@ -28,9 +28,8 @@ public class PlayerWithTrophyCountMapper {
 
         return PlayerSummaryDTO.builder()
                 .player(player)
-                .trophyCount(trophyCountDTO)
+                .trophyCount(trophyCountByTypeDto)
                 .totalGamesPlayed(projection.getTotalGamesPlayed())
-                .lastPlayedCollectionId(projection.getLastCollectionId())
                 .lastPlayedGameId(projection.getLastGameId())
                 .lastPlayedGameTitle(projection.getLastGameTitle())
                 .lastPlayedGameImageUrl(lastPlayedGameImageUrl)

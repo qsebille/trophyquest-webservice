@@ -1,16 +1,16 @@
 package fr.trophyquest.web.service.mappers;
 
-import fr.trophyquest.web.service.dto.RecentlyPlayedGameDTO;
-import fr.trophyquest.web.service.entity.projections.RecentlyPlayedGameProjection;
+import fr.trophyquest.web.service.dto.PopularGameDTO;
+import fr.trophyquest.web.service.entity.projections.PopularGameProjection;
 import org.springframework.stereotype.Component;
 
 @Component
-public class RecentlyPlayedGameMapper {
+public class PopularGameMapper {
 
-    public RecentlyPlayedGameDTO toDTO(RecentlyPlayedGameProjection projection) {
+    public PopularGameDTO toDTO(PopularGameProjection projection) {
         String imageUrl = projection.getAwsImageUrl().orElse(projection.getImageUrl());
 
-        return RecentlyPlayedGameDTO.builder()
+        return PopularGameDTO.builder()
                 .id(projection.getId())
                 .title(projection.getTitle())
                 .imageUrl(imageUrl)

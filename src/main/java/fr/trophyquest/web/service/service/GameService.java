@@ -1,12 +1,15 @@
 package fr.trophyquest.web.service.service;
 
 import fr.trophyquest.web.service.dto.GameDTO;
-import fr.trophyquest.web.service.dto.RecentlyPlayedGameDTO;
+import fr.trophyquest.web.service.dto.PlayerGameDTO;
+import fr.trophyquest.web.service.dto.PopularGameDTO;
 import fr.trophyquest.web.service.dto.SearchDTO;
 import fr.trophyquest.web.service.entity.Game;
-import fr.trophyquest.web.service.entity.projections.RecentlyPlayedGameProjection;
+import fr.trophyquest.web.service.entity.projections.PlayerGameProjection;
+import fr.trophyquest.web.service.entity.projections.PopularGameProjection;
 import fr.trophyquest.web.service.mappers.GameMapper;
-import fr.trophyquest.web.service.mappers.RecentlyPlayedGameMapper;
+import fr.trophyquest.web.service.mappers.PlayerGameMapper;
+import fr.trophyquest.web.service.mappers.PopularGameMapper;
 import fr.trophyquest.web.service.repository.GameRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,24 +23,19 @@ import java.util.UUID;
 public class GameService {
     private final GameRepository gameRepository;
     private final GameMapper gameMapper;
-    private final RecentlyPlayedGameMapper recentlyPlayedGameMapper;
+    private final PlayerGameMapper playerGameMapper;
+    private final PopularGameMapper popularGameMapper;
 
     public GameService(
-            GameRepository gameRepository, GameMapper gameMapper,
-            RecentlyPlayedGameMapper recentlyPlayedGameMapper
+            GameRepository gameRepository, GameMapper gameMapper, PlayerGameMapper playerGameMapper,
+            PopularGameMapper popularGameMapper
     ) {
         this.gameRepository = gameRepository;
         this.gameMapper = gameMapper;
-        this.recentlyPlayedGameMapper = recentlyPlayedGameMapper;
+        this.playerGameMapper = playerGameMapper;
+        this.popularGameMapper = popularGameMapper;
     }
 
-    /**
-     * Searches for a paginated list of games and returns relevant game information.
-     *
-     * @param pageNumber the page number for pagination, starting at 0
-     * @param pageSize   the number of items per page for pagination
-     * @return a GameSearchDTO containing the list of games and the total number of games
-     */
     public SearchDTO<GameDTO> search(int pageNumber, int pageSize) {
         PageRequest pageRequest = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.ASC, "title"));
         Page<Game> games = this.gameRepository.findAll(pageRequest);
@@ -48,19 +46,24 @@ public class GameService {
                 .build();
     }
 
-    /**
-     * Counts the total number of games played by a specific user.
-     *
-     * @param playerId the unique identifier of the player whose played games are being counted
-     * @return the total number of games played by the specified player
-     */
-    public long countPlayedGamesByUser(UUID playerId) {
-        return this.gameRepository.getTotalPlayerGamesPlayed(playerId);
+    public SearchDTO<PlayerGameDTO> searchGamesForUser(UUID playerId, int pageNumber, int pageSize) {
+        int offset = pageNumber * pageSize;
+        List<PlayerGameProjection> projections = this.gameRepository.searchGamesForPlayer(playerId, pageSize, offset);
+        long totalPlayedGames = this.gameRepository.getTotalPlayedGamesForPlayer(playerId);
+
+        return SearchDTO.<PlayerGameDTO>builder()
+                .content(projections.stream().map(this.playerGameMapper::toDTO).toList())
+                .total(totalPlayedGames)
+                .build();
     }
 
-    public List<RecentlyPlayedGameDTO> fetchRecentlyPlayedGames(int limit) {
-        List<RecentlyPlayedGameProjection> projections = this.gameRepository.fetchRecentlyPlayedGames(limit);
-        return projections.stream().map(this.recentlyPlayedGameMapper::toDTO).toList();
+    public long countPlayedGamesByUser(UUID playerId) {
+        return this.gameRepository.getTotalPlayedGamesForPlayer(playerId);
+    }
+
+    public List<PopularGameDTO> fetchMostPopularGames(int limit) {
+        List<PopularGameProjection> projections = this.gameRepository.fetchRecentlyPlayedGames(limit);
+        return projections.stream().map(this.popularGameMapper::toDTO).toList();
     }
 
     public long countGames() {

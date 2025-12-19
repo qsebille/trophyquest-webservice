@@ -20,9 +20,9 @@ public class Trophy {
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "trophy_collection_id")
+    @JoinColumn(name = "game_id")
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    private TrophyCollection trophyCollection;
+    private Game game;
 
     private int rank;
 

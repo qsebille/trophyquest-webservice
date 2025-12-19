@@ -1,0 +1,15 @@
+package fr.trophyquest.web.service.dto;
+
+import lombok.Builder;
+
+import java.util.UUID;
+
+@Builder
+public record GameSummaryDTO(
+        UUID id,
+        String title,
+        String platform,
+        String imageUrl,
+        TrophyCountByTypeDto trophyCount
+) {
+}

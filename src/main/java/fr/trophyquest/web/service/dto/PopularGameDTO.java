@@ -5,7 +5,7 @@ import lombok.Builder;
 import java.util.UUID;
 
 @Builder
-public record RecentlyPlayedGameDTO(
+public record PopularGameDTO(
         UUID id,
         String title,
         String imageUrl,

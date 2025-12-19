@@ -1,21 +1,18 @@
 package fr.trophyquest.web.service.entity.projections;
 
 import java.util.Optional;
+import java.util.UUID;
 
-public interface PlayerCollectionProjection {
-    String getCollectionId();
+public interface PlayerGameProjection {
+    UUID getId();
 
-    String getCollectionTitle();
+    String getTitle();
 
-    String getCollectionPlatform();
+    String getPlatform();
 
-    Optional<String> getCollectionAwsImageUrl();
+    Optional<String> getAwsImageUrl();
 
-    String getCollectionImageUrl();
-
-    String getGameId();
-
-    String getGameTitle();
+    String getImageUrl();
 
     int getPlatinumCount();
 

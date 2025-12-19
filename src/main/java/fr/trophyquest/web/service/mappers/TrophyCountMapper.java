@@ -1,6 +1,6 @@
 package fr.trophyquest.web.service.mappers;
 
-import fr.trophyquest.web.service.dto.TrophyCountDTO;
+import fr.trophyquest.web.service.dto.TrophyCountByTypeDto;
 import fr.trophyquest.web.service.entity.projections.TrophyCountProjection;
 import org.springframework.stereotype.Component;
 
@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 @Component
 public class TrophyCountMapper {
 
-    public TrophyCountDTO toDTO(List<TrophyCountProjection> projections) {
+    public TrophyCountByTypeDto toDTO(List<TrophyCountProjection> projections) {
         Map<String, Integer> counts = projections.stream()
                 .collect(Collectors.toMap(
                         TrophyCountProjection::getTrophyType,
@@ -24,7 +24,7 @@ public class TrophyCountMapper {
         int countSilver = counts.getOrDefault("silver", 0);
         int countBronze = counts.getOrDefault("bronze", 0);
 
-        return TrophyCountDTO.builder()
+        return TrophyCountByTypeDto.builder()
                 .platinum(countPlatinum)
                 .gold(countGold)
                 .silver(countSilver)

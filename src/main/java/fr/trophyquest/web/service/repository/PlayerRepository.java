@@ -18,7 +18,6 @@ public interface PlayerRepository extends JpaRepository<Player, UUID> {
                    p.aws_avatar_url,
                    p.avatar_url,
                    pg_stats.total_games_played,
-                   lg.last_collection_id,
                    lg.last_game_id,
                    lg.last_game_title,
                    lg.last_game_image_url,
@@ -44,12 +43,10 @@ public interface PlayerRepository extends JpaRepository<Player, UUID> {
                                                                   g.title          AS last_game_title,
                                                                   g.image_url      AS last_game_image_url,
                                                                   g.aws_image_url  AS last_game_aws_image_url,
-                                                                  tc.id            AS last_collection_id,
                                                                   et.earned_at     AS last_earned_at
                                 FROM app.earned_trophy et
                                          JOIN app.trophy t ON t.id = et.trophy_id
-                                         JOIN app.trophy_collection tc ON tc.id = t.trophy_collection_id
-                                         JOIN app.game g ON g.id = tc.game_id
+                                         JOIN app.game g ON g.id = t.game_id
                                 ORDER BY et.player_id, et.earned_at DESC) lg ON lg.player_id = p.id
             
             GROUP BY p.id,
@@ -57,7 +54,6 @@ public interface PlayerRepository extends JpaRepository<Player, UUID> {
                      p.aws_avatar_url,
                      p.avatar_url,
                      pg_stats.total_games_played,
-                     lg.last_collection_id,
                      lg.last_game_id,
                      lg.last_game_title,
                      lg.last_game_image_url,
@@ -104,8 +100,7 @@ public interface PlayerRepository extends JpaRepository<Player, UUID> {
                            WHERE et2.earned_at > now() - interval '7 days') recent_trophy_earned
                           ON recent_trophy_earned.player_id = p.id AND recent_trophy_earned.row_number <= 5
                      JOIN app.trophy t ON t.id = recent_trophy_earned.trophy_id
-                     JOIN app.trophy_collection tc ON tc.id = t.trophy_collection_id
-                     JOIN app.game g ON g.id = tc.game_id
+                     JOIN app.game g ON g.id = t.game_id
             ORDER BY trophy_count DESC, obtained_at DESC
             LIMIT :limit
             """, nativeQuery = true)

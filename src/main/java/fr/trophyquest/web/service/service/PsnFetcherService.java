@@ -31,7 +31,7 @@ public class PsnFetcherService {
             String safeProfileName = profileName.replace("\"", "\\\"").trim();
             String payload = "{\"profileName\":\"" + safeProfileName + "\"}";
 
-            InvokeRequest req = InvokeRequest.builder().functionName("psn-fetcher").invocationType(
+            InvokeRequest req = InvokeRequest.builder().functionName("trophyquest-psn-fetcher").invocationType(
                     InvocationType.REQUEST_RESPONSE).payload(SdkBytes.fromUtf8String(payload)).build();
 
             return lambdaClient.invoke(req);

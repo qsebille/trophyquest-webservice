@@ -7,7 +7,7 @@ import fr.trophyquest.web.service.entity.projections.PlayerSummaryProjection;
 import org.springframework.stereotype.Component;
 
 @Component
-public class PlayerWithTrophyCountMapper {
+public class PlayerSummaryMapper {
 
     public PlayerSummaryDTO toDTO(PlayerSummaryProjection projection) {
         String avatarUrl = projection.getAwsAvatarUrl().orElse(projection.getAvatarUrl());
@@ -32,6 +32,7 @@ public class PlayerWithTrophyCountMapper {
                 .totalGamesPlayed(projection.getTotalGamesPlayed())
                 .lastPlayedGameId(projection.getLastGameId())
                 .lastPlayedGameTitle(projection.getLastGameTitle())
+                .lastPlayedGamePlatform(projection.getLastGamePlatform())
                 .lastPlayedGameImageUrl(lastPlayedGameImageUrl)
                 .build();
     }

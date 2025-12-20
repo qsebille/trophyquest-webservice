@@ -26,6 +26,8 @@ public interface PlayerSummaryProjection {
 
     String getLastGameTitle();
 
+    String getLastGamePlatform();
+
     Optional<String> getLastGameAwsImageUrl();
 
     String getLastGameImageUrl();

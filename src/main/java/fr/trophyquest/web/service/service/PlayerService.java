@@ -5,10 +5,10 @@ import fr.trophyquest.web.service.dto.PlayerDTO;
 import fr.trophyquest.web.service.dto.PlayerSummaryDTO;
 import fr.trophyquest.web.service.dto.SearchDTO;
 import fr.trophyquest.web.service.entity.Player;
-import fr.trophyquest.web.service.entity.projections.ActivePlayerTrophyProjection;
+import fr.trophyquest.web.service.entity.projections.ActivePlayerProjection;
 import fr.trophyquest.web.service.mappers.ActivePlayerMapper;
 import fr.trophyquest.web.service.mappers.PlayerMapper;
-import fr.trophyquest.web.service.mappers.PlayerWithTrophyCountMapper;
+import fr.trophyquest.web.service.mappers.PlayerSummaryMapper;
 import fr.trophyquest.web.service.repository.PlayerRepository;
 import org.springframework.stereotype.Service;
 
@@ -22,18 +22,18 @@ public class PlayerService {
     private final PlayerRepository playerRepository;
     private final PlayerMapper playerMapper;
     private final ActivePlayerMapper activePlayerMapper;
-    private final PlayerWithTrophyCountMapper playerWithTrophyCountMapper;
+    private final PlayerSummaryMapper playerSummaryMapper;
 
     public PlayerService(
             PlayerRepository playerRepository,
             PlayerMapper playerMapper,
             ActivePlayerMapper activePlayerMapper,
-            PlayerWithTrophyCountMapper playerWithTrophyCountMapper
+            PlayerSummaryMapper playerSummaryMapper
     ) {
         this.playerRepository = playerRepository;
         this.playerMapper = playerMapper;
         this.activePlayerMapper = activePlayerMapper;
-        this.playerWithTrophyCountMapper = playerWithTrophyCountMapper;
+        this.playerSummaryMapper = playerSummaryMapper;
     }
 
     /**
@@ -46,7 +46,7 @@ public class PlayerService {
     public SearchDTO<PlayerSummaryDTO> search(int pageNumber, int pageSize) {
         int offset = pageNumber * pageSize;
         List<PlayerSummaryDTO> players = this.playerRepository.search(pageSize, offset).stream().map(
-                this.playerWithTrophyCountMapper::toDTO).toList();
+                this.playerSummaryMapper::toDTO).toList();
         long nbPlayers = this.playerRepository.count();
 
         return SearchDTO.<PlayerSummaryDTO>builder().content(players).total(nbPlayers).build();
@@ -73,8 +73,8 @@ public class PlayerService {
     }
 
     public List<MostActivePlayerResponseDTO> fetchMostActive(int limit) {
-        List<ActivePlayerTrophyProjection> projections = this.playerRepository.fetchMostActivePlayerTrophies(limit);
-        return activePlayerMapper.toDTOList(projections);
+        List<ActivePlayerProjection> projections = this.playerRepository.fetchMostActivePlayerTrophies(limit);
+        return projections.stream().map(this.activePlayerMapper::toDTO).toList();
     }
 
 }

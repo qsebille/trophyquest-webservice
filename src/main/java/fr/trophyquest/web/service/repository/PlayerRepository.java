@@ -30,7 +30,7 @@ public interface PlayerRepository extends JpaRepository<Player, UUID> {
                    trophy_count.bronze   AS bronze_trophy_count
             FROM app.player p
                      -- Count trophies by type
-                     LEFT JOIN (SELECT et.player_id                                       AS player_id,
+                     JOIN (SELECT et.player_id                                       AS player_id,
                                        COUNT(*) FILTER (WHERE t.trophy_type = 'platinum') AS platinum,
                                        COUNT(*) FILTER (WHERE t.trophy_type = 'gold')     AS gold,
                                        COUNT(*) FILTER (WHERE t.trophy_type = 'silver')   AS silver,
@@ -40,13 +40,13 @@ public interface PlayerRepository extends JpaRepository<Player, UUID> {
                                 GROUP BY et.player_id) trophy_count ON trophy_count.player_id = p.id
             
                 -- Total played games
-                     LEFT JOIN (SELECT player_id,
+                     JOIN (SELECT player_id,
                                        COUNT(DISTINCT game_id) AS total_games_played
                                 FROM app.played_game
                                 GROUP BY player_id) pg_stats ON pg_stats.player_id = p.id
             
                 -- Last earned trophy game
-                     LEFT JOIN (SELECT DISTINCT ON (et.player_id) et.player_id,
+                     JOIN (SELECT DISTINCT ON (et.player_id) et.player_id,
                                                                   g.id            AS last_game_id,
                                                                   g.title         AS last_game_title,
                                                                   g.platform      AS last_game_platform,

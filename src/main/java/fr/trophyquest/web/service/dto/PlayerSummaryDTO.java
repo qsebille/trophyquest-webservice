@@ -11,6 +11,7 @@ public record PlayerSummaryDTO(
         int totalGamesPlayed,
         UUID lastPlayedGameId,
         String lastPlayedGameTitle,
+        String lastPlayedGamePlatform,
         String lastPlayedGameImageUrl
 ) {
 }

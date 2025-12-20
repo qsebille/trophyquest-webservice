@@ -1,49 +1,75 @@
 package fr.trophyquest.web.service.mappers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.trophyquest.web.service.dto.MostActivePlayerResponseDTO;
 import fr.trophyquest.web.service.dto.ObtainedTrophyDTO;
 import fr.trophyquest.web.service.dto.PlayerDTO;
+import fr.trophyquest.web.service.entity.projections.ActivePlayerProjection;
 import fr.trophyquest.web.service.entity.projections.ActivePlayerTrophyProjection;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
 import java.time.ZoneId;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Component
 public class ActivePlayerMapper {
     private final static ZoneId ZONE_ID = ZoneId.of("Europe/Paris");
+    private final ObjectMapper objectMapper;
 
-    public List<MostActivePlayerResponseDTO> toDTOList(List<ActivePlayerTrophyProjection> projections) {
-        Map<UUID, List<ActivePlayerTrophyProjection>> byPlayer = projections.stream().collect(
-                Collectors.groupingBy(
-                        ActivePlayerTrophyProjection::getPlayerId, LinkedHashMap::new,
-                        Collectors.toList()
-                ));
+    public ActivePlayerMapper(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
+    }
 
-        return byPlayer.entrySet().stream().map(entry -> {
-            UUID playerId = entry.getKey();
-            List<ActivePlayerTrophyProjection> playerProjections = entry.getValue();
-            ActivePlayerTrophyProjection first = playerProjections.get(0);
+    private ObtainedTrophyDTO buildTrophyDTO(ActivePlayerTrophyProjection projection) {
+        String iconUrl = projection.awsIconUrl();
+        if (null == iconUrl) {
+            iconUrl = projection.iconUrl();
+        }
 
-            String avatarUrl = first.getPlayerAwsAvatarUrl().orElse(first.getPlayerAvatarUrl());
-            PlayerDTO player = PlayerDTO.builder().id(playerId).pseudo(first.getPlayerPseudo()).avatarUrl(
-                    avatarUrl).build();
+        return ObtainedTrophyDTO.builder()
+                .id(projection.id())
+                .trophyTitle(projection.title())
+                .trophyDescription(projection.description())
+                .trophyType(projection.trophyType())
+                .trophyIconUrl(iconUrl)
+                .gameTitle(projection.gameTitle())
+                .obtainedDate(Instant.parse(projection.obtainedAt()).atZone(ZONE_ID))
+                .build();
+    }
 
-            List<ObtainedTrophyDTO> trophies = playerProjections.stream().map(p -> {
-                String trophyIconUrl = p.getTrophyAwsIconUrl().orElse(p.getTrophyIconUrl());
-                return ObtainedTrophyDTO.builder().id(p.getTrophyId()).trophyTitle(p.getTrophyTitle()).trophyType(
-                        p.getTrophyType()).trophyDescription(p.getTrophyDescription()).trophyIconUrl(
-                        trophyIconUrl).gameTitle(p.getGameTitle()).obtainedDate(
-                        p.getObtainedAt().atZone(ZONE_ID)).build();
-            }).toList();
+    private List<ObtainedTrophyDTO> readTrophies(String json) {
+        if (json == null || json.isBlank()) {
+            return List.of();
+        }
+        try {
+            return objectMapper.readValue(
+                    json, new TypeReference<List<ActivePlayerTrophyProjection>>() {
+                    }
+            ).stream().map(this::buildTrophyDTO).toList();
+        } catch (JsonProcessingException e) {
+            throw new IllegalStateException("Invalid last trophies JSON", e);
+        }
+    }
 
-            return MostActivePlayerResponseDTO.builder().player(player).recentTrophyCount(
-                    first.getTrophyCount()).lastObtainedTrophies(trophies).build();
-        }).toList();
+    public MostActivePlayerResponseDTO toDTO(ActivePlayerProjection projection) {
+        String avatarUrl = projection.getAwsAvatarUrl().orElse(projection.getAvatarUrl());
+
+        PlayerDTO player = PlayerDTO.builder()
+                .id(projection.getId())
+                .pseudo(projection.getPseudo())
+                .avatarUrl(avatarUrl)
+                .build();
+
+        List<ObtainedTrophyDTO> lastTrophies = readTrophies(projection.getTrophiesJson());
+
+        return MostActivePlayerResponseDTO.builder()
+                .player(player)
+                .recentTrophyCount(projection.getTrophyCount())
+                .lastObtainedTrophies(lastTrophies)
+                .build();
     }
 
 }

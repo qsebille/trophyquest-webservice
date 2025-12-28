@@ -72,4 +72,10 @@ public class TrophyService {
     public long countObtainedTrophies() {
         return this.trophyRepository.countEarnedTrophies();
     }
+
+    public List<TrophyDTO> fetchTrophiesForGame(UUID gameId) {
+        List<TrophyProjection> projections = this.trophyRepository.fetchTrophiesForGame(gameId);
+        return projections.stream().map(this.trophyMapper::toDTO).toList();
+    }
+
 }

@@ -99,6 +99,7 @@ public interface PlayerRepository extends JpaRepository<Player, UUID> {
                                                   'awsIconUrl', lt.aws_icon_url,
                                                   'iconUrl', lt.icon_url,
                                                   'obtainedAt', lt.earned_at,
+                                                  'gameId', lt.game_id,
                                                   'gameTitle', lt.game_title
                                           )
                                           ORDER BY lt.row_number
@@ -111,6 +112,7 @@ public interface PlayerRepository extends JpaRepository<Player, UUID> {
                                         t.trophy_type,
                                         t.aws_icon_url,
                                         t.icon_url,
+                                        g.id              AS game_id,
                                         g.title           AS game_title,
                                         row_number()
                                         OVER (PARTITION BY et.player_id ORDER BY et.earned_at DESC) AS row_number

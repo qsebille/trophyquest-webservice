@@ -35,6 +35,7 @@ public class ActivePlayerMapper {
                 .trophyDescription(projection.description())
                 .trophyType(projection.trophyType())
                 .trophyIconUrl(iconUrl)
+                .gameId(projection.gameId())
                 .gameTitle(projection.gameTitle())
                 .obtainedDate(Instant.parse(projection.obtainedAt()).atZone(ZONE_ID))
                 .build();

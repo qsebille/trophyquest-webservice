@@ -10,6 +10,7 @@ public record ActivePlayerTrophyProjection(
         String awsIconUrl,
         String iconUrl,
         String obtainedAt,
+        UUID gameId,
         String gameTitle
 ) {
 }

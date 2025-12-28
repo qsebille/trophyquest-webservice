@@ -4,8 +4,10 @@ import fr.trophyquest.web.service.dto.GameDTO;
 import fr.trophyquest.web.service.dto.GameSummaryDTO;
 import fr.trophyquest.web.service.dto.PopularGameDTO;
 import fr.trophyquest.web.service.dto.SearchDTO;
+import fr.trophyquest.web.service.dto.TrophyDTO;
 import fr.trophyquest.web.service.service.GameService;
 import fr.trophyquest.web.service.service.GameSummaryService;
+import fr.trophyquest.web.service.service.TrophyService;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,10 +25,12 @@ public class GameController {
 
     private final GameService gameService;
     private final GameSummaryService gameSummaryService;
+    private final TrophyService trophyService;
 
-    public GameController(GameService gameService, GameSummaryService gameSummaryService) {
+    public GameController(GameService gameService, GameSummaryService gameSummaryService, TrophyService trophyService) {
         this.gameService = gameService;
         this.gameSummaryService = gameSummaryService;
+        this.trophyService = trophyService;
     }
 
     @GetMapping
@@ -53,6 +57,11 @@ public class GameController {
     @GetMapping("/{gameId}/summary")
     public GameSummaryDTO gameSummary(@PathVariable UUID gameId) {
         return this.gameSummaryService.retrieveGameSummary(gameId);
+    }
+
+    @GetMapping("/{gameId}/trophies")
+    public List<TrophyDTO> fetchTrophiesOfGame(@PathVariable UUID gameId) {
+        return this.trophyService.fetchTrophiesForGame(gameId);
     }
 
 }

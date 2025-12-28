@@ -71,6 +71,26 @@ public interface TrophyRepository extends JpaRepository<Trophy, UUID> {
     );
 
     @Query(value = """
+            SELECT t.id,
+                   t.rank,
+                   t.title AS trophy_title,
+                   t.description AS trophy_description,
+                   t.trophy_type AS trophy_type,
+                   t.is_hidden,
+                   t.icon_url,
+                   t.aws_icon_url,
+                   g.title as game_title,
+                   t.game_group_id as game_group
+            FROM app.trophy t
+                     JOIN app.game g ON g.id = t.game_id
+            WHERE g.id = :gameId
+            ORDER BY rank
+            """, nativeQuery = true)
+    List<TrophyProjection> fetchTrophiesForGame(
+            @Param("gameId") UUID gameId
+    );
+
+    @Query(value = """
             SELECT COUNT(*)
             FROM app.earned_trophy
             """, nativeQuery = true)

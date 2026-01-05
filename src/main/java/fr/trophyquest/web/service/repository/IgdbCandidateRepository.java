@@ -20,7 +20,8 @@ public interface IgdbCandidateRepository extends JpaRepository<IgdbCandidate, Lo
                                    'id', igdb_game.id,
                                    'name', igdb_game.name,
                                    'cover', igdb_game.cover,
-                                   'releaseDate', igdb_game.release_date
+                                   'releaseDate', igdb_game.release_date,
+                                   'score', igdb_candidate.score
                            )
                    )::text AS candidates_json
             FROM app.igdb_candidate

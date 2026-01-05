@@ -30,7 +30,7 @@ public class GameCandidatesMapper {
                 .candidates(this.readCandidates(projection.getCandidatesJson()))
                 .build();
     }
-    
+
     private List<CandidateDTO> readCandidates(String json) {
         if (json == null || json.isBlank()) {
             return List.of();
@@ -51,6 +51,7 @@ public class GameCandidatesMapper {
                 .name(projection.name())
                 .cover(projection.cover())
                 .releaseDate(Date.valueOf(projection.releaseDate()))
+                .score(projection.score())
                 .build();
     }
 }

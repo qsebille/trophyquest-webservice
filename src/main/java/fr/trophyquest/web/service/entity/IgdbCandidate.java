@@ -30,7 +30,8 @@ public class IgdbCandidate {
     @JoinColumn(name = "candidate_id", nullable = false)
     private IgdbGame candidate;
 
-    @MapsId("status")
+    private Long score;
+
     private String status;
 
 }

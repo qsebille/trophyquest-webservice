@@ -1,0 +1,27 @@
+databaseChangeLog:
+  - changeSet:
+      id: 003-igdb-tables-setup/05-create-igdb-mapping-table
+      author: Quentin Sebille
+      changes:
+        - createTable:
+            schemaName: app
+            tableName: igdb_mapping
+            columns:
+              - column: { name: game_id, type: uuid, constraints: { nullable: false, unique: true, foreignKeyName: fk_game, references: app.game(id) } }
+              - column: { name: igdb_id, type: bigint, constraints: { nullable: false, foreignKeyName: fk_igdb, references: app.igdb_game(id) } }
+              - column: { name: created_at, type: timestamptz, defaultValueComputed: CURRENT_TIMESTAMP, constraints: { nullable: false } }
+              - column: { name: updated_at, type: timestamptz, defaultValueComputed: CURRENT_TIMESTAMP, constraints: { nullable: false } }
+        - addPrimaryKey:
+            schemaName: app
+            tableName: igdb_mapping
+            columnNames: game_id,igdb_id
+            constraintName: pk_igdb_mapping
+        - sql:
+            dbms: postgresql
+            splitStatements: false
+            stripComments: true
+            sql: |
+              CREATE TRIGGER trg_app_igdb_mapping_set_updated_at
+                            BEFORE UPDATE ON app.igdb_mapping
+                            FOR EACH ROW
+                            EXECUTE FUNCTION app.set_updated_at();

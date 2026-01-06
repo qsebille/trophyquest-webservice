@@ -4,6 +4,7 @@ public record CandidateProjection(
         Long id,
         String name,
         String cover,
-        String releaseDate
+        String releaseDate,
+        Long score
 ) {
 }

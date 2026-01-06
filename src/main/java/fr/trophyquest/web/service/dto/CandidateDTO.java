@@ -9,6 +9,7 @@ public record CandidateDTO(
         Long id,
         String name,
         String cover,
-        Date releaseDate
+        Date releaseDate,
+        Long score
 ) {
 }

@@ -10,7 +10,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class IgdbCandidateControllerIT extends IntegrationTestBase {
+class TrophySetControllerIT extends IntegrationTestBase {
 
     @Autowired
     MockMvc mockMvc;

@@ -9,12 +9,12 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
+
+import java.util.Objects;
 
 @Entity
 @Table(name = "igdb_candidate")
 @Data
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class IgdbCandidate {
 
     @EmbeddedId
@@ -34,4 +34,15 @@ public class IgdbCandidate {
 
     private String status;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof IgdbCandidate that)) return false;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

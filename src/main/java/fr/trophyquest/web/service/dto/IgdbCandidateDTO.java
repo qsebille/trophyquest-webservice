@@ -5,7 +5,7 @@ import lombok.Builder;
 import java.util.Date;
 
 @Builder
-public record CandidateDTO(
+public record IgdbCandidateDTO(
         Long id,
         String name,
         String cover,

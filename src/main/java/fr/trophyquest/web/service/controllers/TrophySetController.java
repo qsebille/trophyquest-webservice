@@ -1,33 +1,32 @@
 package fr.trophyquest.web.service.controllers;
 
-import fr.trophyquest.web.service.dto.GameCandidatesDTO;
-import fr.trophyquest.web.service.service.IgdbService;
+import fr.trophyquest.web.service.dto.SearchDTO;
+import fr.trophyquest.web.service.dto.TrophySetDTO;
+import fr.trophyquest.web.service.service.TrophySetService;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @RestController
-@RequestMapping("/api/igdb-candidate")
+@RequestMapping("/api/trophy-set")
 @CrossOrigin(origins = "*")
-public class IgdbCandidateController {
+public class TrophySetController {
 
-    private final IgdbService igdbService;
+    private final TrophySetService trophySetService;
 
-    public IgdbCandidateController(IgdbService igdbService) {
-        this.igdbService = igdbService;
+    public TrophySetController(TrophySetService trophySetService) {
+        this.trophySetService = trophySetService;
     }
 
     @GetMapping("/search")
-    public List<GameCandidatesDTO> getGameById(
+    public SearchDTO<TrophySetDTO> getGameById(
             @RequestParam(name = "pageNumber", defaultValue = "0") String pageNumberParam,
             @RequestParam(name = "pageSize", defaultValue = "50") String pageSizeParam
     ) {
         final int pageNumber = Integer.parseInt(pageNumberParam);
         final int pageSize = Integer.parseInt(pageSizeParam);
-        return igdbService.searchGameCandidates(pageNumber, pageSize);
+        return trophySetService.searchGameCandidates(pageNumber, pageSize);
     }
 }

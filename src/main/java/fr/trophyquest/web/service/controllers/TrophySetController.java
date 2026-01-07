@@ -20,7 +20,7 @@ public class TrophySetController {
         this.trophySetService = trophySetService;
     }
 
-    @GetMapping("/search/igdb-candidates")
+    @GetMapping("/search")
     public SearchDTO<TrophySetDTO> getGameById(
             @RequestParam(name = "pageNumber", defaultValue = "0") String pageNumberParam,
             @RequestParam(name = "pageSize", defaultValue = "50") String pageSizeParam

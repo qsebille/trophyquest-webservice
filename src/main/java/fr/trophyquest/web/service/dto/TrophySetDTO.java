@@ -2,7 +2,7 @@ package fr.trophyquest.web.service.dto;
 
 import lombok.Builder;
 
-import java.util.Set;
+import java.util.List;
 import java.util.UUID;
 
 @Builder
@@ -11,6 +11,6 @@ public record TrophySetDTO(
         String title,
         String platform,
         String imageUrl,
-        Set<IgdbCandidateDTO> igdbGameCandidates
+        List<IgdbCandidateDTO> igdbGameCandidates
 ) {
 }

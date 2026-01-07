@@ -5,8 +5,9 @@ import fr.trophyquest.web.service.dto.TrophySetDTO;
 import fr.trophyquest.web.service.entity.Game;
 import org.springframework.stereotype.Component;
 
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 @Component
 public class TrophySetMapper {
@@ -17,8 +18,12 @@ public class TrophySetMapper {
     }
 
     public TrophySetDTO toDTO(Game trophySet) {
-        Set<IgdbCandidateDTO> igdbCandidates = trophySet.getIgdbCandidates().stream().map(
-                this.igdbCandidateMapper::toDTO).collect(Collectors.toSet());
+        List<IgdbCandidateDTO> igdbCandidates = new ArrayList<>(trophySet.getIgdbCandidates().stream().map(
+                this.igdbCandidateMapper::toDTO).toList());
+
+        igdbCandidates.sort(
+                Comparator.comparing(IgdbCandidateDTO::score, Comparator.nullsLast(Comparator.naturalOrder()))
+                        .reversed());
 
         return TrophySetDTO.builder()
                 .id(trophySet.getId())

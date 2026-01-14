@@ -1,9 +1,0 @@
-databaseChangeLog:
-  - changeSet:
-      id: 004-rename-game-into-trophy-set/01-rename-game-table
-      author: Quentin Sebille
-      changes:
-        - renameTable:
-            schemaName: app
-            oldTableName: game
-            newTableName: trophy_set

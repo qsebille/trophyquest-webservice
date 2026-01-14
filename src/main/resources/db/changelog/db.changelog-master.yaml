@@ -1,29 +1,16 @@
 databaseChangeLog:
-  - include: { file: changesets/001-psn-setup/01-create-psn-schema.yaml, relativeToChangelogFile: true }
-  - include: { file: changesets/001-psn-setup/02-create-psn-user-profile-table.yaml, relativeToChangelogFile: true }
-  - include: { file: changesets/001-psn-setup/03-create-psn-title-table.yaml, relativeToChangelogFile: true }
-  - include: { file: changesets/001-psn-setup/04-create-psn-trophy-table.yaml, relativeToChangelogFile: true }
-  - include: { file: changesets/001-psn-setup/05-create-psn-user-played-title-table.yaml, relativeToChangelogFile: true }
-  - include: { file: changesets/001-psn-setup/06-create-psn-earned-trophy-table.yaml, relativeToChangelogFile: true }
-  - include: { file: changesets/001-psn-setup/07-add-updated-at-columns.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/001-setup/01-create-app-schema.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/001-setup/02-create-set-updated-at-function.yaml, relativeToChangelogFile: true }
 
-  - include: { file: changesets/002-app-setup/01-create-app-schema.yaml, relativeToChangelogFile: true }
-  - include: { file: changesets/002-app-setup/02-create-player-table.yaml, relativeToChangelogFile: true }
-  - include: { file: changesets/002-app-setup/03-create-game-table.yaml, relativeToChangelogFile: true }
-  - include: { file: changesets/002-app-setup/04-create-trophy-table.yaml, relativeToChangelogFile: true }
-  - include: { file: changesets/002-app-setup/05-create-played-game-table.yaml, relativeToChangelogFile: true }
-  - include: { file: changesets/002-app-setup/06-create-earned-trophy-table.yaml, relativeToChangelogFile: true }
-  - include: { file: changesets/002-app-setup/07-add-updated-at-columns.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/002-base-tables-setup/01-create-player-table.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/002-base-tables-setup/02-create-trophy-set-table.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/002-base-tables-setup/03-create-trophy-table.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/002-base-tables-setup/04-create-played-trophy-set-table.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/002-base-tables-setup/05-create-earned-trophy-table.yaml, relativeToChangelogFile: true }
 
   - include: { file: changesets/003-igdb-tables-setup/01-create-igdb-game-table.yaml, relativeToChangelogFile: true }
   - include: { file: changesets/003-igdb-tables-setup/02-create-igdb-collection-table.yaml, relativeToChangelogFile: true }
   - include: { file: changesets/003-igdb-tables-setup/03-create-igdb-company-table.yaml, relativeToChangelogFile: true }
   - include: { file: changesets/003-igdb-tables-setup/04-create-igdb-candidate-table.yaml, relativeToChangelogFile: true }
-  - include: { file: changesets/003-igdb-tables-setup/05-create-igdb-mapping-table.yaml, relativeToChangelogFile: true }
-
-  - include: { file: changesets/004-rename-game-into-trophy-set/01-rename-game-table.yaml, relativeToChangelogFile: true }
-  - include: { file: changesets/004-rename-game-into-trophy-set/02-rename-played-game-table.yaml, relativeToChangelogFile: true }
-  - include: { file: changesets/004-rename-game-into-trophy-set/03-rename-game-id-columns.yaml, relativeToChangelogFile: true }
-  - include: { file: changesets/004-rename-game-into-trophy-set/04-drop-igdb-mapping.yaml, relativeToChangelogFile: true }
-  - include: { file: changesets/004-rename-game-into-trophy-set/05-create-igdb-game-collection-table.yaml, relativeToChangelogFile: true }
-  - include: { file: changesets/004-rename-game-into-trophy-set/06-create-igdb-game-company-table.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/003-igdb-tables-setup/05-create-igdb-game-collection-table.yaml, relativeToChangelogFile: true }
+  - include: { file: changesets/003-igdb-tables-setup/06-create-igdb-game-company-table.yaml, relativeToChangelogFile: true }

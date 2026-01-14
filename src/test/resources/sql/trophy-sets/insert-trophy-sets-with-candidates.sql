@@ -1,19 +1,16 @@
-INSERT INTO app.game(id, title, platform, image_url)
-VALUES ('00000000-1111-0000-0000-000000000000', 'Tomb Raider', 'PS5', 'game1.png'),
-       ('00000000-2222-0000-0000-000000000000', 'Outer Wilds', 'PS5', 'game2.png')
+insert into app.trophy_set(id, title, platform)
+values ('11111111-0000-0000-0000-000000000000', 'Outer Wilds', 'PS5')
 ;
 
-INSERT INTO app.igdb_game(id, name, cover, release_date)
-VALUES (1, 'Tomb Raider 1', 'cover1.png', '2021-01-01'),
-       (2, 'Tomb Raider 2', 'cover2.png', '2021-01-01'),
-       (3, 'Tomb Raider 3', 'cover3.png', '2021-01-01'),
-       (4, 'Outer Wilds', 'cover4.png', '2021-01-01')
+insert into app.igdb_game(id, name)
+values (1, 'Outer Wilds'),
+       (2, 'Outer Worlds'),
+       (3, 'Outer Universe')
 ;
 
-INSERT INTO app.igdb_candidate(game_id, candidate_id, score, status)
-VALUES ('00000000-1111-0000-0000-000000000000', 1, 100, 'PENDING'),
-       ('00000000-1111-0000-0000-000000000000', 2, 90, 'PENDING'),
-       ('00000000-1111-0000-0000-000000000000', 3, 80, 'PENDING'),
-       ('00000000-2222-0000-0000-000000000000', 4, 100, 'PENDING')
+insert into app.igdb_candidate(trophy_set_id, candidate_id, score, status)
+values ('11111111-0000-0000-0000-000000000000', 1, 100, 'PENDING'),
+       ('11111111-0000-0000-0000-000000000000', 2, 90, 'PENDING'),
+       ('11111111-0000-0000-0000-000000000000', 3, 80, 'NOT_PENDING')
 ;
 

@@ -1,0 +1,25 @@
+databaseChangeLog:
+  - changeSet:
+      id: 002-base-tables-setup/02-create-trophy-set-table
+      author: Quentin Sebille
+      changes:
+        - createTable:
+            schemaName: app
+            tableName: trophy_set
+            columns:
+              - column: { name: id, type: uuid, constraints: { nullable: false, primaryKey: true, primaryKeyName: pk_trophy_set } }
+              - column: { name: title, type: text, constraints: { nullable: false } }
+              - column: { name: platform, type: text, constraints: { nullable: false } }
+              - column: { name: image_url, type: text }
+              - column: { name: aws_image_url, type: text }
+              - column: { name: created_at, type: timestamptz, defaultValueComputed: CURRENT_TIMESTAMP, constraints: { nullable: false } }
+              - column: { name: updated_at, type: timestamptz, defaultValueComputed: CURRENT_TIMESTAMP, constraints: { nullable: false } }
+        - sql:
+            dbms: postgresql
+            splitStatements: false
+            stripComments: true
+            sql: |
+              CREATE TRIGGER trg_app_trophy_set_set_updated_at
+              BEFORE UPDATE ON app.trophy_set
+              FOR EACH ROW
+              EXECUTE FUNCTION app.set_updated_at();

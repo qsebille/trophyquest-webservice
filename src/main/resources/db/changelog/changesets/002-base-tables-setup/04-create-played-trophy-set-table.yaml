@@ -1,0 +1,28 @@
+databaseChangeLog:
+  - changeSet:
+      id: 002-base-tables-setup/04-create-played-trophy-set-table
+      author: Quentin Sebille
+      changes:
+        - createTable:
+            schemaName: app
+            tableName: played_trophy_set
+            columns:
+              - column: { name: player_id, type: uuid, constraints: { nullable: false, foreignKeyName: fk_player, references: app.player(id) } }
+              - column: { name: trophy_set_id, type: uuid, constraints: { nullable: false, foreignKeyName: fk_trophy_set, references: app.trophy_set(id) } }
+              - column: { name: last_played_at, type: timestamptz, constraints: { nullable: false } }
+              - column: { name: created_at, type: timestamptz, defaultValueComputed: CURRENT_TIMESTAMP, constraints: { nullable: false } }
+              - column: { name: updated_at, type: timestamptz, defaultValueComputed: CURRENT_TIMESTAMP, constraints: { nullable: false } }
+        - addPrimaryKey:
+            schemaName: app
+            tableName: played_trophy_set
+            columnNames: player_id,trophy_set_id
+            constraintName: pk_played_trophy_set
+        - sql:
+            dbms: postgresql
+            splitStatements: false
+            stripComments: true
+            sql: |
+              CREATE TRIGGER trg_app_played_trophy_set_set_updated_at
+              BEFORE UPDATE ON app.played_trophy_set
+              FOR EACH ROW
+              EXECUTE FUNCTION app.set_updated_at();

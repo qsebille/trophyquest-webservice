@@ -22,7 +22,7 @@ class TrophySetControllerIT extends IntegrationTestBase {
         runScript("/sql/clean-db.sql");
         runScript("/sql/trophy-sets/insert-trophy-sets-with-candidates.sql");
 
-        mockMvc.perform(get(BASE_PATH + "/search-candidates?pageNumber=0&pageSize=50"))
+        mockMvc.perform(get(BASE_PATH + "/search/candidates?pageNumber=0&pageSize=50"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("total").value(1))
                 .andExpect(jsonPath("content").exists())

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -59,9 +59,14 @@ public class TrophySetController {
         return this.trophySetService.fetchEarnedTrophies(trophySetId, playerId);
     }
 
-    @PostMapping("/{trophySetId}/validate-candidate")
-    public Boolean validateCandidate(@PathVariable UUID trophySetId, @RequestBody long igdbGameId) {
+    @PostMapping("/{trophySetId}/candidate/{igdbGameId}/validate")
+    public Boolean validateCandidate(@PathVariable UUID trophySetId, @PathVariable long igdbGameId) {
         return this.igdbCandidateService.validateCandidate(trophySetId, igdbGameId);
+    }
+
+    @PutMapping("/{trophySetId}/candidate/reject-all")
+    public Boolean rejectAllCandidates(@PathVariable UUID trophySetId) {
+        return this.igdbCandidateService.rejectAllPendingCandidates(trophySetId);
     }
 
     @GetMapping("/count")

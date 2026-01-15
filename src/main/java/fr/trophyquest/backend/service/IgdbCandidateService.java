@@ -40,10 +40,21 @@ public class IgdbCandidateService {
             link.setTrophySet(this.trophySetRepository.getReferenceById(trophySetId));
             link.setGame(this.igdbGameRepository.getReferenceById(igdbGameId));
             this.igdbLinkRepository.save(link);
-            this.igdbCandidateRepository.updateCandidateStatus(trophySetId, igdbGameId);
+            this.igdbCandidateRepository.updateStatusAfterValidation(trophySetId, igdbGameId);
             return true;
         } catch (Exception e) {
             log.error("Failed to validate candidate for trophySetId {} and igdbGameId {}", trophySetId, igdbGameId, e);
+            return false;
+        }
+    }
+
+    @Transactional
+    public Boolean rejectAllPendingCandidates(UUID trophySetId) {
+        try {
+            this.igdbCandidateRepository.updateStatusToRejected(trophySetId);
+            return true;
+        } catch (Exception e) {
+            log.error("Failed to reject candidates for trophySetId {}", trophySetId, e);
             return false;
         }
     }

@@ -23,6 +23,11 @@ public interface IgdbCandidateRepository extends JpaRepository<IgdbCandidate, Ig
             END
             WHERE c.id.trophySetId = :trophySetId
             """)
-    void updateCandidateStatus(UUID trophySetId, long gameId);
-    
+    void updateStatusAfterValidation(UUID trophySetId, long gameId);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE IgdbCandidate c SET c.status = 'REJECTED' WHERE c.id.trophySetId = :trophySetId")
+    void updateStatusToRejected(UUID trophySetId);
+
 }

@@ -7,14 +7,14 @@ databaseChangeLog:
             schemaName: app
             tableName: igdb_link
             columns:
-              - column: { name: trophy_set_id, type: uuid, constraints: { nullable: false, unique: true, foreignKeyName: fk_trophy_set, references: app.trophy_set(id) } }
-              - column: { name: game_id, type: bigint, constraints: { nullable: false, foreignKeyName: fk_game, references: app.igdb_game(id) } }
+              - column: { name: psn_game_id, type: uuid, constraints: { nullable: false, unique: true, foreignKeyName: fk_psn_game, references: app.psn_game(id) } }
+              - column: { name: igdb_game_id, type: bigint, constraints: { nullable: false, foreignKeyName: fk_igdb_game, references: app.igdb_game(id) } }
               - column: { name: created_at, type: timestamptz, defaultValueComputed: CURRENT_TIMESTAMP, constraints: { nullable: false } }
               - column: { name: updated_at, type: timestamptz, defaultValueComputed: CURRENT_TIMESTAMP, constraints: { nullable: false } }
         - addPrimaryKey:
             schemaName: app
             tableName: igdb_link
-            columnNames: trophy_set_id,game_id
+            columnNames: psn_game_id,igdb_game_id
             constraintName: pk_igdb_link
         - sql:
             dbms: postgresql

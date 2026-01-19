@@ -1,7 +1,7 @@
 package fr.trophyquest.backend.api.mapper;
 
 import fr.trophyquest.backend.api.dto.candidate.IgdbCandidateDTO;
-import fr.trophyquest.backend.domain.entity.IgdbCandidate;
+import fr.trophyquest.backend.domain.entity.igdb.IgdbCandidate;
 import org.springframework.stereotype.Component;
 
 @Component

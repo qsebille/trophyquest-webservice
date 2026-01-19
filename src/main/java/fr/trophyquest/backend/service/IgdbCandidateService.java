@@ -1,11 +1,10 @@
 package fr.trophyquest.backend.service;
 
-import fr.trophyquest.backend.domain.entity.IgdbLink;
-import fr.trophyquest.backend.domain.entity.embedded.IgdbLinkId;
+import fr.trophyquest.backend.domain.entity.Game;
+import fr.trophyquest.backend.domain.entity.igdb.IgdbGame;
+import fr.trophyquest.backend.repository.GameRepository;
 import fr.trophyquest.backend.repository.IgdbCandidateRepository;
 import fr.trophyquest.backend.repository.IgdbGameRepository;
-import fr.trophyquest.backend.repository.IgdbLinkRepository;
-import fr.trophyquest.backend.repository.TrophySetRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,35 +14,31 @@ import java.util.UUID;
 @Slf4j
 @Service
 public class IgdbCandidateService {
-    private final TrophySetRepository trophySetRepository;
-    private final IgdbLinkRepository igdbLinkRepository;
+    private final GameRepository gameRepository;
     private final IgdbGameRepository igdbGameRepository;
     private final IgdbCandidateRepository igdbCandidateRepository;
 
     public IgdbCandidateService(
-            TrophySetRepository trophySetRepository,
-            IgdbLinkRepository igdbLinkRepository,
+            GameRepository gameRepository,
             IgdbGameRepository igdbGameRepository,
             IgdbCandidateRepository igdbCandidateRepository
     ) {
-        this.trophySetRepository = trophySetRepository;
-        this.igdbLinkRepository = igdbLinkRepository;
+        this.gameRepository = gameRepository;
         this.igdbGameRepository = igdbGameRepository;
         this.igdbCandidateRepository = igdbCandidateRepository;
     }
 
     @Transactional
-    public Boolean validateCandidate(UUID trophySetId, long igdbGameId) {
+    public Boolean validateCandidate(UUID gameId, long igdbGameId) {
         try {
-            IgdbLink link = new IgdbLink();
-            link.setId(new IgdbLinkId(trophySetId, igdbGameId));
-            link.setTrophySet(this.trophySetRepository.getReferenceById(trophySetId));
-            link.setGame(this.igdbGameRepository.getReferenceById(igdbGameId));
-            this.igdbLinkRepository.save(link);
-            this.igdbCandidateRepository.updateStatusAfterValidation(trophySetId, igdbGameId);
+            Game game = this.gameRepository.getReferenceById(gameId);
+            IgdbGame igdbGame = this.igdbGameRepository.getReferenceById(igdbGameId);
+            game.setIgdbGame(igdbGame);
+            this.gameRepository.save(game);
+            this.igdbCandidateRepository.updateStatusAfterValidation(gameId, igdbGameId);
             return true;
         } catch (Exception e) {
-            log.error("Failed to validate candidate for trophySetId {} and igdbGameId {}", trophySetId, igdbGameId, e);
+            log.error("Failed to validate candidate for trophySetId {} and igdbGameId {}", gameId, igdbGameId, e);
             return false;
         }
     }

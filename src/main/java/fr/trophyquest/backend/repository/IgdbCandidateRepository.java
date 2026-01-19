@@ -1,7 +1,7 @@
 package fr.trophyquest.backend.repository;
 
-import fr.trophyquest.backend.domain.entity.IgdbCandidate;
-import fr.trophyquest.backend.domain.entity.embedded.IgdbCandidateId;
+import fr.trophyquest.backend.domain.entity.igdb.IgdbCandidate;
+import fr.trophyquest.backend.domain.entity.igdb.embedded.IgdbCandidateId;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -21,13 +21,13 @@ public interface IgdbCandidateRepository extends JpaRepository<IgdbCandidate, Ig
                 WHEN c.id.candidateId = :gameId THEN 'ACCEPTED'
                 ELSE 'REJECTED'
             END
-            WHERE c.id.trophySetId = :trophySetId
+            WHERE c.id.psnGameId = :psnGameId
             """)
-    void updateStatusAfterValidation(UUID trophySetId, long gameId);
+    void updateStatusAfterValidation(UUID psnGameId, long gameId);
 
     @Modifying
     @Transactional
-    @Query("UPDATE IgdbCandidate c SET c.status = 'REJECTED' WHERE c.id.trophySetId = :trophySetId")
-    void updateStatusToRejected(UUID trophySetId);
+    @Query("UPDATE IgdbCandidate c SET c.status = 'REJECTED' WHERE c.id.psnGameId = :psnGameId")
+    void updateStatusToRejected(UUID psnGameId);
 
 }

@@ -13,36 +13,38 @@ import java.util.UUID;
 public interface TrophyRepository extends JpaRepository<Trophy, UUID> {
 
     @Query(value = """
-            select t.id,
-                   t.rank,
-                   t.title,
-                   t.description,
-                   t.trophy_type,
-                   t.is_hidden,
-                   coalesce(t.aws_icon_url, t.icon_url) as icon,
-                   t.game_group_id,
-                   null::timestamptz as earned_at
-            from app.trophy t
-            where t.trophy_set_id = :trophySetId
-            order by rank
-            """, nativeQuery = true)
-    List<EarnedTrophyDTO> fetchTrophiesOfTrophySet(UUID trophySetId);
+            select new fr.trophyquest.backend.api.dto.trophy.EarnedTrophyDTO(
+               t.id,
+               t.rank,
+               t.title,
+               t.description,
+               t.trophyType,
+               t.isHidden,
+               t.icon,
+               t.trophySuiteGroup.id,
+               null
+            )
+            from Trophy t
+            """)
+    List<EarnedTrophyDTO> fetchTrophiesOfTrophySuite(UUID trophySuiteId);
+// todo !
+
 
     @Query(value = """
-            select t.id,
-                   t.rank,
-                   t.title,
-                   t.description,
-                   t.trophy_type,
-                   t.is_hidden,
-                   coalesce(t.aws_icon_url, t.icon_url) as icon,
-                   t.game_group_id,
-                   et.earned_at
-            from app.trophy t
-                left join app.earned_trophy et on et.trophy_id = t.id and et.player_id = :playerId
-            where t.trophy_set_id = :trophySetId
-            order by rank
-            """, nativeQuery = true)
+            select new fr.trophyquest.backend.api.dto.trophy.EarnedTrophyDTO(
+               t.id,
+               t.rank,
+               t.title,
+               t.description,
+               t.trophyType,
+               t.isHidden,
+               t.icon,
+               t.trophySuiteGroup.id,
+               et.earnedAt
+            )
+            from Trophy t
+             join t.earnedBy et
+            """)
     List<EarnedTrophyDTO> fetchPlayerTrophiesForTrophySet(UUID trophySetId, UUID playerId);
 
 }

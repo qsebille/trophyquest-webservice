@@ -8,7 +8,7 @@ import fr.trophyquest.backend.api.dto.player.PlayerStatsDTO;
 import fr.trophyquest.backend.api.dto.player.RecentPlayerTrophiesItemDTO;
 import fr.trophyquest.backend.api.dto.psn.PsnFetchResponse;
 import fr.trophyquest.backend.api.dto.trophy.EarnedTrophySearchItemDTO;
-import fr.trophyquest.backend.api.dto.trophyset.PlayedTrophySetSearchItemDTO;
+import fr.trophyquest.backend.api.dto.trophysuite.PlayedTrophySuiteSearchItemDTO;
 import fr.trophyquest.backend.service.PlayerService;
 import fr.trophyquest.backend.service.PsnFetcherService;
 import org.slf4j.Logger;
@@ -62,17 +62,17 @@ public class PlayerController {
     }
 
     @GetMapping("{playerId}/last-activity")
-    public PlayerLastActivityDTO fetchWithLastPlayedTrophySet(@PathVariable UUID playerId) {
+    public PlayerLastActivityDTO fetchLastActivity(@PathVariable UUID playerId) {
         return this.playerService.fetchLastActivity(playerId);
     }
 
     @GetMapping("{playerId}/trophy-set/search")
-    public SearchDTO<PlayedTrophySetSearchItemDTO> searchPlayedTrophySets(
+    public SearchDTO<PlayedTrophySuiteSearchItemDTO> SearchPlayedTrophySuites(
             @PathVariable UUID playerId,
             @RequestParam(name = "pageNumber", defaultValue = "0") int pageNumber,
             @RequestParam(name = "pageSize", defaultValue = "50") int pageSize
     ) {
-        return this.playerService.searchPlayedTrophySets(playerId, pageNumber, pageSize);
+        return this.playerService.searchPlayedTrophySuites(playerId, pageNumber, pageSize);
     }
 
     @GetMapping("{playerId}/trophy/search")

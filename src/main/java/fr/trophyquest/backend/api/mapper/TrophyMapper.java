@@ -15,8 +15,8 @@ public class TrophyMapper {
                 .description(trophy.getDescription())
                 .trophyType(trophy.getTrophyType())
                 .isHidden(trophy.isHidden())
-                .iconUrl(trophy.getIconUrl())
-                .gameGroup(trophy.getGameGroupId())
+                .icon(trophy.getIcon())
+                .gameGroupId(trophy.getTrophySuiteGroup().getPsnId())
                 .build();
     }
 

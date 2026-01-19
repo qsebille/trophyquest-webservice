@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 002-psn-tables-setup/08-create-psn-trophy-suite-table
+      id: 002-psn-tables-setup/07-create-psn-trophy-suite-table
       author: Quentin Sebille
       changes:
         - createTable:
@@ -10,8 +10,8 @@ databaseChangeLog:
               - column: { name: id, type: uuid, constraints: { nullable: false, primaryKey: true, primaryKeyName: pk_psn_trophy_suite } }
               - column: { name: name, type: text, constraints: { nullable: false } }
               - column: { name: version, type: text }
-              - column: { name: psn_icon_url, type: text }
-              - column: { name: aws_icon_url, type: text }
+              - column: { name: psn_image_url, type: text }
+              - column: { name: aws_image_url, type: text }
               - column: { name: platforms, type: "text[]" }
               - column: { name: created_at, type: timestamptz, defaultValueComputed: CURRENT_TIMESTAMP, constraints: { nullable: false } }
               - column: { name: updated_at, type: timestamptz, defaultValueComputed: CURRENT_TIMESTAMP, constraints: { nullable: false } }

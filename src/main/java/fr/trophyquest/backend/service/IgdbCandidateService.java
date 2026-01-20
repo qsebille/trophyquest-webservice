@@ -38,18 +38,18 @@ public class IgdbCandidateService {
             this.igdbCandidateRepository.updateStatusAfterValidation(gameId, igdbGameId);
             return true;
         } catch (Exception e) {
-            log.error("Failed to validate candidate for trophySetId {} and igdbGameId {}", gameId, igdbGameId, e);
+            log.error("Failed to validate candidate for gameId {} and igdbGameId {}", gameId, igdbGameId, e);
             return false;
         }
     }
 
     @Transactional
-    public Boolean rejectAllPendingCandidates(UUID trophySetId) {
+    public Boolean rejectAllPendingCandidates(UUID gameId) {
         try {
-            this.igdbCandidateRepository.updateStatusToRejected(trophySetId);
+            this.igdbCandidateRepository.updateStatusToRejected(gameId);
             return true;
         } catch (Exception e) {
-            log.error("Failed to reject candidates for trophySetId {}", trophySetId, e);
+            log.error("Failed to reject candidates for gameId {}", gameId, e);
             return false;
         }
     }

@@ -1,9 +1,7 @@
 package fr.trophyquest.backend.repository;
 
 import fr.trophyquest.backend.api.dto.trophysuite.PlayedTrophySuiteSearchItemDTO;
-import fr.trophyquest.backend.api.dto.trophysuite.RecentTrophySuiteDTO;
 import fr.trophyquest.backend.domain.entity.PlayedTrophySuite;
-import fr.trophyquest.backend.domain.entity.Player;
 import fr.trophyquest.backend.domain.entity.TrophySuite;
 import fr.trophyquest.backend.domain.entity.embedded.PlayedTrophySuiteId;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -21,10 +19,10 @@ public interface PlayedTrophySuiteRepository extends JpaRepository<PlayedTrophyS
     @Query("""
             select pts.trophySuite
             from PlayedTrophySuite pts
-            where pts.player = :player
+            where pts.player.id = :playerId
             order by pts.lastPlayedAt desc
             """)
-    List<TrophySuite> listByPlayerId(Player player);
+    List<TrophySuite> listByPlayerId(UUID playerId);
 
     @Query(value = """
             with trophy_count as (
@@ -56,9 +54,7 @@ public interface PlayedTrophySuiteRepository extends JpaRepository<PlayedTrophyS
             where pts.player_id = :playerId
             order by pts.last_played_at desc
             limit :limit offset :offset
-            """,
-            nativeQuery = true
-    )
+            """, nativeQuery = true)
     List<PlayedTrophySuiteSearchItemDTO> searchPlayedTrophySuitesByPlayer(
             @Param("playerId") UUID playerId,
             int limit,
@@ -75,23 +71,4 @@ public interface PlayedTrophySuiteRepository extends JpaRepository<PlayedTrophyS
             """)
     long countRecentPlayers(@Param("limitDate") Instant limitDate);
 
-    @Query("""
-            select count(distinct pts.trophySuite.id )
-            from PlayedTrophySuite pts
-            where pts.lastPlayedAt >= :limitDate
-            """)
-    long countRecentPlayedTrophySuites(@Param("limitDate") Instant limitDate);
-
-    @Query("""
-            select new fr.trophyquest.backend.api.dto.trophysuite.RecentTrophySuiteDTO(
-                ts.id,
-                ts.name,
-                ts.image,
-                count(distinct(pts.player.id))
-            )
-            from PlayedTrophySuite pts
-                join pts.trophySuite ts
-            where pts.lastPlayedAt >= :limitDate
-            """)
-    List<RecentTrophySuiteDTO> fetchRecentPlayedTrophySuites(@Param("limitDate") Instant limitDate);
 }

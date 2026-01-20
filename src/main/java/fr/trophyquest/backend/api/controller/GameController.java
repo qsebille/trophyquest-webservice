@@ -2,8 +2,10 @@ package fr.trophyquest.backend.api.controller;
 
 import fr.trophyquest.backend.api.dto.SearchDTO;
 import fr.trophyquest.backend.api.dto.game.GameWithIgdbCandidatesDTO;
+import fr.trophyquest.backend.api.dto.game.RecentGameDTO;
 import fr.trophyquest.backend.service.GameService;
 import fr.trophyquest.backend.service.IgdbCandidateService;
+import fr.trophyquest.backend.service.RecentGameService;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,20 +23,24 @@ import java.util.UUID;
 public class GameController {
 
     private final GameService gameService;
+    private final RecentGameService recentGameService;
     private final IgdbCandidateService igdbCandidateService;
 
-    public GameController(GameService gameService, IgdbCandidateService igdbCandidateService) {
+    public GameController(
+            GameService gameService,
+            RecentGameService recentGameService,
+            IgdbCandidateService igdbCandidateService
+    ) {
         this.gameService = gameService;
+        this.recentGameService = recentGameService;
         this.igdbCandidateService = igdbCandidateService;
     }
 
     @GetMapping("/search/candidates")
     public SearchDTO<GameWithIgdbCandidatesDTO> searchCandidates(
-            @RequestParam(name = "pageNumber", defaultValue = "0") String pageNumberParam,
-            @RequestParam(name = "pageSize", defaultValue = "50") String pageSizeParam
+            @RequestParam(name = "pageNumber", defaultValue = "0") int pageNumber,
+            @RequestParam(name = "pageSize", defaultValue = "50") int pageSize
     ) {
-        final int pageNumber = Integer.parseInt(pageNumberParam);
-        final int pageSize = Integer.parseInt(pageSizeParam);
         return this.gameService.searchWithCandidates(pageNumber, pageSize);
     }
 
@@ -51,6 +57,19 @@ public class GameController {
     @GetMapping("/count")
     public long count() {
         return this.gameService.count();
+    }
+
+    @GetMapping("/recent/count")
+    public long countRecent() {
+        return this.gameService.countRecentlyPlayed();
+    }
+
+    @GetMapping("/recent/search")
+    public SearchDTO<RecentGameDTO> searchRecent(
+            @RequestParam(name = "pageNumber", defaultValue = "0") int pageNumber,
+            @RequestParam(name = "pageSize", defaultValue = "50") int pageSize
+    ) {
+        return this.recentGameService.search(pageNumber, pageSize);
     }
 
 }

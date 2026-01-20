@@ -3,11 +3,9 @@ package fr.trophyquest.backend.service;
 import fr.trophyquest.backend.api.dto.SearchDTO;
 import fr.trophyquest.backend.api.dto.player.PlayerDTO;
 import fr.trophyquest.backend.api.dto.player.PlayerLastActivityDTO;
-import fr.trophyquest.backend.api.dto.player.PlayerSearchItemDTO;
 import fr.trophyquest.backend.api.dto.player.PlayerStatsDTO;
 import fr.trophyquest.backend.api.dto.player.RecentPlayerTrophiesItemDTO;
 import fr.trophyquest.backend.api.dto.trophy.EarnedTrophySearchItemDTO;
-import fr.trophyquest.backend.api.dto.trophysuite.PlayedTrophySuiteSearchItemDTO;
 import fr.trophyquest.backend.api.mapper.PlayerMapper;
 import fr.trophyquest.backend.api.mapper.TrophyMapper;
 import fr.trophyquest.backend.api.mapper.TrophySuiteMapper;
@@ -80,11 +78,11 @@ public class PlayerService {
     public PlayerLastActivityDTO fetchLastActivity(UUID playerId) {
         Player player = this.playerRepository.findById(playerId)
                 .orElseThrow(() -> new PlayerNotFoundException(playerId));
-        TrophySuite lastPlayedTrophySuite = this.playedTrophySuiteRepository.listByPlayerId(player).get(0);
-        Trophy lastEarnedTrophy = this.earnedTrophyRepository.listByPlayerId(player).get(0);
+        TrophySuite lastPlayedTrophySuite = this.playedTrophySuiteRepository.listByPlayerId(player.getId()).get(0);
+        Trophy lastEarnedTrophy = this.earnedTrophyRepository.listByPlayerId(player.getId()).get(0);
 
         return PlayerLastActivityDTO.builder()
-                .lastPlayedTrophySet(this.trophySuiteMapper.toDTO(lastPlayedTrophySuite))
+                .lastPlayedTrophySuite(this.trophySuiteMapper.toDTO(lastPlayedTrophySuite))
                 .lastEarnedTrophy(this.trophyMapper.toDTO(lastEarnedTrophy))
                 .build();
     }
@@ -93,32 +91,15 @@ public class PlayerService {
         return this.earnedTrophyRepository.getStatsForPlayer(id);
     }
 
-    public List<PlayerSearchItemDTO> search(int pageNumber, int pageSize) {
-        int offset = pageNumber * pageSize;
-        return this.playerRepository.searchPlayers(pageSize, offset);
-    }
-
     public SearchDTO<EarnedTrophySearchItemDTO> searchEarnedTrophies(UUID playerId, int pageNumber, int pageSize) {
+        Player player = this.playerRepository.findById(playerId)
+                .orElseThrow(() -> new PlayerNotFoundException(playerId));
         PageRequest pageRequest = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.DESC, "earnedAt"));
         Page<EarnedTrophySearchItemDTO> searchResult = this.earnedTrophyRepository.searchEarnedTrophiesByPlayer(
-                playerId, pageRequest);
+                player.getId(), pageRequest);
         return SearchDTO.<EarnedTrophySearchItemDTO>builder()
                 .content(searchResult.getContent())
                 .total(searchResult.getTotalElements())
-                .build();
-    }
-
-    public SearchDTO<PlayedTrophySuiteSearchItemDTO> searchPlayedTrophySuites(
-            UUID playerId,
-            int pageNumber,
-            int pageSize
-    ) {
-        int offset = pageNumber * pageSize;
-        List<PlayedTrophySuiteSearchItemDTO> results = this.playedTrophySuiteRepository.searchPlayedTrophySuitesByPlayer(
-                playerId, pageSize, offset);
-        return SearchDTO.<PlayedTrophySuiteSearchItemDTO>builder()
-                .content(results)
-                .total(this.playedTrophySuiteRepository.countPlayedTrophySuitesByPlayer(playerId))
                 .build();
     }
 
@@ -136,8 +117,8 @@ public class PlayerService {
                     .trophyType(row.getTrophyType())
                     .icon(row.getTrophyIcon())
                     .description(row.getTrophyDescription())
-                    .trophySetId(row.getTrophySuiteId())
-                    .trophySetTitle(row.getTrophySuiteTitle())
+                    .trophySuiteId(row.getTrophySuiteId())
+                    .trophySuiteTitle(row.getTrophySuiteTitle())
                     .earnedAt(row.getEarnedAt())
                     .build();
 

@@ -1,9 +1,7 @@
 package fr.trophyquest.backend.api.controller;
 
 import fr.trophyquest.backend.api.dto.trophy.EarnedTrophyDTO;
-import fr.trophyquest.backend.api.dto.trophysuite.RecentTrophySuiteDTO;
 import fr.trophyquest.backend.api.dto.trophysuite.TrophySuiteDTO;
-import fr.trophyquest.backend.service.IgdbCandidateService;
 import fr.trophyquest.backend.service.TrophySuiteService;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,19 +15,14 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/trophy-set")
+@RequestMapping("/api/trophy-suite")
 @CrossOrigin(origins = "*")
 public class TrophySuiteController {
 
     private final TrophySuiteService trophySuiteService;
-    private final IgdbCandidateService igdbCandidateService;
 
-    public TrophySuiteController(
-            TrophySuiteService trophySuiteService,
-            IgdbCandidateService igdbCandidateService
-    ) {
+    public TrophySuiteController(TrophySuiteService trophySuiteService) {
         this.trophySuiteService = trophySuiteService;
-        this.igdbCandidateService = igdbCandidateService;
     }
 
     @GetMapping("/{trophySuiteId}")
@@ -43,21 +36,6 @@ public class TrophySuiteController {
             @RequestParam(name = "playerId", required = false) Optional<UUID> playerId
     ) {
         return this.trophySuiteService.fetchEarnedTrophies(trophySuiteId, playerId);
-    }
-
-    @GetMapping("/count")
-    public long count() {
-        return this.trophySuiteService.count();
-    }
-
-    @GetMapping("/recent/count")
-    public long countRecent() {
-        return this.trophySuiteService.countRecent();
-    }
-
-    @GetMapping("/top-recent")
-    public List<RecentTrophySuiteDTO> getRecent() {
-        return this.trophySuiteService.fetchRecent();
     }
 
 }

@@ -1,16 +1,14 @@
 package fr.trophyquest.backend.service;
 
 import fr.trophyquest.backend.api.dto.trophy.EarnedTrophyDTO;
-import fr.trophyquest.backend.api.dto.trophysuite.RecentTrophySuiteDTO;
 import fr.trophyquest.backend.api.dto.trophysuite.TrophySuiteDTO;
 import fr.trophyquest.backend.api.mapper.TrophySuiteMapper;
-import fr.trophyquest.backend.repository.PlayedTrophySuiteRepository;
+import fr.trophyquest.backend.domain.entity.TrophySuite;
+import fr.trophyquest.backend.exceptions.TrophySuiteNotFoundException;
 import fr.trophyquest.backend.repository.TrophyRepository;
 import fr.trophyquest.backend.repository.TrophySuiteRepository;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -19,48 +17,32 @@ import java.util.UUID;
 public class TrophySuiteService {
 
     private final TrophySuiteRepository trophySuiteRepository;
-    private final PlayedTrophySuiteRepository playedTrophySuiteRepository;
     private final TrophyRepository trophyRepository;
-
     private final TrophySuiteMapper trophySuiteMapper;
 
     public TrophySuiteService(
             TrophySuiteRepository trophySuiteRepository,
-            PlayedTrophySuiteRepository playedTrophySuiteRepository,
             TrophyRepository trophyRepository,
             TrophySuiteMapper trophySuiteMapper
     ) {
         this.trophySuiteRepository = trophySuiteRepository;
-        this.playedTrophySuiteRepository = playedTrophySuiteRepository;
         this.trophyRepository = trophyRepository;
         this.trophySuiteMapper = trophySuiteMapper;
     }
 
-    public TrophySuiteDTO retrieve(UUID trophySetId) {
-        return this.trophySuiteMapper.toDTO(this.trophySuiteRepository.findById(trophySetId).orElseThrow());
+    public TrophySuiteDTO retrieve(UUID trophySuiteId) {
+        TrophySuite trophySuite = this.trophySuiteRepository.findById(trophySuiteId)
+                .orElseThrow(() -> new TrophySuiteNotFoundException(trophySuiteId));
+        return this.trophySuiteMapper.toDTO(trophySuite);
     }
 
 
-    public List<EarnedTrophyDTO> fetchEarnedTrophies(UUID trophySetId, Optional<UUID> playerId) {
+    public List<EarnedTrophyDTO> fetchEarnedTrophies(UUID trophySuiteId, Optional<UUID> playerId) {
         if (playerId.isEmpty()) {
-            return this.trophyRepository.fetchTrophiesOfTrophySuite(trophySetId);
+            return this.trophyRepository.fetchTrophiesOfTrophySuite(trophySuiteId);
         } else {
-            return this.trophyRepository.fetchPlayerTrophiesForTrophySet(trophySetId, playerId.get());
+            return this.trophyRepository.fetchPlayerTrophiesForTrophySuite(trophySuiteId, playerId.get());
         }
-    }
-
-    public long count() {
-        return this.trophySuiteRepository.count();
-    }
-
-    public long countRecent() {
-        Instant limitDate = Instant.now().minus(7, ChronoUnit.DAYS);
-        return this.playedTrophySuiteRepository.countRecentPlayedTrophySuites(limitDate);
-    }
-
-    public List<RecentTrophySuiteDTO> fetchRecent() {
-        Instant limitDate = Instant.now().minus(7, ChronoUnit.DAYS);
-        return this.playedTrophySuiteRepository.fetchRecentPlayedTrophySuites(limitDate);
     }
 
 }

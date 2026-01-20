@@ -9,6 +9,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.UUID;
 
@@ -28,14 +30,21 @@ public class GameService {
         Page<UUID> gameUuids = this.gameRepository.findGameIdsHavingPendingCandidate(pageRequest);
         List<Game> games = this.gameRepository.fetchGamesWithCandidatesByIds(gameUuids.getContent());
 
-        List<GameWithIgdbCandidatesDTO> trophySets = games.stream().map(this.gameMapper::toWithCandidatesDTO).toList();
+        List<GameWithIgdbCandidatesDTO> gamesWithCandidates = games.stream()
+                .map(this.gameMapper::toWithCandidatesDTO)
+                .toList();
         long total = gameUuids.getTotalElements();
 
-        return SearchDTO.<GameWithIgdbCandidatesDTO>builder().content(trophySets).total(total).build();
+        return SearchDTO.<GameWithIgdbCandidatesDTO>builder().content(gamesWithCandidates).total(total).build();
     }
 
     public long count() {
         return this.gameRepository.count();
+    }
+
+    public long countRecentlyPlayed() {
+        Instant limitDate = Instant.now().minus(7, ChronoUnit.DAYS);
+        return this.gameRepository.countRecentlyPlayed(limitDate);
     }
 
 }

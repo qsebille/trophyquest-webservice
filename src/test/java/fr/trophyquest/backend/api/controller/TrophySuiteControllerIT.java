@@ -27,12 +27,12 @@ class TrophySuiteControllerIT extends IntegrationTestBase {
                 .andExpect(jsonPath("total").value(1))
                 .andExpect(jsonPath("content").exists())
                 .andExpect(jsonPath("content", hasSize(1)))
-                .andExpect(jsonPath("content[0].trophySet.title").value("Outer Wilds"))
-                .andExpect(jsonPath("content[0].mappingCandidates", hasSize(2)))
-                .andExpect(jsonPath("content[0].mappingCandidates[0].name").value("Outer Wilds"))
-                .andExpect(jsonPath("content[0].mappingCandidates[0].score").value(100))
-                .andExpect(jsonPath("content[0].mappingCandidates[1].name").value("Outer Worlds"))
-                .andExpect(jsonPath("content[0].mappingCandidates[1].score").value(90))
+                .andExpect(jsonPath("content[0].game.title").value("Outer Wilds"))
+                .andExpect(jsonPath("content[0].candidates", hasSize(2)))
+                .andExpect(jsonPath("content[0].candidates[0].name").value("Outer Wilds"))
+                .andExpect(jsonPath("content[0].candidates[0].score").value(100))
+                .andExpect(jsonPath("content[0].candidates[1].name").value("Outer Worlds"))
+                .andExpect(jsonPath("content[0].candidates[1].score").value(90))
         ;
     }
 

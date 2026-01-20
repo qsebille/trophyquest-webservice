@@ -3,7 +3,6 @@ package fr.trophyquest.backend.repository;
 import fr.trophyquest.backend.api.dto.player.PlayerStatsDTO;
 import fr.trophyquest.backend.api.dto.trophy.EarnedTrophySearchItemDTO;
 import fr.trophyquest.backend.domain.entity.EarnedTrophy;
-import fr.trophyquest.backend.domain.entity.Player;
 import fr.trophyquest.backend.domain.entity.Trophy;
 import fr.trophyquest.backend.domain.entity.embedded.EarnedTrophyId;
 import org.springframework.data.domain.Page;
@@ -38,10 +37,10 @@ public interface EarnedTrophyRepository extends JpaRepository<EarnedTrophy, Earn
     @Query("""
             select et.trophy
             from EarnedTrophy et
-            where et.player = :player
+            where et.player.id = :playerId
             order by et.earnedAt desc
             """)
-    List<Trophy> listByPlayerId(Player player);
+    List<Trophy> listByPlayerId(UUID playerId);
 
     @Query(value = """
             select new fr.trophyquest.backend.api.dto.trophy.EarnedTrophySearchItemDTO(

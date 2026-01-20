@@ -14,20 +14,20 @@ public interface TrophyRepository extends JpaRepository<Trophy, UUID> {
 
     @Query(value = """
             select new fr.trophyquest.backend.api.dto.trophy.EarnedTrophyDTO(
-               t.id,
-               t.rank,
-               t.title,
-               t.description,
-               t.trophyType,
-               t.isHidden,
-               t.icon,
-               t.trophySuiteGroup.id,
-               null
+                t.id,
+                t.rank,
+                t.title,
+                t.description,
+                t.trophyType,
+                t.isHidden,
+                t.icon,
+                t.trophySuiteGroup.id,
+                null
             )
             from Trophy t
+            where t.trophySuite.id = :trophySuiteId
             """)
     List<EarnedTrophyDTO> fetchTrophiesOfTrophySuite(UUID trophySuiteId);
-// todo !
 
 
     @Query(value = """
@@ -43,8 +43,9 @@ public interface TrophyRepository extends JpaRepository<Trophy, UUID> {
                et.earnedAt
             )
             from Trophy t
-             join t.earnedBy et
+                join t.earnedBy et
+            where t.trophySuite.id = :trophySuiteId and et.player.id = :playerId
             """)
-    List<EarnedTrophyDTO> fetchPlayerTrophiesForTrophySet(UUID trophySetId, UUID playerId);
+    List<EarnedTrophyDTO> fetchPlayerTrophiesForTrophySuite(UUID trophySuiteId, UUID playerId);
 
 }

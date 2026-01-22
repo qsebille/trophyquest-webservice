@@ -17,14 +17,15 @@ public interface PlayerRepository extends JpaRepository<Player, UUID> {
     @Query(value = """
             with active as (select et.player_id, count(*) as trophy_count
                             from app.psn_earned_trophy et
-                            where et.earned_at >= now() - interval '7 days'
+                            where et.earned_at >= :limitDate
                             group by et.player_id
                             order by trophy_count desc
                             limit :playerLimit),
                  ranked as (select et.*,
                                    row_number() over (partition by et.player_id order by et.earned_at desc) as rn
                             from app.psn_earned_trophy et
-                                     join active a on a.player_id = et.player_id)
+                                 join active a on a.player_id = et.player_id
+                            where et.earned_at >= :limitDate)
             select p.id                                         as player_id,
                    p.pseudo                                     as pseudo,
                    coalesce(p.aws_avatar_url, p.psn_avatar_url) as avatar,

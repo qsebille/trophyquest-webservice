@@ -27,7 +27,6 @@ public class PsnFetcherService {
         if (player.isPresent()) {
             throw new Exception("Player already in database!");
         } else {
-
             String safeProfileName = profileName.replace("\"", "\\\"").trim();
             String payload = "{\"profileName\":\"" + safeProfileName + "\"}";
 

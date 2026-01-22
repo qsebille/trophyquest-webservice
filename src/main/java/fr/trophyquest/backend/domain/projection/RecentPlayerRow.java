@@ -22,9 +22,9 @@ public interface RecentPlayerRow {
 
     String getTrophyDescription();
 
-    UUID getTrophySetId();
+    UUID getTrophySuiteId();
 
-    String getTrophySetTitle();
+    String getTrophySuiteTitle();
 
     Instant getEarnedAt();
 }

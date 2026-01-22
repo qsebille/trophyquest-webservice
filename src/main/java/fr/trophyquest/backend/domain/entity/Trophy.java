@@ -17,7 +17,7 @@ import java.util.Set;
 import java.util.UUID;
 
 @Entity
-@Table(name = "trophy")
+@Table(name = "psn_trophy")
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Trophy {
@@ -36,15 +36,18 @@ public class Trophy {
 
     private boolean isHidden;
 
-    private String gameGroupId;
-
-    @Formula("coalesce(aws_icon_url, icon_url)")
-    private String iconUrl;
+    @Formula("coalesce(aws_icon_url, psn_icon_url)")
+    private String icon;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "trophy_set_id")
+    @JoinColumn(name = "trophy_suite_id")
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    private TrophySet trophySet;
+    private TrophySuite trophySuite;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "trophy_suite_group_id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    private TrophySuiteGroup trophySuiteGroup;
 
     @OneToMany(mappedBy = "trophy")
     private Set<EarnedTrophy> earnedBy = new HashSet<>();

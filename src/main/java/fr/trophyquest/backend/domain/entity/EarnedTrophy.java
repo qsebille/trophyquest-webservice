@@ -14,7 +14,7 @@ import java.time.Instant;
 import java.util.Objects;
 
 @Entity
-@Table(name = "earned_trophy")
+@Table(name = "psn_earned_trophy")
 @Data
 public class EarnedTrophy {
 

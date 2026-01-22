@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 004-rename-game-into-trophy-set/06-create-igdb-game-company-table
+      id: 003-igdb-tables-setup/06-create-igdb-game-company-table
       author: Quentin Sebille
       changes:
         - createTable:

@@ -12,7 +12,7 @@ public record TrophyDTO(
         String description,
         String trophyType,
         Boolean isHidden,
-        String iconUrl,
-        String gameGroup
+        String icon,
+        String gameGroupId
 ) {
 }

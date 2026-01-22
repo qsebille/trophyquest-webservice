@@ -4,7 +4,7 @@ import lombok.Builder;
 
 @Builder
 public record PlayerStatsDTO(
-        long totalTrophySetsPlayed,
+        long totalTrophySuitesPlayed,
         long totalPlatinumTrophies,
         long totalGoldTrophies,
         long totalSilverTrophies,

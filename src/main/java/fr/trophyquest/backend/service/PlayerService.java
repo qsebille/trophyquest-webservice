@@ -2,16 +2,11 @@ package fr.trophyquest.backend.service;
 
 import fr.trophyquest.backend.api.dto.SearchDTO;
 import fr.trophyquest.backend.api.dto.player.PlayerDTO;
-import fr.trophyquest.backend.api.dto.player.PlayerLastActivityDTO;
 import fr.trophyquest.backend.api.dto.player.PlayerStatsDTO;
 import fr.trophyquest.backend.api.dto.player.RecentPlayerTrophiesItemDTO;
 import fr.trophyquest.backend.api.dto.trophy.EarnedTrophySearchItemDTO;
 import fr.trophyquest.backend.api.mapper.PlayerMapper;
-import fr.trophyquest.backend.api.mapper.TrophyMapper;
-import fr.trophyquest.backend.api.mapper.TrophySuiteMapper;
 import fr.trophyquest.backend.domain.entity.Player;
-import fr.trophyquest.backend.domain.entity.Trophy;
-import fr.trophyquest.backend.domain.entity.TrophySuite;
 import fr.trophyquest.backend.domain.projection.RecentPlayerRow;
 import fr.trophyquest.backend.exceptions.PlayerNotFoundException;
 import fr.trophyquest.backend.repository.EarnedTrophyRepository;
@@ -38,23 +33,17 @@ public class PlayerService {
     private final EarnedTrophyRepository earnedTrophyRepository;
 
     private final PlayerMapper playerMapper;
-    private final TrophySuiteMapper trophySuiteMapper;
-    private final TrophyMapper trophyMapper;
 
     public PlayerService(
             PlayerRepository playerRepository,
             PlayedTrophySuiteRepository playedTrophySuiteRepository,
             EarnedTrophyRepository earnedTrophyRepository,
-            PlayerMapper playerMapper,
-            TrophySuiteMapper trophySuiteMapper,
-            TrophyMapper trophyMapper
+            PlayerMapper playerMapper
     ) {
         this.playerRepository = playerRepository;
         this.playedTrophySuiteRepository = playedTrophySuiteRepository;
         this.earnedTrophyRepository = earnedTrophyRepository;
         this.playerMapper = playerMapper;
-        this.trophySuiteMapper = trophySuiteMapper;
-        this.trophyMapper = trophyMapper;
     }
 
     public long count() {
@@ -73,18 +62,6 @@ public class PlayerService {
 
     public Optional<PlayerDTO> findByPseudo(String pseudo) {
         return this.playerRepository.findByPseudo(pseudo).map(this.playerMapper::toDTO);
-    }
-
-    public PlayerLastActivityDTO fetchLastActivity(UUID playerId) {
-        Player player = this.playerRepository.findById(playerId)
-                .orElseThrow(() -> new PlayerNotFoundException(playerId));
-        TrophySuite lastPlayedTrophySuite = this.playedTrophySuiteRepository.listByPlayerId(player.getId()).get(0);
-        Trophy lastEarnedTrophy = this.earnedTrophyRepository.listByPlayerId(player.getId()).get(0);
-
-        return PlayerLastActivityDTO.builder()
-                .lastPlayedTrophySuite(this.trophySuiteMapper.toDTO(lastPlayedTrophySuite))
-                .lastEarnedTrophy(this.trophyMapper.toDTO(lastEarnedTrophy))
-                .build();
     }
 
     public PlayerStatsDTO fetchStats(UUID id) {

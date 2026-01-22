@@ -35,4 +35,7 @@ public class Game {
     @JoinColumn(name = "igdb_game_id", referencedColumnName = "id", unique = true)
     private IgdbGame igdbGame;
 
+    @OneToMany(mappedBy = "game")
+    private Set<GameImage> images = new HashSet<>();
+
 }

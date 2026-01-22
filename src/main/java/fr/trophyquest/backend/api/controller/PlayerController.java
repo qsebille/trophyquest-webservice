@@ -2,7 +2,6 @@ package fr.trophyquest.backend.api.controller;
 
 import fr.trophyquest.backend.api.dto.SearchDTO;
 import fr.trophyquest.backend.api.dto.player.PlayerDTO;
-import fr.trophyquest.backend.api.dto.player.PlayerLastActivityDTO;
 import fr.trophyquest.backend.api.dto.player.PlayerSearchItemDTO;
 import fr.trophyquest.backend.api.dto.player.PlayerStatsDTO;
 import fr.trophyquest.backend.api.dto.player.RecentPlayerTrophiesItemDTO;
@@ -78,11 +77,6 @@ public class PlayerController {
     @GetMapping("{playerId}/stats")
     public PlayerStatsDTO fetchWithStats(@PathVariable UUID playerId) {
         return this.playerService.fetchStats(playerId);
-    }
-
-    @GetMapping("{playerId}/last-activity")
-    public PlayerLastActivityDTO fetchLastActivity(@PathVariable UUID playerId) {
-        return this.playerService.fetchLastActivity(playerId);
     }
 
     @GetMapping("{playerId}/trophy-suite/search")

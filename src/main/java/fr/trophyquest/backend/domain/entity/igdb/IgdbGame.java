@@ -10,6 +10,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.hibernate.annotations.Formula;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -29,6 +30,8 @@ public class IgdbGame {
     private String name;
 
     private String summary;
+
+    private String gameType;
 
     private Date releaseDate;
 
@@ -51,6 +54,9 @@ public class IgdbGame {
     private String communityWikiWebsite;
 
     private List<String> youtubeIds;
+
+    @Formula("coalesce(psn_website, official_website, community_wiki_website)")
+    private String website;
 
     @ManyToMany
     @JoinTable(

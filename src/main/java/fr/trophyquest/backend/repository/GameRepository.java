@@ -32,6 +32,7 @@ public interface GameRepository extends JpaRepository<Game, UUID> {
                 from Game g
                     join fetch g.igdbCandidates c
                     join fetch c.candidate ig
+                    join fetch g.images i
                 where g.id in :ids and c.status = 'PENDING'
                 order by g.id
             """)

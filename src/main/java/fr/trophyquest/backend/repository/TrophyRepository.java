@@ -21,11 +21,14 @@ public interface TrophyRepository extends JpaRepository<Trophy, UUID> {
                 t.trophyType,
                 t.isHidden,
                 t.icon,
-                t.trophySuiteGroup.id,
+                t.trophySuiteGroup.psnId,
+                t.trophySuiteGroup.name,
                 null
             )
             from Trophy t
+                left join t.trophySuiteGroup
             where t.trophySuite.id = :trophySuiteId
+            order by t.rank asc
             """)
     List<EarnedTrophyDTO> fetchTrophiesOfTrophySuite(UUID trophySuiteId);
 
@@ -38,12 +41,15 @@ public interface TrophyRepository extends JpaRepository<Trophy, UUID> {
                t.trophyType,
                t.isHidden,
                t.icon,
-               t.trophySuiteGroup.id,
+               t.trophySuiteGroup.psnId,
+               t.trophySuiteGroup.name,
                et.earnedAt
             )
             from Trophy t
                 left join t.earnedBy et on et.player.id = :playerId
+                left join t.trophySuiteGroup
             where t.trophySuite.id = :trophySuiteId
+            order by t.rank asc
             """)
     List<EarnedTrophyDTO> fetchPlayerTrophiesForTrophySuite(UUID trophySuiteId, UUID playerId);
 

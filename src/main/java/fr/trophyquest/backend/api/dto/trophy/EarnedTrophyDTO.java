@@ -14,7 +14,8 @@ public record EarnedTrophyDTO(
         String trophyType,
         Boolean isHidden,
         String icon,
-        UUID trophyGroupId,
+        String trophyGroupId,
+        String trophyGroupName,
         Instant earnedAt
 ) {
 }

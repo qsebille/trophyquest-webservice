@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'fr.trophyquest'
-description = 'Web Service for TrophyQuest'
+description = 'Backend web service for TrophyQuest'
 
 java {
     toolchain {

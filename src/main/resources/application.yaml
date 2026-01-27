@@ -5,10 +5,10 @@ management:
         include: health,info
   endpoint:
     info:
-      enabled: true
+      access: read_only
 
 spring:
-  application.name: trophyquest-web-service
+  application.name: trophyquest-backend
   datasource:
     url:
     username:
